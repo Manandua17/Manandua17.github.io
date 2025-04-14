@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Full-Width Portfolio</title>
+  <style>
+    /* New Color Variables & Rounded Corners */
+    :root {
+      --primary-color: #007aff;
+      --accent-color: #ff6f61;
+      --secondary-color: #6b5b95;
+      --bg-dark: #1e1e1e;
+      --card-bg: #2c2c2c;
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+    }
+
+    /* Global Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-color);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;  /* content above background canvas */
+      overflow-x: hidden;
+    }
+
+    /* Full-screen Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Header Styles */
+    header {
+      background: var(--card-bg);
+      box-shadow: 0 2px 4px var(--shadow);
+      padding: 15px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-radius: var(--border-radius);
+      margin: 10px;
+    }
+    header nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+    }
+    header nav ul li {
+      margin-left: 25px;
+    }
+    header nav ul li a {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    header nav ul li a:hover {
+      color: #005bb5;
+    }
+
+    /* Section Styles Using Full Width */
+    section {
+      width: 100%;
+      padding: 60px 40px;
+    }
+    h2.section-title {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      color: var(--primary-color);
+    }
+    h2.section-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 50%;
+      height: 3px;
+      background: var(--primary-color);
+    }
+    /* Fade and Zoom Animation for Scroll Reveal */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Hero Section with Flex Layout */
+    .hero {
+      padding: 120px 40px;
+      background: rgba(0, 122, 255, 0.8); /* semi-transparent overlay to complement canvas */
+      color: var(--text-color);
+    }
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .hero-text {
+      flex: 1 1 300px;
+      padding-right: 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .hero p {
+      font-size: 1.25rem;
+    }
+    /* Typewriter Effect Styling */
+    #typed-text {
+      font-weight: bold;
+    }
+    #cursor {
+      display: inline-block;
+      background-color: var(--text-color);
+      width: 2px;
+      margin-left: 5px;
+      animation: blink 0.7s infinite;
+    }
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    .hero-image {
+      flex: 0 0 auto;
+      margin-top: 20px;
+    }
+    .hero-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 4px solid var(--text-color);
+      object-fit: cover;
+    }
+
+    /* Card Container for Projects & Experience */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .project-link {
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px var(--shadow);
+      /* Initial state for zoom-in animation */
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      transition: transform 0.3s ease;
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    /* Styling for Project Images */
+    .project-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+      margin-bottom: 15px;
+    }
+
+    /* Skills Section */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+    .skill-item {
+      background: var(--card-bg);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 4px var(--shadow);
+      transition: transform 0.3s ease;
+    }
+    .skill-item:hover {
+      transform: translateY(-5px);
+    }
+    .skill-item img {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 10px;
+    }
+    .skill-item span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-color);
+    }
+
+    /* Contact Section */
+    .contact a {
+      color: var(--primary-color);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    .contact a:hover {
+      color: #005bb5;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--card-bg);
+      border-top: 1px solid #444;
+      font-size: 0.9rem;
+      border-radius: var(--border-radius);
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Canvas for Animated Circuit-Like Effect -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Header with Navigation -->
+  <header>
+    <nav>
+      <ul>
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section with Typewriter Effect -->
+  <section id="hero" class="hero fade-in">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Hello, I'm [Your Name]</h1>
+        <p>I am a <span id="typed-text"></span><span id="cursor">|</span></p>
+      </div>
+      <div class="hero-image">
+        <!-- Replace 'your-picture.jpg' with your image path or URL -->
+        <img src="your-picture.jpg" alt="Your Name" class="hero-img">
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="fade-in">
+    <h2 class="section-title">About Me</h2>
+    <p>I'm a [Your Profession/Student/Developer] experienced in creating innovative solutions. I thrive on exploring new ideas and pushing the boundaries of technology. My interests span hardware, software, and the intersection of both in solving real-world challenges.</p>
+  </section>
+
+  <!-- Projects Section with Clickable Cards and Zoom-In Effect -->
+  <section id="projects" class="fade-in">
+    <h2 class="section-title">Projects</h2>
+    <div class="card-container">
+      <a class="project-link" href="https://example.com/project1" target="_blank">
+        <div class="card">
+          <!-- Replace with your project image URL -->
+          <img src="https://via.placeholder.com/280x150" alt="Project One Image" class="project-img">
+          <h3>Project One</h3>
+          <p>A brief description of your project. Outline its purpose, the technologies used, and what makes it special.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://example.com/project2" target="_blank">
+        <div class="card">
+          <img src="https://via.placeholder.com/280x150" alt="Project Two Image" class="project-img">
+          <h3>Project Two</h3>
+          <p>A brief description of another project, highlighting key features and achievements.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://example.com/project3" target="_blank">
+        <div class="card">
+          <img src="https://via.placeholder.com/280x150" alt="Project Three Image" class="project-img">
+          <h3>Project Three</h3>
+          <p>A brief description of your third project. Explain the challenges and milestones you achieved.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section id="experience" class="fade-in">
+    <h2 class="section-title">Experience</h2>
+    <div class="card-container">
+      <div class="card">
+        <h3>Role @ Company</h3>
+        <p>Description of your role, responsibilities, and key achievements at the company.</p>
+      </div>
+      <div class="card">
+        <h3>Another Role @ Organization</h3>
+        <p>Description of your role and experiences, focusing on contributions and projects delivered.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="fade-in">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-grid">
+      <div class="skill-item">
+        <img src="https://via.placeholder.com/40" alt="C/C++">
+        <span>C/C++</span>
+      </div>
+      <div class="skill-item">
+        <img src="https://via.placeholder.com/40" alt="Python">
+        <span>Python</span>
+      </div>
+      <div class="skill-item">
+        <img src="https://via.placeholder.com/40" alt="JavaScript">
+        <span>JavaScript</span>
+      </div>
+      <div class="skill-item">
+        <img src="https://via.placeholder.com/40" alt="React">
+        <span>React</span>
+      </div>
+      <!-- Add more skills as needed -->
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="fade-in">
+    <h2 class="section-title">Contact</h2>
+    <p>If you'd like to get in touch, please email me at <a href="mailto:your.email@example.com">your.email@example.com</a> or connect on <a href="#" target="_blank">LinkedIn</a>.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 [Your Name]. Designed with passion.</p>
+  </footer>
+
+  <!-- JavaScript for Scroll & Zoom Animations -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.fade-in, .card');
+      const options = { threshold: 0.2 };
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+      elements.forEach(el => observer.observe(el));
+    });
+  </script>
+
+  <!-- JavaScript for Typewriter Effect -->
+  <script>
+    const textArray = ["Software Developer", "Creative Designer", "Innovator"];
+    const typingDelay = 100;
+    const erasingDelay = 50;
+    const newTextDelay = 2000;
+    let textArrayIndex = 0;
+    let charIndex = 0;
+
+    function type() {
+      if (charIndex < textArray[textArrayIndex].length) {
+        document.getElementById("typed-text").textContent += textArray[textArrayIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, typingDelay);
+      } else {
+        setTimeout(erase, newTextDelay);
+      }
+    }
+
+    function erase() {
+      if (charIndex > 0) {
+        document.getElementById("typed-text").textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, erasingDelay);
+      } else {
+        textArrayIndex = (textArrayIndex + 1) % textArray.length;
+        setTimeout(type, typingDelay + 1100);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      if(textArray.length) setTimeout(type, newTextDelay + 250);
+    });
+  </script>
+
+  <!-- JavaScript for Animated Computer-Engineering Background -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    let particles = [];
+    const numParticles = 100;
+
+    // Initialize particles with random positions, velocities, and sizes.
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        size: Math.random() * 2 + 1
+      });
+    }
+
+    function animateBackground() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Update and draw particles.
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        // Wrap around edges for continuous effect.
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fill();
+      }
+      // Draw connecting lines between nearby particles.
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = "rgba(255,255,255," + (1 - dist / 100) + ")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateBackground);
+    }
+
+    animateBackground();
+  </script>
+</body>
+</html>
