@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Force scroll to top and remove any hash -->
+  <!-- Force scroll to top and clear any URL hash -->
   <script>
     if ('scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
@@ -17,7 +17,7 @@
   <style>
     /* Base Colors & Rounded Corners */
     :root {
-      --primary-color: #007aff;
+      --primary-color: #007aff; /* Light blue */
       --accent-color: #ff6f61;
       --secondary-color: #6b5b95;
       --bg-dark: #1e1e1e;
@@ -107,15 +107,12 @@
       .nav-container {
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        transition: max-height 0.3s ease-in-out;
         flex-direction: column;
         align-items: center;
       }
       .nav-container.open { max-height: 300px; }
-      header nav ul {
-        flex-direction: column;
-        align-items: center;
-      }
+      header nav ul { flex-direction: column; align-items: center; }
       header nav ul li { margin: 10px 0; }
       .hamburger { display: flex; }
     }
@@ -148,25 +145,27 @@
     }
     .fade-in.visible { opacity: 1; transform: translateY(0) scale(1); }
     
-    /* HERO Section */
+    /* HERO Section: Full-Screen, Raised Content */
     .hero {
-      padding: 120px 40px;
+      height: 100vh;
+      padding: 20px 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
       background: transparent;
       color: var(--text-color);
+      position: relative;
     }
     .hero-content {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 40px;
+      margin-top: 100px;
     }
     .hero-left { display: flex; flex-direction: column; align-items: flex-start; }
     .hero h1 { font-size: 3rem; line-height: 1.2; }
-    .hero-subheading {
-      font-size: 1.2rem;
-      margin-top: 5px;
-      color: var(--primary-color);
-    }
+    .hero-subheading { font-size: 1.2rem; margin-top: 5px; color: var(--primary-color); }
     .typewriter-text { margin: 20px 0; font-size: 1.25rem; }
     .social-buttons { display: flex; gap: 15px; margin-top: 10px; }
     .social-buttons a { text-decoration: none; transition: transform 0.3s ease; }
@@ -174,11 +173,31 @@
     .social-buttons img { width: 32px; height: 32px; }
     .hero-image { flex: 0 0 auto; }
     .hero-img {
-      width: 300px;
-      height: 300px;
+      width: 300px; height: 300px;
       border-radius: 50%;
       border: 4px solid var(--text-color);
       object-fit: cover;
+    }
+    /* Bouncing Downward Arrow: SVG Chevron */
+    .down-arrow {
+      position: absolute;
+      bottom: 20%;  /* Default for larger viewports */
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 101;
+    }
+    .down-arrow svg {
+      width: 40px;
+      height: 40px;
+      stroke: white;
+      stroke-width: 2;
+      animation: bounce 1s linear infinite;
+    }
+    @keyframes bounce {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-20px); }
+      100% { transform: translateX(-50%) translateY(0); }
     }
     
     /* Projects Section */
@@ -214,10 +233,7 @@
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
     .card.visible { opacity: 1; transform: translateY(0) scale(1); }
-    .card:hover {
-      transform: translateY(-5px) scale(1.02);
-      transition: transform 0.3s ease;
-    }
+    .card:hover { transform: translateY(-5px) scale(1.02); transition: transform 0.3s ease; }
     .card h3 { margin-bottom: 10px; color: var(--primary-color); }
     .card p { font-size: 0.95rem; line-height: 1.5; }
     .project-img {
@@ -247,7 +263,7 @@
       color: var(--bg-dark);
     }
     
-    /* Experience Section – Flip Cards in a 2-Column Grid */
+    /* Experience Section – Flip Cards in 2 Columns */
     .experience-container {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -287,35 +303,42 @@
       background: var(--card-bg);
       transform: rotateY(180deg);
     }
+    .flip-card-front::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      background: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      z-index: 1;
+    }
+    .flip-card-front h3 {
+      position: relative;
+      z-index: 2;
+    }
     
-    /* Skills Section – Remove large panel background;
-       Instead, show a category title with a small grey background above the items.
-       The overall section fills the full width.
-    */
+    /* Skills Section – Three Equal Columns */
     .skills-wrapper {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 40px;
-      margin-top: 20px;
       width: 100%;
+      margin-top: 20px;
     }
-    .skills-category {
-      /* Remove background, padding, and box-shadow */
-      padding: 0;
-      margin: 0;
-    }
+    .skills-category { padding: 0; }
     .skill-category-title {
-      background: #333; /* Small grey background */
-      padding: 5px 10px;
-      border-radius: 4px;
-      display: inline-block;
+      display: block;
+      text-align: center;
       margin-bottom: 10px;
+      color: var(--primary-color);
+      font-weight: bold;
     }
     .skills-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      /* The container will expand its height based on number of items */
     }
     .skill-item {
       background: var(--card-bg);
@@ -331,8 +354,8 @@
     }
     .skill-item:hover { transform: translateY(-4px); }
     .skill-item img {
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       object-fit: contain;
     }
     .skill-tooltip {
@@ -350,19 +373,25 @@
       transition: opacity 0.3s ease;
       white-space: nowrap;
     }
-    .skill-item:hover .skill-tooltip {
-      opacity: 1;
-      visibility: visible;
-    }
+    .skill-item:hover .skill-tooltip { opacity: 1; visibility: visible; }
     
-    /* Contact Section */
-    .contact a {
-      color: var(--primary-color);
-      text-decoration: none;
-      font-weight: 500;
-      transition: color 0.3s ease;
+    /* Contact Section: Left-Aligned, Clickable Icons */
+    .contact {
+      text-align: left;
+      margin-top: 40px;
+      padding-left: 40px;
     }
-    .contact a:hover { color: #005bb5; }
+    .contact a {
+      margin-right: 20px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .contact a:hover { transform: scale(1.1); }
+    .contact img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
     
     /* Footer */
     footer {
@@ -382,7 +411,7 @@
       .nav-container {
         max-height: 0;
         overflow: hidden;
-        transition: max-height 0.3s ease;
+        transition: max-height 0.3s ease-in-out;
         flex-direction: column;
         align-items: center;
       }
@@ -395,9 +424,16 @@
       .hero p { font-size: 1rem; }
       .hero-content { flex-direction: column; gap: 20px; }
       .social-buttons { justify-content: flex-start; }
-      .experience-container { grid-template-columns: 1fr; }
-      /* On small screens, skills categories stack vertically */
+      .experience-container { grid-template-columns: 1fr !important; }
       .skills-wrapper { grid-template-columns: 1fr; }
+      .contact { text-align: center; padding-left: 0; }
+      /* For mobile: Lower the down arrow so it sits below the photo */
+      .down-arrow { bottom: 10% !important; }
+
+      /* Adjust font size for experience descriptions on smaller screens */
+      .flip-card-back p {
+        font-size: 0.8rem;
+      }
     }
   </style>
 </head>
@@ -424,7 +460,7 @@
     </nav>
   </header>
   
-  <!-- Hero Section -->
+  <!-- HERO Section: Full-Screen, Raised Content -->
   <section id="hero" class="hero fade-in">
     <div class="hero-content">
       <div class="hero-left">
@@ -450,16 +486,22 @@
         <img src="your-picture.jpg" alt="Manan Dua" class="hero-img">
       </div>
     </div>
+    <!-- Bouncing Downward Arrow: SVG Chevron -->
+    <div class="down-arrow" id="down-arrow">
+      <svg width="40" height="40" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" fill="none" stroke="white" stroke-width="2"/>
+      </svg>
+    </div>
   </section>
   
   <!-- About Section -->
   <section id="about" class="fade-in">
     <h2 class="section-title">About Me</h2>
     <p>
-        Hi! I'm Manan, a second-year Computer Engineering student at McMaster University. I love diving into hands-on tech projects that blend both hardware and software—from building autonomous robots to designing MIDI controllers from scratch.
+      Hi! I'm Manan, a second-year Computer Engineering student at McMaster University. I love diving into hands-on tech projects that blend both hardware and software—from building autonomous robots to designing MIDI controllers from scratch.
     </p>
     <p>
-        At McMaster, I've been part of exciting group design projects and competitions, where I've gotten to apply my skills in coding, 3D modeling, and circuit design. Outside of class, you'll usually find me experimenting with electronics or exploring new programming languages to push my skills even further.
+      At McMaster, I've been part of exciting group design projects and competitions, applying my skills in coding, 3D modeling, and circuit design. Outside of class, you'll find me experimenting with electronics or exploring new programming languages.
     </p>
   </section>
   
@@ -472,121 +514,123 @@
       <button data-filter="personal">Personal Projects</button>
     </div>
     <div class="card-container">
-      <!-- Projects for 1st Year -->
+      <!-- 1st Year Projects -->
       <a class="project-link" href="https://acute-fedora-96d.notion.site/P-1-Renewable-Technology-Challenge-4863b14fb81f46228aaa2980385b5d95" target="_blank" data-year="1st">
         <div class="card">
           <img src="project1.png" alt="Renewable Technology Challenge" class="project-img">
           <h3>Renewable Technology Challenge</h3>
-          <p>Wind turbine blade design for a start-up in Calgary, Ontario</p>
+          <p>Wind turbine blade design for a start-up in Calgary.</p>
         </div>
       </a>
       <a class="project-link" href="https://acute-fedora-96d.notion.site/P-2-Get-a-Grip-9f4bf9d9b8a74477b73340fac02d6250" target="_blank" data-year="1st">
         <div class="card">
           <img src="project2.png" alt="Get a Grip" class="project-img">
           <h3>Get a Grip</h3>
-          <p>Mankind's solution for robotics in the medical industry</p>
+          <p>Robotics solution for the medical industry.</p>
         </div>
       </a>
       <a class="project-link" href="https://acute-fedora-96d.notion.site/P-3-Revenge-of-the-Recycling-System-f90ce9bdd7834017afcd36aa13ad4fe9" target="_blank" data-year="1st">
         <div class="card">
           <img src="project3.png" alt="Revenge of the Recycling System" class="project-img">
           <h3>Revenge of the Recycling System</h3>
-          <p>Project Green Sort: Advancing Recycling Accuracy</p>
+          <p>Project Green Sort for advanced recycling.</p>
         </div>
       </a>
       <a class="project-link" href="https://acute-fedora-96d.notion.site/P-4-Power-in-Community-1c80ff98ac714374bd5b0de7c3104095" target="_blank" data-year="1st">
         <div class="card">
           <img src="project4.png" alt="Power in Community" class="project-img">
           <h3>Power in Community</h3>
-          <p>Lightweight Waterproof Control System Protection for Wheelchairs</p>
+          <p>Waterproof control system for wheelchairs.</p>
         </div>
       </a>
-      <!-- Projects for 2nd Year -->
-      <a class="project-link" href="" target="_blank" data-year="2nd">
+      <!-- 2nd Year Projects -->
+      <a class="project-link" href="https://example.com/ei project 1.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="ei project 1.png" alt="Project One" class="project-img">
+          <img src="ei project 1.png" alt="Full Bridge Rectifier Power Supply" class="project-img">
           <h3>Full Bridge Rectifier Power Supply</h3>
-          <p>Design and build a dc power supply that delivers 10 mA at 3V ± 0.1V from a source that is 120V (rms) at 1 kHz</p>
+          <p>DC power supply design with tight voltage regulation.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project4" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/ei project 2.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="ei project 2.png" alt="Project Four" class="project-img">
+          <img src="ei project 2.png" alt="Voltage Controlled Switch" class="project-img">
           <h3>Voltage Controlled Switch</h3>
-          <p>Design and build “ideal” voltage controlled switches. You are required to design two types of switches</p>
+          <p>Design of two types of ideal voltage controlled switches.</p>
         </div>
       </a>
       <a class="project-link" href="https://drive.google.com/file/d/1kRZfR3ar7bKVE7x23aJh0k1N_WGjhmfp/view?usp=sharing" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="ei project 3.png" alt="Project Three" class="project-img">
+          <img src="ei project 3.png" alt="Transistor Amplifier" class="project-img">
           <h3>Transistor Amplifier</h3>
-          <p>Design, simulate, and build an amplifier that can take an input of ±0.5V from a source with an internal resistance of 100Ω and deliver it to a 100Ω load with good linearity and less than 10% attenuation</p>
+          <p>Amplifier with high linearity and low attenuation.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project4" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/ei project 4.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="ei project 4.png" alt="Project Four" class="project-img">
+          <img src="ei project 4.png" alt="CMOS XOR Gate" class="project-img">
           <h3>CMOS XOR Gate</h3>
-          <p>Design, build, and test a MOSFET based XOR gate</p>
+          <p>Designed, built, and tested a MOSFET-based XOR gate.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project3" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/ei project 5.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="ei project 5.png" alt="Project Three" class="project-img">
+          <img src="ei project 5.png" alt="Digital-to-Analog Converter" class="project-img">
           <h3>Digital-to-Analog Converter</h3>
-          <p>Design, simulate, and build a 3-bit Digital-to-Analog Converter with full-scale analog voltage, V<sub>FS</sub> = 5V</p>
+          <p>3-bit DAC with a full-scale output of 5V.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project4" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/dx project.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="dx project.png" alt="Project Four" class="project-img">
-          <h3>High-Accuracy Mapping Lidar (HAML)</h3>
-          <p>Design and build an embedded spatial measurement system using a time-of-flight sensor and rotary mechanism to capture 3D distance data, store it in memory, and transmit it to a PC for graphical reconstruction</p>
+          <img src="dx project.png" alt="High-Accuracy Mapping Lidar" class="project-img">
+          <h3>High-Accuracy Mapping Lidar</h3>
+          <p>Embedded system for 3D distance capture and reconstruction.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project3" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/sh project.png" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="sh project.png" alt="Project Three" class="project-img">
+          <img src="sh project.png" alt="Snake Game" class="project-img">
           <h3>Snake Game</h3>
-          <p>Develop a C++ object-oriented version of the classic Snake game from scratch, applying procedural and object-oriented programming principles to create a customizable and interactive user experience</p>
+          <p>Classic Snake game developed in C++ using OOP principles.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/project4" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://example.com/2si3 project.jpg" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="2si3 project.jpg" alt="Project Four" class="project-img">
+          <img src="2si3 project.jpg" alt="COMPENG 2SI3 Projects" class="project-img">
           <h3>COMPENG 2SI3 Projects</h3>
-          <p>Explore various Data Structures & Algorithms through McMaster's 2SI3 course, including: linked lists, binary search trees, and hash tables</p>
+          <p>Data structures & algorithms projects from the 2SI3 course.</p>
         </div>
       </a>
-      <!-- Projects for Personal Projects -->
-      <a class="project-link" href="https://example.com/project5" target="_blank" data-year="personal">
+      <!-- Personal Projects -->
+      <a class="project-link" href="https://example.com/midi.jpg" target="_blank" data-year="personal">
         <div class="card">
-          <img src="midi.jpg" alt="Project Five" class="project-img">
-          <h3>Arduino Based MIDI Controller</h3>
-          <p>Designed and build a versitile Arduino-based Streamdeck capable of communicating with a computing through MIDI protocol</p>
+          <img src="midi.jpg" alt="Arduino MIDI Controller" class="project-img">
+          <h3>Arduino MIDI Controller</h3>
+          <p>Versatile Arduino-based MIDI controller.</p>
         </div>
       </a>
       <a class="project-link" href="https://github.com/orgs/Manan-s-Games/repositories" target="_blank" data-year="personal">
         <div class="card">
-          <img src="coding project.jpg" alt="Project Six" class="project-img">
+          <img src="coding project.jpg" alt="Summer Coding Projects" class="project-img">
           <h3>Summer Coding Projects</h3>
-          <p>Public Archive of some of my best Games and programs I developed thought out the summer</p>
+          <p>Archive of my best games and programs developed over the summer.</p>
         </div>
       </a>
     </div>
   </section>
   
-  <!-- Experience Section (Flip Cards) -->
+  <!-- Experience Section (Flip Cards with Detailed Descriptions) -->
   <section id="experience" class="fade-in">
     <h2 class="section-title">Experience</h2>
     <div class="experience-container">
+      <!-- Sumobot Designer -->
       <div class="flip-card">
         <div class="flip-card-inner">
-          <div class="flip-card-front" style="background-image: url('sumobot.jpg');">
-            <h3>Sumobot Designer @ Mcmaster University<br>November 2024 - March 2025</h3>
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('sumobot.jpg');">
+            <h3>Sumobot Designer @ McMaster University<br>Nov 2024 – Mar 2025</h3>
           </div>
           <div class="flip-card-back">
-            <p><b>McMaster University & Ontario Provincial Sumobot Competition</b>
+            <p>
+              <b>McMaster University & Ontario Provincial Sumobot Competition</b>
                 <br>
                 C/C++ • Arduino IDE • Debuging • Autodesk Inventor • 3D Printing •Teamwork • Communication
                 <br>
@@ -600,8 +644,6 @@
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Integrated time-of-flight sensors for accurate opponent detection and collision avoidance
                 <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• Conducted extensive testing and debugging to ensure reliable performance during matches
-                <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Recognized for innovation in mechanical design and strategic use of sensors
                 <br>
                 <a href="https://www.linkedin.com/posts/manan-dua-412a13281_engineering-sumobot-mcmasteruniversity-activity-7310070810877022209--yaj?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAESr744BqYgfCwdIt7IWyBJErc_aGHX3sQE" target="_blank">Read more about my experience</a>
@@ -609,17 +651,19 @@
           </div>
         </div>
       </div>
+      <!-- Administrative Assistant -->
       <div class="flip-card">
         <div class="flip-card-inner">
-          <div class="flip-card-front" style="background-image: url('experience 2.jpg');">
-            <h3>Administative Assistant @ Retial Therapy<br>October 2022 - March 2023</h3>
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience 2.jpg');">
+            <h3>Administrative Assistant @ Retail Therapy<br>Oct 2022 – Mar 2023</h3>
           </div>
           <div class="flip-card-back">
-            <p><b>Administrative Assistant - Retail Therapy</b>
+            <p>
+              <b>Administrative Assistant - Retail Therapy</b>
                 <br>
                 Sales Order Management • Data Entry • Microsoft Excel • Client Service • Organization • Communication
                 <br>
-                <b>Responsibilities</b>
+                <b>Highlights</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Handled sales order processing and administrative workflows
                 <br>
@@ -629,24 +673,25 @@
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Managed routine office tasks and supported daily operations
                 <br>
-                <b>Achievements</b>
-                <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Streamlined order processing, reducing turnaround time by 30%
                 <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• Maintained a 100% on-time task completion rate in a fast-paced environment</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Maintained a 100% on-time task completion rate in a fast-paced environment
+            </p>
           </div>
         </div>
       </div>
+      <!-- Mathematics Tutor -->
       <div class="flip-card">
         <div class="flip-card-inner">
-          <div class="flip-card-front" style="background-image: url('experience3.jpg');">
-            <h3>Mathematics Tutor @ HomeworkHub<br>May 2022 - August 2022</h3>
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience3.jpg');">
+            <h3>Mathematics Tutor @ HomeworkHub<br>May 2022 – Aug 2022</h3>
           </div>
           <div class="flip-card-back">
-            <p><b>Mathematics Tutor - HomeworkHub</b><br>
+            <p>
+              <b>Mathematics Tutor - HomeworkHub</b><br>
                 Mathematics • Personalized Teaching • Communication • Patience • Adaptability • Academic Support
                 <br>
-                <b>Responsibilities</b>
+                <b>Highlights</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Delivered one-on-one tutoring sessions tailored to individual student needs
                 <br>
@@ -656,21 +701,22 @@
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Helped students complete assignments, improve weak areas, and build confidence in math
                 <br>
-                <b>Achievements</b>
-                <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Contributed to measurable improvements in grades and test scores
                 <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• Helped students develop stronger study habits and a more positive outlook on learning</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Helped students develop stronger study habits and a more positive outlook on learning
+            </p>
           </div>
         </div>
       </div>
+      <!-- Computer Engineering Student -->
       <div class="flip-card">
         <div class="flip-card-inner">
-          <div class="flip-card-front" style="background-image: url('experience4.jpg');">
-            <h3>Computer Engineering Student @ Mcmaster University<br>September 2023 - Present</h3>
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience4.jpg');">
+            <h3>Computer Engineering Student @ McMaster University<br>Sep 2023 – Present</h3>
           </div>
           <div class="flip-card-back">
-            <p><b>B.Eng. Computer Engineering - McMaster University</b><br>
+            <p>
+              <b>B.Eng. Computer Engineering - McMaster University</b><br>
                 Digital Systems • Embedded Programming • Circuit Analysis • C/C++ • Python • MATLAB • Problem-Solving • Teamwork
                 <br>
                 <b>Highlights</b>
@@ -683,22 +729,23 @@
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Applied engineering design principles in circuit labs, robotics competitions, and software development
                 <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;• Actively developing both hardware and software skills through coursework and extracurricular projects</p>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Actively developing both hardware and software skills through coursework and extracurricular projects
+            </p>
           </div>
         </div>
       </div>
     </div>
   </section>
   
-  <!-- Skills Section (Three Categories in a Full-Width Grid) -->
+  <!-- Skills Section (Three Columns, Items Directly Under Title) -->
   <section id="skills" class="fade-in">
     <h2 class="section-title">Skills</h2>
     <div class="skills-wrapper">
       <!-- Languages Panel -->
       <div class="skills-category">
-        <h3 class="skill-category-title">Languages</h3>
+        <span class="skill-category-title">Languages</span>
         <div class="skills-grid">
-          <!-- 10 skill items -->
+          <!-- 10 items -->
           <div class="skill-item">
             <img src="link-to-C.png" alt="C">
             <span class="skill-tooltip">C</span>
@@ -744,9 +791,9 @@
       
       <!-- Software Panel -->
       <div class="skills-category">
-        <h3 class="skill-category-title">Software</h3>
+        <span class="skill-category-title">Software</span>
         <div class="skills-grid">
-          <!-- 9 skill items -->
+          <!-- 9 items -->
           <div class="skill-item">
             <img src="link-to-vscode.png" alt="VS Code">
             <span class="skill-tooltip">VS Code</span>
@@ -761,7 +808,7 @@
           </div>
           <div class="skill-item">
             <img src="link-to-inventor.png" alt="Autodesk Inventor">
-            <span class="skill-tooltip">Autodesk Inventor</span>
+            <span class="skill-tooltip">Inventor</span>
           </div>
           <div class="skill-item">
             <img src="link-to-quartus.png" alt="Quartus II">
@@ -773,7 +820,7 @@
           </div>
           <div class="skill-item">
             <img src="link-to-keil.png" alt="Keil uVision5">
-            <span class="skill-tooltip">Keil uVision5</span>
+            <span class="skill-tooltip">Keil</span>
           </div>
           <div class="skill-item">
             <img src="link-to-ltspice.png" alt="LTSpice">
@@ -788,16 +835,16 @@
       
       <!-- Hardware Panel -->
       <div class="skills-category">
-        <h3 class="skill-category-title">Hardware</h3>
+        <span class="skill-category-title">Hardware</span>
         <div class="skills-grid">
-          <!-- 5 skill items -->
+          <!-- 5 items -->
           <div class="skill-item">
             <img src="link-to-arduino.png" alt="Arduino">
             <span class="skill-tooltip">Arduino</span>
           </div>
           <div class="skill-item">
-            <img src="link-to-ti.png" alt="Arm Cortex Microcontrollers">
-            <span class="skill-tooltip">Arm Cortex Microcontrollers</span>
+            <img src="link-to-ti.png" alt="Arm Cortex">
+            <span class="skill-tooltip">Arm Cortex</span>
           </div>
           <div class="skill-item">
             <img src="link-to-fpga.png" alt="FPGA">
@@ -808,10 +855,6 @@
             <span class="skill-tooltip">PLC</span>
           </div>
           <div class="skill-item">
-            <img src="link-to-git.png" alt="Git">
-            <span class="skill-tooltip">Git</span>
-          </div>
-          <div class="skill-item">
             <img src="link-to-midi.png" alt="MIDI">
             <span class="skill-tooltip">MIDI</span>
           </div>
@@ -820,13 +863,17 @@
     </div>
   </section>
   
-  <!-- Contact Section -->
+  <!-- Contact Section: Left-Aligned Clickable Icons -->
   <section id="contact" class="fade-in">
     <h2 class="section-title">Contact</h2>
-    <p>
-      Email: <a href="mailto:manandua16@gmail.com">manandua16@gmail.com</a><br>
-      LinkedIn: <a href="https://linkedin.com/in/manan-dua-412a13281" target="_blank">linkedin.com/in/manan-dua-412a13281</a>
-    </p>
+    <div class="contact">
+      <a href="mailto:manandua16@gmail.com" title="Email">
+        <img src="email.png" alt="Email">
+      </a>
+      <a href="https://linkedin.com/in/manan-dua-412a13281" target="_blank" title="LinkedIn">
+        <img src="linkedin.png" alt="LinkedIn">
+      </a>
+    </div>
   </section>
   
   <!-- Footer -->
@@ -834,14 +881,15 @@
     <p>⚒️ Designed by Manan Dua 2025 ⚒️</p>
   </footer>
   
-  <!-- JavaScript: Fade In on Scroll -->
+  <!-- JavaScript: Fade In on Scroll with Responsive Threshold -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const elements = document.querySelectorAll('.fade-in, .card');
-      const options = { threshold: 0.2 };
+      const thresholdValue = window.innerWidth <= 600 ? 0.05 : 0.1;
+      const options = { threshold: thresholdValue };
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-          if (entry.intersectionRatio >= 0.2) {
+          if (entry.intersectionRatio >= thresholdValue) {
             entry.target.classList.add('visible');
           } else {
             entry.target.classList.remove('visible');
@@ -855,19 +903,14 @@
   <!-- JavaScript: Typewriter Effect -->
   <script>
     const textArray = ["Software Developer", "Creative Designer", "Innovator"];
-    const typingDelay = 100;
-    const erasingDelay = 50;
-    const newTextDelay = 2000;
-    let textArrayIndex = 0;
-    let charIndex = 0;
+    const typingDelay = 100, erasingDelay = 50, newTextDelay = 2000;
+    let textArrayIndex = 0, charIndex = 0;
     function type() {
       if (charIndex < textArray[textArrayIndex].length) {
         document.getElementById("typed-text").textContent += textArray[textArrayIndex].charAt(charIndex);
         charIndex++;
         setTimeout(type, typingDelay);
-      } else {
-        setTimeout(erase, newTextDelay);
-      }
+      } else { setTimeout(erase, newTextDelay); }
     }
     function erase() {
       if (charIndex > 0) {
@@ -939,7 +982,7 @@
     animateBackground();
   </script>
   
-  <!-- JavaScript: Header Slide & Hamburger Behavior -->
+  <!-- JavaScript: Header Slide & Hamburger Behavior (Auto-collapse on scroll) -->
   <script>
     let lastScrollTop = 0;
     const header = document.getElementById("site-header");
@@ -948,32 +991,30 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       if (scrollTop > lastScrollTop && scrollTop > 100) {
         header.style.transform = "translateY(-110%)";
-        if(window.innerWidth <= 600) { hamburgerMenu.style.opacity = "0"; }
+        if(window.innerWidth <= 600) { 
+          hamburgerMenu.style.opacity = "0"; 
+          const navContainer = document.querySelector(".nav-container");
+          if (navContainer && navContainer.classList.contains("open")) {
+            navContainer.classList.remove("open");
+          }
+        }
       } else {
         header.style.transform = "translateY(0)";
         if(window.innerWidth <= 600) { hamburgerMenu.style.opacity = "1"; }
-      }
-      if(window.innerWidth <= 600) {
-        const navContainer = document.querySelector(".nav-container");
-        if (navContainer && navContainer.classList.contains("open")) {
-          navContainer.classList.remove("open");
-        }
       }
       lastScrollTop = scrollTop;
     });
   </script>
   
-  <!-- JavaScript: Force Scroll to Top on Page Load -->
+  <!-- JavaScript: Force Scroll to Top on Load -->
   <script>
     window.onload = function() {
       setTimeout(() => { window.scrollTo(0, 0); }, 50);
-      if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
-      }
+      if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
     };
   </script>
   
-  <!-- JavaScript: Mobile Hamburger Menu Toggle -->
+  <!-- JavaScript: Mobile Hamburger Toggle -->
   <script>
     document.getElementById("hamburger-menu").addEventListener("click", function() {
       const navContainer = document.querySelector(".nav-container");
@@ -981,7 +1022,7 @@
     });
   </script>
   
-  <!-- JavaScript: Project Filter Buttons with Slide/Fade -->
+  <!-- JavaScript: Project Filter Buttons with Full Fade Out/In -->
   <script>
     document.addEventListener('DOMContentLoaded', function(){
       const filterButtons = document.querySelectorAll('#project-filters button');
@@ -992,26 +1033,28 @@
           if (button.classList.contains('active')) {
             filterButtons.forEach(btn => btn.classList.remove('active'));
             updateProjectDisplay("all");
-            animateProjectTransition();
             return;
           }
           filterButtons.forEach(btn => btn.classList.remove('active'));
           button.classList.add('active');
           const filterValue = button.getAttribute('data-filter');
           updateProjectDisplay(filterValue);
-          animateProjectTransition();
         });
       });
       
       function updateProjectDisplay(filterValue) {
         projectCards.forEach(card => {
-          const cardCategory = card.getAttribute('data-year');
-          if (filterValue === "all" || cardCategory === filterValue) {
-            fadeInCard(card);
-          } else {
-            fadeOutCard(card);
-          }
+          fadeOutCard(card);
         });
+        setTimeout(() => {
+          projectCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-year');
+            if (filterValue === "all" || cardCategory === filterValue) {
+              fadeInCard(card);
+            }
+          });
+          animateProjectTransition();
+        }, 500);
       }
       
       function fadeInCard(card) {
@@ -1066,9 +1109,7 @@
       transform-style: preserve-3d;
       transition: transform 0.8s;
     }
-    .flip-card:hover .flip-card-inner {
-      transform: rotateY(180deg);
-    }
+    .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
     .flip-card-front,
     .flip-card-back {
       position: absolute;
@@ -1080,11 +1121,37 @@
       padding: 20px;
       color: var(--text-color);
     }
-    .flip-card-front { background-size: cover; background-position: center; }
+    .flip-card-front {
+      background-size: cover;
+      background-position: center;
+    }
     .flip-card-back {
       background: var(--card-bg);
       transform: rotateY(180deg);
     }
+    .flip-card-front::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      background: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      z-index: 1;
+    }
+    .flip-card-front h3 {
+      position: relative;
+      z-index: 2;
+    }
   </style>
+  
+  <!-- JavaScript: Down Arrow Scroll Behavior -->
+  <script>
+    document.getElementById("down-arrow").addEventListener("click", function() {
+      document.getElementById("about").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+  
 </body>
 </html>
