@@ -33,7 +33,9 @@
       padding: 0;
       box-sizing: border-box;
     }
-    html { scroll-behavior: smooth; }
+    html {
+      scroll-behavior: smooth;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       background: var(--bg-dark);
@@ -73,20 +75,26 @@
       justify-content: space-between;
       align-items: center;
     }
-    .nav-container { display: flex; }
+    .nav-container {
+      display: flex;
+    }
     header nav ul {
       list-style: none;
       display: flex;
       justify-content: flex-end;
     }
-    header nav ul li { margin-left: 25px; }
+    header nav ul li {
+      margin-left: 25px;
+    }
     header nav ul li a {
       text-decoration: none;
       color: var(--primary-color);
       font-weight: 500;
       transition: color 0.3s ease;
     }
-    header nav ul li a:hover { color: #005bb5; }
+    header nav ul li a:hover {
+      color: #005bb5;
+    }
     
     /* Hamburger (Mobile) */
     .hamburger {
@@ -111,10 +119,19 @@
         flex-direction: column;
         align-items: center;
       }
-      .nav-container.open { max-height: 300px; }
-      header nav ul { flex-direction: column; align-items: center; }
-      header nav ul li { margin: 10px 0; }
-      .hamburger { display: flex; }
+      .nav-container.open {
+        max-height: 300px;
+      }
+      header nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      header nav ul li {
+        margin: 10px 0;
+      }
+      .hamburger {
+        display: flex;
+      }
     }
     
     /* Section Styles */
@@ -143,7 +160,10 @@
       transform: translateY(20px) scale(0.9);
       transition: opacity 0.7s ease-out, transform 0.7s ease-out;
     }
-    .fade-in.visible { opacity: 1; transform: translateY(0) scale(1); }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
     
     /* HERO Section: Full-Screen, Raised Content */
     .hero {
@@ -163,17 +183,46 @@
       gap: 40px;
       margin-top: 100px;
     }
-    .hero-left { display: flex; flex-direction: column; align-items: flex-start; }
-    .hero h1 { font-size: 3rem; line-height: 1.2; }
-    .hero-subheading { font-size: 1.2rem; margin-top: 5px; color: var(--primary-color); }
-    .typewriter-text { margin: 20px 0; font-size: 1.25rem; }
-    .social-buttons { display: flex; gap: 15px; margin-top: 10px; }
-    .social-buttons a { text-decoration: none; transition: transform 0.3s ease; }
-    .social-buttons a:hover { transform: scale(1.1); }
-    .social-buttons img { width: 32px; height: 32px; }
-    .hero-image { flex: 0 0 auto; }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+    .hero-subheading {
+      font-size: 1.2rem;
+      margin-top: 5px;
+      color: var(--primary-color);
+    }
+    .typewriter-text {
+      margin: 20px 0;
+      font-size: 1.25rem;
+    }
+    .social-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .social-buttons a {
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+    .social-buttons a:hover {
+      transform: scale(1.1);
+    }
+    .social-buttons img {
+      width: 32px;
+      height: 32px;
+    }
+    .hero-image {
+      flex: 0 0 auto;
+    }
     .hero-img {
-      width: 300px; height: 300px;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
       border: 4px solid var(--text-color);
       object-fit: cover;
@@ -208,7 +257,9 @@
       transition: all 0.5s ease;
     }
     @media (min-width: 900px) {
-      .card-container { grid-template-columns: repeat(3, 1fr); }
+      .card-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
     }
     .project-link {
       text-decoration: none;
@@ -232,10 +283,22 @@
       transform: translateY(20px) scale(0.9);
       transition: transform 0.5s ease, opacity 0.5s ease;
     }
-    .card.visible { opacity: 1; transform: translateY(0) scale(1); }
-    .card:hover { transform: translateY(-5px) scale(1.02); transition: transform 0.3s ease; }
-    .card h3 { margin-bottom: 10px; color: var(--primary-color); }
-    .card p { font-size: 0.95rem; line-height: 1.5; }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      transition: transform 0.3s ease;
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
     .project-img {
       width: 100%;
       height: auto;
@@ -284,7 +347,9 @@
       transform-style: preserve-3d;
       transition: transform 0.8s;
     }
-    .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
     .flip-card-front,
     .flip-card-back {
       position: absolute;
@@ -327,7 +392,9 @@
       width: 100%;
       margin-top: 20px;
     }
-    .skills-category { padding: 0; }
+    .skills-category {
+      padding: 0;
+    }
     .skill-category-title {
       display: block;
       text-align: center;
@@ -352,7 +419,9 @@
       transition: transform 0.3s ease;
       aspect-ratio: 1;
     }
-    .skill-item:hover { transform: translateY(-4px); }
+    .skill-item:hover {
+      transform: translateY(-4px);
+    }
     .skill-item img {
       width: 80px;
       height: 80px;
@@ -373,7 +442,10 @@
       transition: opacity 0.3s ease;
       white-space: nowrap;
     }
-    .skill-item:hover .skill-tooltip { opacity: 1; visibility: visible; }
+    .skill-item:hover .skill-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
     
     /* Contact Section: Left-Aligned, Clickable Icons */
     .contact {
@@ -386,7 +458,9 @@
       display: inline-block;
       transition: transform 0.3s ease;
     }
-    .contact a:hover { transform: scale(1.1); }
+    .contact a:hover {
+      transform: scale(1.1);
+    }
     .contact img {
       width: 50px;
       height: 50px;
@@ -406,8 +480,12 @@
     
     /* Responsive Adjustments */
     @media (max-width: 600px) {
-      header { padding: 10px 20px; }
-      header nav { justify-content: space-between; }
+      header {
+        padding: 10px 20px;
+      }
+      header nav {
+        justify-content: space-between;
+      }
       .nav-container {
         max-height: 0;
         overflow: hidden;
@@ -415,24 +493,53 @@
         flex-direction: column;
         align-items: center;
       }
-      .nav-container.open { max-height: 300px; }
-      header nav ul { flex-direction: column; align-items: center; }
-      header nav ul li { margin: 10px 0; }
-      .hamburger { display: flex; }
-      section { padding: 60px 20px; }
-      .hero h1 { font-size: 2.5rem; }
-      .hero p { font-size: 1rem; }
-      .hero-content { flex-direction: column; gap: 20px; }
-      .social-buttons { justify-content: flex-start; }
-      .experience-container { grid-template-columns: 1fr !important; }
-      .skills-wrapper { grid-template-columns: 1fr; }
-      .contact { text-align: center; padding-left: 0; }
+      .nav-container.open {
+        max-height: 300px;
+      }
+      header nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      header nav ul li {
+        margin: 10px 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      section {
+        padding: 60px 20px;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .hero-content {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px !important;  /* Move name and photo to top on mobile */
+      }
+      .social-buttons {
+        justify-content: flex-start;
+      }
+      .experience-container {
+        grid-template-columns: 1fr !important;
+      }
+      .skills-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .contact {
+        text-align: center;
+        padding-left: 0;
+      }
       /* For mobile: Lower the down arrow so it sits below the photo */
-      .down-arrow { bottom: 10% !important; }
-
-      /* Adjust font size for experience descriptions on smaller screens */
+      .down-arrow {
+        bottom: 10% !important;
+      }
+      /* Responsive font sizing for experience descriptions */
       .flip-card-back p {
-        font-size: 0.8rem;
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
       }
     }
   </style>
@@ -615,6 +722,14 @@
           <p>Archive of my best games and programs developed over the summer.</p>
         </div>
       </a>
+
+      <a class="project-link" href="https://github.com/orgs/Manan-s-Games/repositories" target="_blank" data-year="personal">
+        <div class="card">
+          <img src="pulltrusion.jpg" alt="PET Pulltrusion Machine" class="project-img">
+          <h3>PET Pulltrusion Machine</h3>
+          <p>Custom built machine that turn PET bottles into usable 3D printer filament.</p>
+        </div>
+      </a>
     </div>
   </section>
   
@@ -663,7 +778,7 @@
                 <br>
                 Sales Order Management • Data Entry • Microsoft Excel • Client Service • Organization • Communication
                 <br>
-                <b>Highlights</b>
+                <b>Responsibilities</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Handled sales order processing and administrative workflows
                 <br>
@@ -672,6 +787,8 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;• Responded to customer inquiries and concerns in a timely, professional manner
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Managed routine office tasks and supported daily operations
+                <br>
+                <b>Achievements</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Streamlined order processing, reducing turnaround time by 30%
                 <br>
@@ -691,7 +808,7 @@
               <b>Mathematics Tutor - HomeworkHub</b><br>
                 Mathematics • Personalized Teaching • Communication • Patience • Adaptability • Academic Support
                 <br>
-                <b>Highlights</b>
+                <b>Responsibilities</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Delivered one-on-one tutoring sessions tailored to individual student needs
                 <br>
@@ -700,6 +817,8 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;• Adapted teaching strategies to suit different learning styles and academic levels
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Helped students complete assignments, improve weak areas, and build confidence in math
+                <br>
+                <b>Achievements</b>
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;• Contributed to measurable improvements in grades and test scores
                 <br>
@@ -1009,8 +1128,12 @@
   <!-- JavaScript: Force Scroll to Top on Load -->
   <script>
     window.onload = function() {
-      setTimeout(() => { window.scrollTo(0, 0); }, 50);
-      if ('scrollRestoration' in history) { history.scrollRestoration = 'manual'; }
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 50);
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
     };
   </script>
   
@@ -1065,7 +1188,9 @@
       
       function fadeOutCard(card) {
         card.classList.add('hidden-project');
-        setTimeout(() => { card.style.display = 'none'; }, 500);
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 500);
       }
       
       function animateProjectTransition() {
@@ -1109,7 +1234,9 @@
       transform-style: preserve-3d;
       transition: transform 0.8s;
     }
-    .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
     .flip-card-front,
     .flip-card-back {
       position: absolute;
