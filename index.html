@@ -75,6 +75,18 @@
       justify-content: space-between;
       align-items: center;
     }
+    /* Left part for site title */
+    .header-left a.site-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    /* Right part for navigation */
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
     .nav-container {
       display: flex;
     }
@@ -483,6 +495,14 @@
       header {
         padding: 10px 20px;
       }
+      /* Remove extra vertical space by integrating title inline */
+      .header-left, .header-right {
+        display: flex;
+        align-items: center;
+      }
+      .header-left {
+        margin-right: auto;
+      }
       header nav {
         justify-content: space-between;
       }
@@ -537,7 +557,7 @@
       .down-arrow {
         bottom: 10% !important;
       }
-      /* Responsive font sizing for experience descriptions */
+      /* Responsive font sizing for experience descriptions using clamp() */
       .flip-card-back p {
         font-size: clamp(0.7rem, 2vw, 0.8rem);
       }
@@ -551,18 +571,23 @@
   <!-- Header with Navigation -->
   <header id="site-header">
     <nav>
-      <div class="nav-container">
-        <ul>
-          <li><a href="#hero">Home</a></li>
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
+      <div class="header-left">
+        <a href="#hero" class="site-title">Manan Dua</a>
       </div>
-      <div class="hamburger" id="hamburger-menu">
-        <span></span><span></span><span></span>
+      <div class="header-right">
+        <div class="nav-container">
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="hamburger" id="hamburger-menu">
+          <span></span><span></span><span></span>
+        </div>
       </div>
     </nav>
   </header>
@@ -704,7 +729,7 @@
         <div class="card">
           <img src="2si3 project.jpg" alt="COMPENG 2SI3 Projects" class="project-img">
           <h3>COMPENG 2SI3 Projects</h3>
-          <p>Data structures & algorithms projects from the 2SI3 course.</p>
+          <p>Data structures &amp; algorithms projects from the 2SI3 course.</p>
         </div>
       </a>
       <!-- Personal Projects -->
@@ -722,7 +747,6 @@
           <p>Archive of my best games and programs developed over the summer.</p>
         </div>
       </a>
-
       <a class="project-link" href="https://github.com/orgs/Manan-s-Games/repositories" target="_blank" data-year="personal">
         <div class="card">
           <img src="pulltrusion.jpg" alt="PET Pulltrusion Machine" class="project-img">
@@ -745,7 +769,7 @@
           </div>
           <div class="flip-card-back">
             <p>
-              <b>McMaster University & Ontario Provincial Sumobot Competition</b>
+              <b>McMaster University &amp; Ontario Provincial Sumobot Competition</b>
                 <br>
                 C/C++ • Arduino IDE • Debuging • Autodesk Inventor • 3D Printing •Teamwork • Communication
                 <br>
@@ -1110,8 +1134,8 @@
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       if (scrollTop > lastScrollTop && scrollTop > 100) {
         header.style.transform = "translateY(-110%)";
-        if(window.innerWidth <= 600) { 
-          hamburgerMenu.style.opacity = "0"; 
+        if (window.innerWidth <= 600) {
+          hamburgerMenu.style.opacity = "0";
           const navContainer = document.querySelector(".nav-container");
           if (navContainer && navContainer.classList.contains("open")) {
             navContainer.classList.remove("open");
@@ -1119,7 +1143,9 @@
         }
       } else {
         header.style.transform = "translateY(0)";
-        if(window.innerWidth <= 600) { hamburgerMenu.style.opacity = "1"; }
+        if (window.innerWidth <= 600) {
+          hamburgerMenu.style.opacity = "1";
+        }
       }
       lastScrollTop = scrollTop;
     });
@@ -1247,10 +1273,9 @@
       box-shadow: 0 2px 8px var(--shadow);
       padding: 20px;
       color: var(--text-color);
-    }
-    .flip-card-front {
       background-size: cover;
       background-position: center;
+      background-repeat: no-repeat;
     }
     .flip-card-back {
       background: var(--card-bg);
