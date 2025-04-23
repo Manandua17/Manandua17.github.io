@@ -380,6 +380,15 @@
       background: var(--card-bg);
       transform: rotateY(180deg);
     }
+    .flip-card-back p {
+  /* 
+    - 0.8rem is minimum so it’s always legible 
+    - 1.5vw scales with viewport width 
+    - 1rem caps it so it never gets too large 
+  */
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  line-height: 1.4;
+}
     .flip-card-front::before {
       content: "";
       position: absolute;
@@ -676,14 +685,14 @@
         </div>
       </a>
       <!-- 2nd Year Projects -->
-      <a class="project-link" href="https://example.com/ei project 1.png" target="_blank" data-year="2nd">
+      <a class="project-link" href="duam4 - 2EI4 Project Report 1.pdf" target="_blank" data-year="2nd">
         <div class="card">
           <img src="ei project 1.png" alt="Full Bridge Rectifier Power Supply" class="project-img">
           <h3>Full Bridge Rectifier Power Supply</h3>
           <p>DC power supply design with tight voltage regulation.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/ei project 2.png" target="_blank" data-year="2nd">
+      <a class="project-link" href="duam4 - 2EI4 Project 2 Report.pdf" target="_blank" data-year="2nd">
         <div class="card">
           <img src="ei project 2.png" alt="Voltage Controlled Switch" class="project-img">
           <h3>Voltage Controlled Switch</h3>
@@ -697,14 +706,14 @@
           <p>Amplifier with high linearity and low attenuation.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/ei project 4.png" target="_blank" data-year="2nd">
+      <a class="project-link" href="2EI4 Project 4 Report.pdf" target="_blank" data-year="2nd">
         <div class="card">
           <img src="ei project 4.png" alt="CMOS XOR Gate" class="project-img">
           <h3>CMOS XOR Gate</h3>
           <p>Designed, built, and tested a MOSFET-based XOR gate.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/ei project 5.png" target="_blank" data-year="2nd">
+      <a class="project-link" href="2EI4 Project 5 Report.pdf" target="_blank" data-year="2nd">
         <div class="card">
           <img src="ei project 5.png" alt="Digital-to-Analog Converter" class="project-img">
           <h3>Digital-to-Analog Converter</h3>
@@ -718,22 +727,22 @@
           <p>Embedded system for 3D distance capture and reconstruction.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/sh project.png" target="_blank" data-year="2nd">
+      <a class="project-link" href="https://github.com/COE2SH4-F2024/course-project-hackstreet-boys" target="_blank" data-year="2nd">
         <div class="card">
           <img src="sh project.png" alt="Snake Game" class="project-img">
           <h3>Snake Game</h3>
           <p>Classic Snake game developed in C++ using OOP principles.</p>
         </div>
       </a>
-      <a class="project-link" href="https://example.com/2si3 project.jpg" target="_blank" data-year="2nd">
+      <a class="project-link" href="g" target="_blank" data-year="2nd">
         <div class="card">
-          <img src="2si3 project.jpg" alt="COMPENG 2SI3 Projects" class="project-img">
-          <h3>COMPENG 2SI3 Projects</h3>
+          <img src="2si3 project.jpg" alt="Data Structures and Algorithms" class="project-img">
+          <h3>Data Structures and Algorithms</h3>
           <p>Data structures &amp; algorithms projects from the 2SI3 course.</p>
         </div>
       </a>
       <!-- Personal Projects -->
-      <a class="project-link" href="https://example.com/midi.jpg" target="_blank" data-year="personal">
+      <a class="project-link" href="" target="_blank" data-year="personal">
         <div class="card">
           <img src="midi.jpg" alt="Arduino MIDI Controller" class="project-img">
           <h3>Arduino MIDI Controller</h3>
@@ -747,7 +756,7 @@
           <p>Archive of my best games and programs developed over the summer.</p>
         </div>
       </a>
-      <a class="project-link" href="https://github.com/orgs/Manan-s-Games/repositories" target="_blank" data-year="personal">
+      <a class="project-link" href="" target="_blank" data-year="personal">
         <div class="card">
           <img src="pulltrusion.jpg" alt="PET Pulltrusion Machine" class="project-img">
           <h3>PET Pulltrusion Machine</h3>
@@ -986,8 +995,8 @@
             <span class="skill-tooltip">Arduino</span>
           </div>
           <div class="skill-item">
-            <img src="link-to-ti.png" alt="Arm Cortex">
-            <span class="skill-tooltip">Arm Cortex</span>
+            <img src="link-to-ti.png" alt="Arm Cortex Microcontrollers">
+            <span class="skill-tooltip">Arm Cortex Microcontrollers</span>
           </div>
           <div class="skill-item">
             <img src="link-to-fpga.png" alt="FPGA">
