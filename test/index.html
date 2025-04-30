@@ -1,0 +1,1318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    if (window.location.hash) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | Computer Engineering</title>
+  <style>
+    /* Base Colors & Rounded Corners */
+    :root {
+      --primary-color: #007aff; /* Light blue */
+      --accent-color: #ff6f61;
+      --secondary-color: #6b5b95;
+      --bg-dark: #1e1e1e;
+      --card-bg: #2c2c2c;
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+    }
+    
+    /* Global Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-color);
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+      overflow-x: hidden;
+    }
+    
+    /* Full-screen Canvas Background */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+    }
+    
+    /* Header with Navigation */
+    header {
+      background: var(--card-bg);
+      box-shadow: 0 2px 4px var(--shadow);
+      padding: 15px 40px;
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      border-radius: var(--border-radius);
+      margin: 10px;
+      transition: transform 0.3s ease;
+    }
+    header nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* Left part for site title */
+    .header-left a.site-title {
+      font-weight: bold;
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    /* Right part for navigation */
+    .header-right {
+      display: flex;
+      align-items: center;
+    }
+    .nav-container {
+      display: flex;
+    }
+    header nav ul {
+      list-style: none;
+      display: flex;
+      justify-content: flex-end;
+    }
+    header nav ul li {
+      margin-left: 25px;
+    }
+    header nav ul li a {
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    header nav ul li a:hover {
+      color: #005bb5;
+    }
+    
+    /* Hamburger (Mobile) */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      transition: opacity 0.3s ease;
+    }
+    .hamburger span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      margin: 4px 0;
+      background: var(--primary-color);
+      transition: all 0.3s ease;
+    }
+    @media (max-width: 600px) {
+      .nav-container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        flex-direction: column;
+        align-items: center;
+      }
+      .nav-container.open {
+        max-height: 300px;
+      }
+      header nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      header nav ul li {
+        margin: 10px 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+    }
+    
+    /* Section Styles */
+    section {
+      width: 100%;
+      padding: 60px 40px;
+    }
+    h2.section-title {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      color: var(--primary-color);
+    }
+    h2.section-title::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -5px;
+      width: 50%;
+      height: 3px;
+      background: var(--primary-color);
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    
+    /* HERO Section: Full-Screen, Raised Content */
+    .hero {
+      height: 100vh;
+      padding: 20px 40px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      background: transparent;
+      color: var(--text-color);
+      position: relative;
+    }
+    .hero-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 100px;
+    }
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+    }
+    .hero-subheading {
+      font-size: 1.2rem;
+      margin-top: 5px;
+      color: var(--primary-color);
+    }
+    .typewriter-text {
+      margin: 20px 0;
+      font-size: 1.25rem;
+    }
+    .social-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 10px;
+    }
+    .social-buttons a {
+      text-decoration: none;
+      transition: transform 0.3s ease;
+    }
+    .social-buttons a:hover {
+      transform: scale(1.1);
+    }
+    .social-buttons img {
+      width: 32px;
+      height: 32px;
+    }
+    .hero-image {
+      flex: 0 0 auto;
+    }
+    .hero-img {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      border: 4px solid var(--text-color);
+      object-fit: cover;
+    }
+    /* Bouncing Downward Arrow: SVG Chevron */
+    .down-arrow {
+      position: absolute;
+      bottom: 20%;  /* Default for larger viewports */
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      z-index: 101;
+    }
+    .down-arrow svg {
+      width: 40px;
+      height: 40px;
+      stroke: white;
+      stroke-width: 2;
+      animation: bounce 1s linear infinite;
+    }
+    @keyframes bounce {
+      0% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-20px); }
+      100% { transform: translateX(-50%) translateY(0); }
+    }
+    
+    /* Projects Section */
+    .card-container {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      transition: all 0.5s ease;
+    }
+    @media (min-width: 900px) {
+      .card-container {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    .project-link {
+      text-decoration: none;
+      display: block;
+      color: inherit;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .hidden-project {
+      opacity: 0 !important;
+      transform: translateY(20px) scale(0.95) !important;
+      pointer-events: none;
+    }
+    .card {
+      background: var(--card-bg);
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px var(--shadow);
+      opacity: 0;
+      transform: translateY(20px) scale(0.9);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    .card.visible {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    .card:hover {
+      transform: translateY(-5px) scale(1.02);
+      transition: transform 0.3s ease;
+    }
+    .card h3 {
+      margin-bottom: 10px;
+      color: var(--primary-color);
+    }
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .project-img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--border-radius);
+      margin-bottom: 15px;
+    }
+    
+    /* Project Filter Buttons */
+    #project-filters {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    #project-filters button {
+      background: none;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      padding: 8px 16px;
+      margin: 0 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    #project-filters button.active {
+      background: var(--primary-color);
+      color: var(--bg-dark);
+    }
+    
+    /* Experience Section – Flip Cards in 2 Columns */
+    .experience-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .flip-card {
+      background: transparent;
+      perspective: 1000px;
+      width: 100%;
+      height: 300px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px var(--shadow);
+      padding: 20px;
+      color: var(--text-color);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .flip-card-back {
+      background: var(--card-bg);
+      transform: rotateY(180deg);
+    }
+    .flip-card-back p {
+  /* 
+    - 0.8rem is minimum so it’s always legible 
+    - 1.5vw scales with viewport width 
+    - 1rem caps it so it never gets too large 
+  */
+  font-size: clamp(0.7rem, 1.5vw, 1rem);
+  line-height: 1.4;
+}
+    .flip-card-front::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      background: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      z-index: 1;
+    }
+    .flip-card-front h3 {
+      position: relative;
+      z-index: 2;
+    }
+    
+    /* Skills Section – Three Equal Columns */
+    .skills-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .skills-category {
+      padding: 0;
+    }
+    .skill-category-title {
+      display: block;
+      text-align: center;
+      margin-bottom: 10px;
+      color: var(--primary-color);
+      font-weight: bold;
+    }
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .skill-item {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: 0 1px 3px var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      aspect-ratio: 1;
+    }
+    .skill-item:hover {
+      transform: translateY(-4px);
+    }
+    .skill-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+    .skill-tooltip {
+      position: absolute;
+      bottom: -28px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      white-space: nowrap;
+    }
+    .skill-item:hover .skill-tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    /* Contact Section: Left-Aligned, Clickable Icons */
+    .contact {
+      text-align: left;
+      margin-top: 40px;
+      padding-left: 40px;
+    }
+    .contact a {
+      margin-right: 20px;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .contact a:hover {
+      transform: scale(1.1);
+    }
+    .contact img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+    }
+    
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: var(--card-bg);
+      border-top: 1px solid #444;
+      font-size: 0.9rem;
+      border-radius: var(--border-radius);
+      margin: 20px;
+    }
+    
+    /* Responsive Adjustments */
+    @media (max-width: 600px) {
+      header {
+        padding: 10px 20px;
+      }
+      /* Remove extra vertical space by integrating title inline */
+      .header-left, .header-right {
+        display: flex;
+        align-items: center;
+      }
+      .header-left {
+        margin-right: auto;
+      }
+      header nav {
+        justify-content: space-between;
+      }
+      .nav-container {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out;
+        flex-direction: column;
+        align-items: center;
+      }
+      .nav-container.open {
+        max-height: 300px;
+      }
+      header nav ul {
+        flex-direction: column;
+        align-items: center;
+      }
+      header nav ul li {
+        margin: 10px 0;
+      }
+      .hamburger {
+        display: flex;
+      }
+      section {
+        padding: 60px 20px;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .hero p {
+        font-size: 1rem;
+      }
+      .hero-content {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px !important;  /* Move name and photo to top on mobile */
+      }
+      .social-buttons {
+        justify-content: flex-start;
+      }
+      .experience-container {
+        grid-template-columns: 1fr !important;
+      }
+      .skills-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .contact {
+        text-align: center;
+        padding-left: 0;
+      }
+      /* For mobile: Lower the down arrow so it sits below the photo */
+      .down-arrow {
+        bottom: 10% !important;
+      }
+      /* Responsive font sizing for experience descriptions using clamp() */
+      .flip-card-back p {
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Canvas -->
+  <canvas id="bg-canvas"></canvas>
+  
+  <!-- Header with Navigation -->
+  <header id="site-header">
+    <nav>
+      <div class="header-left">
+        <a href="#hero" class="site-title">Manan Dua</a>
+      </div>
+      <div class="header-right">
+        <div class="nav-container">
+          <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="hamburger" id="hamburger-menu">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </nav>
+  </header>
+  
+  <!-- HERO Section: Full-Screen, Raised Content -->
+  <section id="hero" class="hero fade-in">
+    <div class="hero-content">
+      <div class="hero-left">
+        <h1>Hello, I'm Manan Dua</h1>
+        <p class="hero-subheading">Computer Engineering @ McMaster University</p>
+        <p class="typewriter-text"><span id="typed-text"></span><span id="cursor">|</span></p>
+        <div class="social-buttons">
+          <a href="https://www.instagram.com/mananx_05?igsh=MTJsN3FjaDZyc2praQ==" target="_blank" title="Instagram">
+            <img src="instagram.png" alt="Instagram">
+          </a>
+          <a href="https://github.com/Manan-s-Games" target="_blank" title="GitHub">
+            <img src="github.png" alt="GitHub">
+          </a>
+          <a href="https://acute-fedora-96d.notion.site/Manan-Dua-ef6ed04bc50e4788beb245e219840104" target="_blank" title="Notion">
+            <img src="notion.png" alt="Notion">
+          </a>
+          <a href="https://www.linkedin.com/in/manan-dua-412a13281/" target="_blank" title="LinkedIn">
+            <img src="linkedin.png" alt="LinkedIn">
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="your-picture.jpg" alt="Manan Dua" class="hero-img">
+      </div>
+    </div>
+    <!-- Bouncing Downward Arrow: SVG Chevron -->
+    <div class="down-arrow" id="down-arrow">
+      <svg width="40" height="40" viewBox="0 0 24 24">
+        <polyline points="6 9 12 15 18 9" fill="none" stroke="white" stroke-width="2"/>
+      </svg>
+    </div>
+  </section>
+  
+  <!-- About Section -->
+  <section id="about" class="fade-in">
+    <h2 class="section-title">About Me</h2>
+    <p>
+      Hi! I'm Manan, a second-year Computer Engineering student at McMaster University. I love diving into hands-on tech projects that blend both hardware and software—from building autonomous robots to designing MIDI controllers from scratch.
+    </p>
+    <p>
+      At McMaster, I've been part of exciting group design projects and competitions, applying my skills in coding, 3D modeling, and circuit design. Outside of class, you'll find me experimenting with electronics or exploring new programming languages.
+    </p>
+  </section>
+  
+  <!-- Projects Section with Filter Buttons -->
+  <section id="projects" class="fade-in">
+    <h2 class="section-title">Projects</h2>
+    <div id="project-filters">
+      <button data-filter="1st">1st Year</button>
+      <button data-filter="2nd">2nd Year</button>
+      <button data-filter="personal">Personal Projects</button>
+    </div>
+    <div class="card-container">
+      <!-- 1st Year Projects -->
+      <a class="project-link" href="https://acute-fedora-96d.notion.site/P-1-Renewable-Technology-Challenge-4863b14fb81f46228aaa2980385b5d95" target="_blank" data-year="1st">
+        <div class="card">
+          <img src="project1.png" alt="Renewable Technology Challenge" class="project-img">
+          <h3>Renewable Technology Challenge</h3>
+          <p>Wind turbine blade design for a start-up in Calgary.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://acute-fedora-96d.notion.site/P-2-Get-a-Grip-9f4bf9d9b8a74477b73340fac02d6250" target="_blank" data-year="1st">
+        <div class="card">
+          <img src="project2.png" alt="Get a Grip" class="project-img">
+          <h3>Get a Grip</h3>
+          <p>Robotics solution for the medical industry.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://acute-fedora-96d.notion.site/P-3-Revenge-of-the-Recycling-System-f90ce9bdd7834017afcd36aa13ad4fe9" target="_blank" data-year="1st">
+        <div class="card">
+          <img src="project3.png" alt="Revenge of the Recycling System" class="project-img">
+          <h3>Revenge of the Recycling System</h3>
+          <p>Project Green Sort for advanced recycling.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://acute-fedora-96d.notion.site/P-4-Power-in-Community-1c80ff98ac714374bd5b0de7c3104095" target="_blank" data-year="1st">
+        <div class="card">
+          <img src="project4.png" alt="Power in Community" class="project-img">
+          <h3>Power in Community</h3>
+          <p>Waterproof control system for wheelchairs.</p>
+        </div>
+      </a>
+      <!-- 2nd Year Projects -->
+      <a class="project-link" href="duam4 - 2EI4 Project Report 1.pdf" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="ei project 1.png" alt="Full Bridge Rectifier Power Supply" class="project-img">
+          <h3>Full Bridge Rectifier Power Supply</h3>
+          <p>DC power supply design with tight voltage regulation.</p>
+        </div>
+      </a>
+      <a class="project-link" href="duam4 - 2EI4 Project 2 Report.pdf" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="ei project 2.png" alt="Voltage Controlled Switch" class="project-img">
+          <h3>Voltage Controlled Switch</h3>
+          <p>Design of two types of ideal voltage controlled switches.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://drive.google.com/file/d/1kRZfR3ar7bKVE7x23aJh0k1N_WGjhmfp/view?usp=sharing" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="ei project 3.png" alt="Transistor Amplifier" class="project-img">
+          <h3>Transistor Amplifier</h3>
+          <p>Amplifier with high linearity and low attenuation.</p>
+        </div>
+      </a>
+      <a class="project-link" href="2EI4 Project 4 Report.pdf" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="ei project 4.png" alt="CMOS XOR Gate" class="project-img">
+          <h3>CMOS XOR Gate</h3>
+          <p>Designed, built, and tested a MOSFET-based XOR gate.</p>
+        </div>
+      </a>
+      <a class="project-link" href="2EI4 Project 5 Report.pdf" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="ei project 5.png" alt="Digital-to-Analog Converter" class="project-img">
+          <h3>Digital-to-Analog Converter</h3>
+          <p>3-bit DAC with a full-scale output of 5V.</p>
+        </div>
+      </a>
+      <a class="project-link" href="duam4 - 2DX3 Final Project Report.pdf" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="dx project.png" alt="High-Accuracy Mapping Lidar" class="project-img">
+          <h3>High-Accuracy Mapping Lidar</h3>
+          <p>Embedded system for 3D distance capture and reconstruction.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://github.com/COE2SH4-F2024/course-project-hackstreet-boys" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="sh project.png" alt="Snake Game" class="project-img">
+          <h3>Snake Game</h3>
+          <p>Classic Snake game developed in C++ using OOP principles.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://github.com/orgs/Data-Structures-and-Algoritms-Projects/repositories" target="_blank" data-year="2nd">
+        <div class="card">
+          <img src="2si3 project.jpg" alt="Data Structures and Algorithms" class="project-img">
+          <h3>Data Structures and Algorithms</h3>
+          <p>Data structures &amp; algorithms projects from the 2SI3 course.</p>
+        </div>
+      </a>
+      <!-- Personal Projects -->
+      <a class="project-link" href="" target="_blank" data-year="personal">
+        <div class="card">
+          <img src="midi.jpg" alt="Arduino MIDI Controller" class="project-img">
+          <h3>Arduino MIDI Controller</h3>
+          <p>Versatile Arduino-based MIDI controller.</p>
+        </div>
+      </a>
+      <a class="project-link" href="https://github.com/orgs/Manan-s-Games/repositories" target="_blank" data-year="personal">
+        <div class="card">
+          <img src="coding project.jpg" alt="Summer Coding Projects" class="project-img">
+          <h3>Summer Coding Projects</h3>
+          <p>Archive of my best games and programs developed over the summer.</p>
+        </div>
+      </a>
+      <a class="project-link" href="" target="_blank" data-year="personal">
+        <div class="card">
+          <img src="pulltrusion.jpg" alt="PET Pulltrusion Machine" class="project-img">
+          <h3>PET Pulltrusion Machine</h3>
+          <p>Custom built machine that turn PET bottles into usable 3D printer filament.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+  
+  <!-- Experience Section (Flip Cards with Detailed Descriptions) -->
+  <section id="experience" class="fade-in">
+    <h2 class="section-title">Experience</h2>
+    <div class="experience-container">
+      <!-- Sumobot Designer -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('sumobot.jpg');">
+            <h3>Sumobot Designer @ McMaster University<br>Nov 2024 – Mar 2025</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>
+              <b>McMaster University &amp; Ontario Provincial Sumobot Competition</b>
+                <br>
+                C/C++ • Arduino IDE • Debuging • Autodesk Inventor • 3D Printing •Teamwork • Communication
+                <br>
+                <b>Highlights</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Designed and assembled an autonomous robot using motors, motor drivers, sensors, and an Arduino 
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Created a custom 3D-printed chassis with a foldable hinge mechanism for size expansion mid-match
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Programmed the robot in C/C++, including EEPROM data storage and sensor-based navigation logic
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Integrated time-of-flight sensors for accurate opponent detection and collision avoidance
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Recognized for innovation in mechanical design and strategic use of sensors
+                <br>
+                <a href="https://www.linkedin.com/posts/manan-dua-412a13281_engineering-sumobot-mcmasteruniversity-activity-7310070810877022209--yaj?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAESr744BqYgfCwdIt7IWyBJErc_aGHX3sQE" target="_blank">Read more about my experience</a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Administrative Assistant -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience 2.jpg');">
+            <h3>Administrative Assistant @ Retail Therapy<br>Oct 2022 – Mar 2023</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>
+              <b>Administrative Assistant - Retail Therapy</b>
+                <br>
+                Sales Order Management • Data Entry • Microsoft Excel • Client Service • Organization • Communication
+                <br>
+                <b>Responsibilities</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Handled sales order processing and administrative workflows
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Maintained databases with accurate and up-to-date company records
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Responded to customer inquiries and concerns in a timely, professional manner
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Managed routine office tasks and supported daily operations
+                <br>
+                <b>Achievements</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Streamlined order processing, reducing turnaround time by 30%
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Maintained a 100% on-time task completion rate in a fast-paced environment
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Mathematics Tutor -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience3.jpg');">
+            <h3>Mathematics Tutor @ HomeworkHub<br>May 2022 – Aug 2022</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>
+              <b>Mathematics Tutor - HomeworkHub</b><br>
+                Mathematics • Personalized Teaching • Communication • Patience • Adaptability • Academic Support
+                <br>
+                <b>Responsibilities</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Delivered one-on-one tutoring sessions tailored to individual student needs
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Used positive reinforcement, repetition, and guided review to support concept mastery
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Adapted teaching strategies to suit different learning styles and academic levels
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Helped students complete assignments, improve weak areas, and build confidence in math
+                <br>
+                <b>Achievements</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Contributed to measurable improvements in grades and test scores
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Helped students develop stronger study habits and a more positive outlook on learning
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Computer Engineering Student -->
+      <div class="flip-card">
+        <div class="flip-card-inner">
+          <div class="flip-card-front" style="background-image: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent), url('experience4.jpg');">
+            <h3>Computer Engineering Student @ McMaster University<br>Sep 2023 – Present</h3>
+          </div>
+          <div class="flip-card-back">
+            <p>
+              <b>B.Eng. Computer Engineering - McMaster University</b><br>
+                Digital Systems • Embedded Programming • Circuit Analysis • C/C++ • Python • MATLAB • Problem-Solving • Teamwork
+                <br>
+                <b>Highlights</b>
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Currently in second year of the Computer Engineering Co-op program
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Gained hands-on experience with microcontrollers, digital logic, and embedded systems
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Completed projects involving sensor integration, UART/I2C communication, and 3D visualization
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Applied engineering design principles in circuit labs, robotics competitions, and software development
+                <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;• Actively developing both hardware and software skills through coursework and extracurricular projects
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Skills Section (Three Columns, Items Directly Under Title) -->
+  <section id="skills" class="fade-in">
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-wrapper">
+      <!-- Languages Panel -->
+      <div class="skills-category">
+        <span class="skill-category-title">Languages</span>
+        <div class="skills-grid">
+          <!-- 10 items -->
+          <div class="skill-item">
+            <img src="link-to-C.png" alt="C">
+            <span class="skill-tooltip">C</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-cpp.png" alt="C++">
+            <span class="skill-tooltip">C++</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-cs.png" alt="C#">
+            <span class="skill-tooltip">C#</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-java.png" alt="Java">
+            <span class="skill-tooltip">Java</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-python.png" alt="Python">
+            <span class="skill-tooltip">Python</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-go.png" alt="Golang">
+            <span class="skill-tooltip">Golang</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-matlab.png" alt="MATLAB">
+            <span class="skill-tooltip">MATLAB</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-verilog.png" alt="Verilog">
+            <span class="skill-tooltip">Verilog</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-assembly.png" alt="Assembly">
+            <span class="skill-tooltip">Assembly</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-R.png" alt="R">
+            <span class="skill-tooltip">R</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Software Panel -->
+      <div class="skills-category">
+        <span class="skill-category-title">Software</span>
+        <div class="skills-grid">
+          <!-- 9 items -->
+          <div class="skill-item">
+            <img src="link-to-vscode.png" alt="VS Code">
+            <span class="skill-tooltip">VS Code</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-vs.png" alt="Visual Studio">
+            <span class="skill-tooltip">Visual Studio</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-eclipse.png" alt="Eclipse">
+            <span class="skill-tooltip">Eclipse</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-inventor.png" alt="Autodesk Inventor">
+            <span class="skill-tooltip">Inventor</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-quartus.png" alt="Quartus II">
+            <span class="skill-tooltip">Quartus II</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-quanser.png" alt="Quanser">
+            <span class="skill-tooltip">Quanser</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-keil.png" alt="Keil uVision5">
+            <span class="skill-tooltip">Keil</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-ltspice.png" alt="LTSpice">
+            <span class="skill-tooltip">LTSpice</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-msoffice.png" alt="MS Office">
+            <span class="skill-tooltip">MS Office</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Hardware Panel -->
+      <div class="skills-category">
+        <span class="skill-category-title">Hardware</span>
+        <div class="skills-grid">
+          <!-- 5 items -->
+          <div class="skill-item">
+            <img src="link-to-arduino.png" alt="Arduino">
+            <span class="skill-tooltip">Arduino</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-ti.png" alt="Arm Cortex Microcontrollers">
+            <span class="skill-tooltip">Arm Cortex Microcontrollers</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-fpga.png" alt="FPGA">
+            <span class="skill-tooltip">FPGA</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-plc.png" alt="PLC">
+            <span class="skill-tooltip">PLC</span>
+          </div>
+          <div class="skill-item">
+            <img src="link-to-midi.png" alt="MIDI">
+            <span class="skill-tooltip">MIDI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Contact Section: Left-Aligned Clickable Icons -->
+  <section id="contact" class="fade-in">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact">
+      <a href="mailto:manandua16@gmail.com" title="Email">
+        <img src="email.png" alt="Email">
+      </a>
+      <a href="https://linkedin.com/in/manan-dua-412a13281" target="_blank" title="LinkedIn">
+        <img src="linkedin.png" alt="LinkedIn">
+      </a>
+    </div>
+  </section>
+  
+  <!-- Footer -->
+  <footer>
+    <p>⚒️ Designed by Manan Dua 2025 ⚒️</p>
+  </footer>
+  
+  <!-- JavaScript: Fade In on Scroll with Responsive Threshold -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const elements = document.querySelectorAll('.fade-in, .card');
+      const thresholdValue = window.innerWidth <= 600 ? 0.05 : 0.1;
+      const options = { threshold: thresholdValue };
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.intersectionRatio >= thresholdValue) {
+            entry.target.classList.add('visible');
+          } else {
+            entry.target.classList.remove('visible');
+          }
+        });
+      }, options);
+      elements.forEach(el => observer.observe(el));
+    });
+  </script>
+  
+  <!-- JavaScript: Typewriter Effect -->
+  <script>
+    const textArray = ["Software Developer", "Creative Designer", "Innovator"];
+    const typingDelay = 100, erasingDelay = 50, newTextDelay = 2000;
+    let textArrayIndex = 0, charIndex = 0;
+    function type() {
+      if (charIndex < textArray[textArrayIndex].length) {
+        document.getElementById("typed-text").textContent += textArray[textArrayIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(type, typingDelay);
+      } else { setTimeout(erase, newTextDelay); }
+    }
+    function erase() {
+      if (charIndex > 0) {
+        document.getElementById("typed-text").textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+        charIndex--;
+        setTimeout(erase, erasingDelay);
+      } else {
+        textArrayIndex = (textArrayIndex + 1) % textArray.length;
+        setTimeout(type, typingDelay + 1100);
+      }
+    }
+    document.addEventListener("DOMContentLoaded", function() {
+      if (textArray.length) setTimeout(type, newTextDelay + 250);
+    });
+  </script>
+  
+  <!-- JavaScript: Animated Particle Background -->
+  <script>
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    let particles = [];
+    const numParticles = 100;
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        size: Math.random() * 2 + 1
+      });
+    }
+    function animateBackground() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fill();
+      }
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          let dx = particles[i].x - particles[j].x;
+          let dy = particles[i].y - particles[j].y;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = "rgba(255,255,255," + (1 - dist / 100) + ")";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animateBackground);
+    }
+    animateBackground();
+  </script>
+  
+  <!-- JavaScript: Header Slide & Hamburger Behavior (Auto-collapse on scroll) -->
+  <script>
+    let lastScrollTop = 0;
+    const header = document.getElementById("site-header");
+    const hamburgerMenu = document.getElementById("hamburger-menu");
+    window.addEventListener("scroll", function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        header.style.transform = "translateY(-110%)";
+        if (window.innerWidth <= 600) {
+          hamburgerMenu.style.opacity = "0";
+          const navContainer = document.querySelector(".nav-container");
+          if (navContainer && navContainer.classList.contains("open")) {
+            navContainer.classList.remove("open");
+          }
+        }
+      } else {
+        header.style.transform = "translateY(0)";
+        if (window.innerWidth <= 600) {
+          hamburgerMenu.style.opacity = "1";
+        }
+      }
+      lastScrollTop = scrollTop;
+    });
+  </script>
+  
+  <!-- JavaScript: Force Scroll to Top on Load -->
+  <script>
+    window.onload = function() {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 50);
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+    };
+  </script>
+  
+  <!-- JavaScript: Mobile Hamburger Toggle -->
+  <script>
+    document.getElementById("hamburger-menu").addEventListener("click", function() {
+      const navContainer = document.querySelector(".nav-container");
+      navContainer.classList.toggle("open");
+    });
+  </script>
+  
+  <!-- JavaScript: Project Filter Buttons with Full Fade Out/In -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const filterButtons = document.querySelectorAll('#project-filters button');
+      const projectCards = document.querySelectorAll('.project-link');
+      
+      filterButtons.forEach(button => {
+        button.addEventListener('click', function(){
+          if (button.classList.contains('active')) {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            updateProjectDisplay("all");
+            return;
+          }
+          filterButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          const filterValue = button.getAttribute('data-filter');
+          updateProjectDisplay(filterValue);
+        });
+      });
+      
+      function updateProjectDisplay(filterValue) {
+        projectCards.forEach(card => {
+          fadeOutCard(card);
+        });
+        setTimeout(() => {
+          projectCards.forEach(card => {
+            const cardCategory = card.getAttribute('data-year');
+            if (filterValue === "all" || cardCategory === filterValue) {
+              fadeInCard(card);
+            }
+          });
+          animateProjectTransition();
+        }, 500);
+      }
+      
+      function fadeInCard(card) {
+        card.style.display = '';
+        card.offsetHeight;
+        card.classList.remove('hidden-project');
+      }
+      
+      function fadeOutCard(card) {
+        card.classList.add('hidden-project');
+        setTimeout(() => {
+          card.style.display = 'none';
+        }, 500);
+      }
+      
+      function animateProjectTransition() {
+        const visibleCards = Array.from(projectCards).filter(card => card.style.display !== 'none');
+        const positions = visibleCards.map(card => card.getBoundingClientRect().top);
+        requestAnimationFrame(() => {
+          visibleCards.forEach((card, index) => {
+            const newTop = card.getBoundingClientRect().top;
+            const delta = positions[index] - newTop;
+            if(delta !== 0) {
+              card.style.transition = 'transform 0.5s ease';
+              card.style.transform = `translateY(${delta}px)`;
+              card.offsetHeight;
+              card.style.transform = '';
+            }
+          });
+        });
+      }
+    });
+  </script>
+  
+  <!-- Extra CSS: Experience Flip Cards -->
+  <style>
+    .experience-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .flip-card {
+      background: transparent;
+      perspective: 1000px;
+      width: 100%;
+      height: 300px;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s;
+    }
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--border-radius);
+      box-shadow: 0 2px 8px var(--shadow);
+      padding: 20px;
+      color: var(--text-color);
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .flip-card-back {
+      background: var(--card-bg);
+      transform: rotateY(180deg);
+    }
+    .flip-card-front::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 30%;
+      background: linear-gradient(to right, rgba(30,30,30,0.8) 30%, transparent);
+      border-radius: var(--border-radius) 0 0 var(--border-radius);
+      z-index: 1;
+    }
+    .flip-card-front h3 {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+  
+  <!-- JavaScript: Down Arrow Scroll Behavior -->
+  <script>
+    document.getElementById("down-arrow").addEventListener("click", function() {
+      document.getElementById("about").scrollIntoView({ behavior: "smooth" });
+    });
+  </script>
+  
+</body>
+</html>
