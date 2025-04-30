@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | MisteRdeck MIDI Controller</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --max-width: 800px;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: var(--primary-color); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px 40px;
+      margin: 10px;
+      position: sticky;
+      top: 0;
+      width: calc(100% - 20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .site-title { font-size: 1.5rem; font-weight: bold; }
+    .nav-menu { display: flex; gap: 25px; }
+    main { max-width: var(--max-width); margin: 2rem auto; padding: 0 40px; }
+    .hero-image {
+      width: 100%;
+      max-height: 350px;
+      border-radius: var(--border-radius);
+      margin-bottom: 2rem;
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .hero-image img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: 1;
+    }
+    section { margin-bottom: 2rem; }
+    section > h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    ul { padding-left: 1.2rem; margin-bottom: 1rem; }
+    ul li { list-style: disc; margin-bottom: 0.5rem; }
+    .fade-in { opacity: 0; transform: translateY(20px) scale(0.95); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+    .fade-in.visible { opacity: 1; transform: none; }
+    footer {
+      opacity: 0.8;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px;
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <header>
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+  <main>
+    <div class="hero-image fade-in">
+      <img src="misterdeck-hero.jpg" alt="MisteRdeck MIDI Controller">
+    </div>
+    <section class="fade-in" id="overview">
+      <h2>Overview</h2>
+      <p>The MisteRdeck is an Arduino-powered MIDI Stream Deck designed for streaming scene switching and volume control. It features built-in faders and buttons and runs on QMK firmware for easy customization.</p>
+    </section>
+    <section class="fade-in" id="features">
+      <h2>Features</h2>
+      <ul>
+        <li>12 tactile scene-control buttons</li>
+        <li>4 Inline fader knobs for precision volume adjustment</li>
+        <li>USB-C or Pro Micro compatibility</li>
+        <li>Programmable via QMK firmware</li>
+      </ul>
+    </section>
+    <section class="fade-in" id="files">
+      <h2>Files &amp; Parts</h2>
+      <ul>
+        <li>3D model STLs: clip_single, clips, base, base_usbc, box_standard variants, fader_knob, solder_jig</li>
+        <li>Electronics: Arduino Pro Micro or similar board, fader potentiometers, switches, diodes, wiring harness</li>
+      </ul>
+    </section>
+    <section class="fade-in" id="process">
+      <h2>Build Process</h2>
+      <ul>
+        <li>3D print chassis and components</li>
+        <li>Solder faders and buttons to the microcontroller</li>
+        <li>Flash QMK firmware with custom keymap</li>
+        <li>Enclose and test functionality with MIDI software</li>
+      </ul>
+    </section>
+    <section class="fade-in" id="resources">
+      <h2>Resources</h2>
+      <ul>
+        <li><a href="https://www.printables.com/model/134529-misterdeck" target="_blank">MisteRdeck on Printables</a></li>
+        <li><a href="https://files.printables.com/media/prints/134529/pdfs/134529-misterdeck-822aca1a-228e-4188-893e-47363f813762.pdf" target="_blank">Official PDF Manual</a></li>
+        <li><a href="https://www.youtube.com/watch?v=YYY7iTM4BYM" target="_blank">Quick Demo Video</a></li>
+        <li><a href="https://www.youtube.com/watch?v=Eho_ae5cxNE" target="_blank">Live Build Video</a></li>
+        <li><a href="https://github.com/qmk/qmk_firmware" target="_blank">QMK Firmware Repository</a></li>
+        <li><a href="https://discord.gg/bz3j3AvAU3" target="_blank">Community Discord</a></li>
+      </ul>
+    </section>
+  </main>
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el => new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && el.classList.add('visible')), { threshold: 0.1 }).observe(el));
+    });
+    const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
+    function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
+    window.addEventListener('resize', resize); resize();
+    const particles = Array.from({ length: 100 }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5, r:Math.random()*2+1 }));
+    function animate() {
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      // Draw particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.8)';
+        ctx.fill();
+      });
+      // Draw lines between close particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - dist/100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
