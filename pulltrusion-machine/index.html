@@ -18,9 +18,14 @@
       --text-color: #f0f0f0;
       --shadow: rgba(0, 0, 0, 0.5);
       --border-radius: 16px;
-      --max-width: 800px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       background: var(--bg-dark);
       color: var(--text-color);
@@ -28,35 +33,49 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-    a { color: var(--primary-color); text-decoration: none; transition: color 0.3s; }
-    a:hover { color: #005bb5; }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
     header {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 4px var(--shadow);
       border-radius: var(--border-radius);
-      padding: 15px 40px;
-      margin: 10px;
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
       position: sticky;
       top: 0;
-      width: calc(100% - 20px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
       transition: transform 0.3s ease;
     }
-    .site-title { font-size: 1.5rem; font-weight: bold; }
-    .nav-menu { display: flex; gap: 25px; }
-    main { max-width: var(--max-width); margin: 2rem auto; padding: 0 40px; }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
     .hero-image {
       position: relative;
       z-index: 1;
       width: 100%;
-      max-height: 400px;
+      max-height: 450px;
       border-radius: var(--border-radius);
-      margin-bottom: 2rem;
-      background-color: var(--bg-dark); /* Opaque background behind transparent PNG areas */
+      margin-bottom: var(--section-gap);
+      background-color: var(--bg-dark);
       overflow: hidden;
     }
     .hero-image img {
@@ -67,24 +86,90 @@
       opacity: 1 !important;
       background-color: transparent;
     }
-    section { margin-bottom: 2rem; }
+    section {
+      margin-bottom: var(--section-gap);
+    }
     section > h2 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
       padding-bottom: 0.3rem;
       border-bottom: 2px solid var(--primary-color);
     }
-    p, ul { margin-bottom: 1rem; }
-    ul { padding-left: 1.2rem; }
-    ul li { list-style: disc; margin-bottom: 0.5rem; }
-    .fade-in { opacity: 0; transform: translateY(20px) scale(0.95); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .fade-in.visible { opacity: 1; transform: none; }
+    p, ul {
+      margin-bottom: 1rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    ul li {
+      list-style: disc;
+      margin-bottom: 0.5rem;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    /* Two-column layout on larger screens */
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .video-container {
+      width: 100%;
+      margin: 1rem 0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
     footer {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 4px var(--shadow);
       border-radius: var(--border-radius);
-      margin: 10px;
+      margin: 10px calc(var(--side-padding) + 10px);
       padding: 20px;
       text-align: center;
       font-size: 0.9rem;
@@ -111,35 +196,207 @@
   </header>
 
   <main>
-    <div class="hero-image">
+    <!-- Hero Section -->
+    <div class="hero-image fade-in">
       <img src="pulltrusion-hero-large.jpg" alt="Open-Source PET Pulltrusion Machine">
     </div>
+
+    <!-- Overview & Purpose -->
     <section id="overview" class="fade-in">
-      <h2>Overview</h2>
-      <p>The Pulltrusion Machine is an open-source filament extruder that transforms recycled PET bottles into 3D printing filament. Based on the PETamentor design, it uses a heated nozzle, puller motor, and temperature controller to produce consistent, high-quality filament.</p>
+      <h2>Overview &amp; Purpose</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            The Pulltrusion Machine is an open-source filament extruder designed to convert discarded PET bottles into high-quality 3D printing filament. By repurposing plastic waste, this project reduces environmental impact and provides makers with an affordable filament source.
+          </p>
+          <p>
+            Commercial filament can be costly and contribute to landfill waste. The Pulltrusion Machine addresses this by:
+          </p>
+          <ul>
+            <li>Recycling used PET bottles into usable 3D filament.</li>
+            <li>Lowering material costs for small-scale and hobbyist applications.</li>
+            <li>Promoting sustainability within the maker community.</li>
+          </ul>
+        </div>
+      </div>
     </section>
+
+    <!-- Design & Development -->
+    <section id="design-development" class="fade-in">
+      <h2>Design &amp; Development</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="design-prototype.jpg" alt="Initial Prototype Frame and Components">
+        </div>
+        <div class="text-block">
+          <p>
+            Based on the PETamentor design, the Pulltrusion Machine emphasizes efficient heating and a controlled puller system. Key development milestones:
+          </p>
+          <ul>
+            <li><strong>Prototype Frame:</strong> Built from aluminum profiles to maintain alignment between cutter, heater, and puller assemblies.</li>
+            <li><strong>Cutter Mechanism:</strong> Designed a rotary cutter to slice bottles into uniform ribbons for consistent melting.</li>
+            <li><strong>Nozzle &amp; Heater:</strong> Tested optimal filament diameter of 1.75 mm, optimizing heater cartridge placement for uniform temperature.</li>
+            <li><strong>Puller Calibration:</strong> Iterated on motor speeds using a JGB37-520 high torque geared motor with 7 rpm.</li>
+            <li><strong>Temperature Control:</strong> Integrated a W1209 digital controller to maintain nozzle temperature between 240 °C and 260 °C. This was later upgraded to a W3230 for more accurate control and temperature display.</li>
+          </ul>
+          <p>
+            Challenges &amp; Solutions:
+          </p>
+          <ul>
+            <li><strong>Uneven Ribbon Thickness:</strong> Early tests yielded inconsistent ribbon width; refined blade angle and guiding channel to ensure uniform strips.</li>
+            <li><strong>Nozzle Clogging:</strong> PET caramelized at high temperatures; optimized feed rate and added a short cooling zone before the puller.</li>
+            <li><strong>Puller Slip:</strong> Initial wheels lacked traction; switched to toothed rollers to eliminate slippage.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components & Parts -->
     <section id="components" class="fade-in">
-      <h2>Components</h2>
-      <ul>
-        <li><strong>Frame & Cutter:</strong> Custom chassis slicing PET bottles into uniform strips.</li>
-        <li><strong>Heater & Nozzle:</strong> Interchangeable tips for different filament diameters.</li>
-        <li><strong>Puller Motor:</strong> DC motor drawing molten PET steadily.</li>
-        <li><strong>Temperature Control:</strong> W1209 module for precise heat regulation.</li>
-        <li><strong>Power Supply:</strong> 12–24V adapter.</li>
-      </ul>
+      <h2>Key Components</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <ul>
+            <li><strong>Frame &amp; Cutter:</strong> Custom wood and 3D printed chassis holds all modules in rigid alignment. Rotary cutter slices PET bottles into roughtly 9mm ribbons.</li>
+            <li><strong>Heater &amp; Nozzle:</strong> Interchangeable 1.75 mm nozzle tip; 100 W PTC heater cartridge; thermistor for precise temperature feedback.</li>
+            <li><strong>Puller Motor:</strong> Using a JGB37-520 high torque geared motor. Toothed 3D printed rollers ensure consistent draw without slipping.</li>
+            <li><strong>Temperature Control:</strong> W1209/W3230 digital controller regulates nozzle temperature via SSR to maintain 240 °C–260 °C.</li>
+            <li><strong>Power Supply:</strong> Separate switch-mode supplies: 12 V 10 A for heater and puller motor to ensure sufficient power.</li>
+            <li><strong>Spooling &amp; Collection:</strong> Filament winds onto a 3D-printer spool holder; manual tensioner maintains consistent winding.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="components-heater.jpg" alt="Heater Cartridge and Nozzle Assembly">
+        </div>
+        <div class="text-block">
+          <ul>
+            <li><strong>Puller Motor Assembly:</strong> Toothed rollers mounted on a JGB37-520 gearbox for precise speed control and stable filament diameter.</li>
+            <li><strong>Spooling Setup:</strong> Retrofit spool holder attached to chassis; adjustahble pull speed prevents slack.</li>
+            <li><strong>Temperature Sensor &amp; Controller:</strong> Thermistor in nozzle feeds data to W3230 module; SSR switches heater on/off to maintain setpoint.</li>
+          </ul>
+        </div>
+      </div>
     </section>
+
+    <!-- Manufacturing Process -->
     <section id="process" class="fade-in">
-      <h2>Process</h2>
-      <ul>
-        <li>Cut PET bottles into thin ribbons.</li>
-        <li>Feed ribbons into heated nozzle.</li>
-        <li>Pull molten PET into filament.</li>
-        <li>Spool the filament for use.</li>
-      </ul>
+      <h2>Manufacturing Process</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>Step-by-step guide to transform PET bottles into 3D filament:</p>
+          <h3>1. Preparation</h3>
+          <ul>
+            <li>Clean &amp; dry each PET bottle to remove labels and residue.</li>
+            <li>Trim bottles into flat panels using a utility knife and scissors.</li>
+            <li>Feed panels through the cutter to produce long 9 mm ribbons.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>2. Preheating &amp; Feeding</h3>
+          <ul>
+            <li>Set W1209/W3230 to 80 °C (with account for thermistor) for optimal PET melting without degradation.</li>
+            <li>Slowly feed ribbons into feed tube throught the heated nozzle.</li>
+            <li>Wait until nozzle temperature stabilizes within ±3 °C of setpoint to avoid air pockets.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>3. Extrusion &amp; Pulling</h3>
+          <ul>
+            <li>Once molten PET emerges, engage puller motor at ~3 RPM (≈10 cm/min filament speed).</li>
+            <li>Measure filament diameter with calipers every 30 cm; adjust puller speed to maintain 1.75 mm ± 0.05 mm.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>4. Spooling &amp; Drying</h3>
+          <ul>
+            <li>Spool the filament on the onboard removable spool and remove once finished.</li>
+            <li>Dry the filament using a filament dryer on PETG settings to ensure consistent print textures before use.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>5. Testing &amp; Quality Control</h3>
+          <ul>
+            <li>Print a 20 mm³ calibration cube to check for smooth walls and no under-extrusion.</li>
+            <li>Inspect spool for air bubbles or diameter inconsistencies. Discard any segments outside the ±0.05 mm tolerance.</li>
+          </ul>
+        </div>
+        <div class="video-container">
+            <video controls src="pulltrusion.mp4" alt="Pulltrusion Demo">
+              Your browser does not support HTML5 video.
+            </video>
+          </div>
+      </div>
     </section>
+
+    <!-- Results & Performance -->
+    <section id="results" class="fade-in">
+      <h2>Results &amp; Performance</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            After multiple production runs, the Pulltrusion Machine produced filament with:
+          </p>
+          <ul>
+            <li><strong>Average Diameter:</strong> 1.75 mm ± 0.05 mm</li>
+            <li><strong>Surface Finish:</strong> Smooth, minimal layer lines when printing at 250 °C–260 °C.</li>
+            <li><strong>Printability:</strong> Successfully printed various parts without stringing.</li>
+          </ul>
+         <!--  <div class="section-image">
+            <img src="results-printed-parts.jpg" alt="Printed Parts Using Recycled PET Filament">
+          </div> -->
+          <p>
+            Cost analysis shows recycled PET filament is roughly one-third the price of commercial filament when accounting for electricity and labor.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & Resources -->
     <section id="community" class="fade-in">
-      <h2>Community & Resources</h2>
-      <p>Find tutorials and designs on the <a href="https://petamentor.com/" target="_blank">Official PETamentor Website</a>.</p>
+      <h2>Community &amp; Resources</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            The Pulltrusion Machine is part of an open-source ecosystem. Key resources:
+          </p>
+          <ul>
+            <li><a href="https://petamentor.com/" target="_blank">Official PETamentor Website</a> (schematics, BOM, assembly guide).</li>
+            <li><a href="https://github.com/petamentor/pulltrusion" target="_blank">GitHub Repository</a> (CAD files, firmware, community contributions).</li>
+            <li><a href="https://forum.petamentor.com/" target="_blank">PETamentor Forum</a> (Q&amp;A, modifications, discussion).</li>
+          </ul>
+          <p>
+            Join maker spaces or online workshops—many host build sessions where participants assemble their own Pulltrusion Machines and share tips on feed rates and nozzle optimizations.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Future Improvements -->
+    <section id="future" class="fade-in">
+      <h2>Future Improvements &amp; Next Steps</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <ul>
+            <li><strong>Automated Ribbon Feeder:</strong> Implement rotary gear feeder to maintain constant ribbon tension and speed.</li>
+            <li><strong>Closed-Loop Diameter Control:</strong> Add laser micrometer sensor to monitor filament diameter in real time and adjust puller speed dynamically.</li>
+            <li><strong>Multi-Material Filament:</strong> Explore co-extrusion of PET with additives like wood fiber or PLA to create composite filaments.</li>
+            <li><strong>Improved Bottle Cutter:</strong> Implement a more robust rotary cutter with adjustable blade angles for different bottle sizes.</li>
+          </ul>
+          <p>
+            These enhancements aim to further increase consistency, throughput, and material versatility for community-driven builds.
+          </p>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -147,25 +404,48 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-in').forEach(el => new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }).observe(el));
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
     });
+
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     window.addEventListener('resize', resizeBg); resizeBg();
-    const particles = Array.from({ length: 100 }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx: (Math.random()-0.5)*0.4, vy: (Math.random()-0.5)*0.4, r: Math.random()*2+1 }));
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
     function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      particles.forEach(p => { p.x+=p.vx; p.y+=p.vy; if (p.x<0) p.x=canvas.width; if (p.x>canvas.width) p.x=0; if (p.y<0) p.y=canvas.height; if (p.y>canvas.height) p.y=0; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,2*Math.PI); ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.fill(); });
-      for (let i=0; i<particles.length; i++) {
-        for (let j=i+1; j<particles.length; j++) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const d = Math.hypot(dx,dy);
+          const d = Math.hypot(dx, dy);
           if (d < 100) {
-            ctx.beginPath(); ctx.moveTo(particles[i].x,particles[i].y);
-            ctx.lineTo(particles[j].x,particles[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - d/100})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
             ctx.lineWidth = 1;
             ctx.stroke();
           }
@@ -174,6 +454,7 @@
       requestAnimationFrame(draw);
     }
     draw();
+
     let lastY = 0;
     const headerEl = document.getElementById('site-header');
     window.addEventListener('scroll', () => {

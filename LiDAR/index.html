@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | High-Accuracy Mapping Lidar (HAML)</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
+    .hero-image {
+      width: 100%;
+      max-height: 400px;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--section-gap);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    p, ul {
+      margin-bottom: 1rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    ul li {
+      list-style: disc;
+      margin-bottom: 0.5rem;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1rem;
+    }
+    th, td {
+      border: 1px solid var(--text-color);
+      padding: 0.5rem;
+      text-align: left;
+    }
+    th {
+      background: rgba(0, 122, 255, 0.2);
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    footer {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px calc(var(--side-padding) + 10px);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <div class="hero-image fade-in">
+      <img src="Fully Assembled.jpg" alt="Fully Assembled HAML Device">
+    </div>
+
+    <!-- Device Description -->
+    <section id="description" class="fade-in">
+      <h2>Device Description: High-Accuracy Mapping Lidar (HAML)</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            The High-Accuracy Mapping Lidar (HAML) is designed to map indoor areas up to 4 meters away using a rotating Time-of-Flight (ToF) sensor mounted on a stepper motor. It leverages the MSP432E401Y microcontroller, a VL53L1X ToF sensor, and a 28BYJ-48 stepper motor to create 2D radial measurements that are converted into 3D point clouds via a Python script.
+          </p>
+          <p>Key Features:</p>
+          <ul>
+            <li><strong>Microcontroller:</strong> MSP432E401Y running at 26 MHz with 17 kB program memory.</li>
+            <li><strong>User Interface:</strong> Two push buttons—one to start the scan, one for homing.</li>
+            <li><strong>ToF Sensor:</strong> VL53L1X captures distance readings every 5.625° for a full 360° sweep (64 measurements).</li>
+            <li><strong>Stepper Motor:</strong> 28BYJ-48 controlled via ULN2003 driver in Full-Step mode for maximum torque.</li>
+            <li><strong>Power:</strong> 5 V DC via micro-USB; VL53L1X powered at 3.3 V from the MCU.</li>
+            <li><strong>Connectivity:</strong> I²C between MCU and ToF sensor; UART between MCU and PC at 115200 bps.</li>
+            <li><strong>Indicators:</strong> LEDs for data measurement, UART status, and error indication.</li>
+            <li><strong>Data Visualization:</strong> Python (v3.12) and Open3D (v0.19) convert measurements into 3D point clouds.</li>
+            <li><strong>Cost:</strong> Approximately $105 total: MSP432E401Y ($75), VL53L1X ($15), stepper kit ($10), 3D prints ($5).
+          </li></ul>
+        </div>
+        <div class="section-image">
+          <img src="block diagram.jpg" alt="Block Diagram of HAML Data Flow">
+        </div>
+      </div>
+    </section>
+
+    <!-- Device Characteristics Table -->
+    <section id="characteristics" class="fade-in">
+      <h2>Device Characteristics</h2>
+      <div class="section-content">
+        <table>
+          <thead>
+            <tr><th>Characteristic</th><th>Detail</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Microcontroller Bus Speed</td><td>26 MHz</td></tr>
+            <tr><td>SCL (ToF Pin)</td><td>PB2 on MSP432E401Y (I²C clock)</td></tr>
+            <tr><td>SDA (ToF Pin)</td><td>PB3 on MSP432E401Y (I²C data)</td></tr>
+            <tr><td>Vin (ToF Power)</td><td>3.3 V</td></tr>
+            <tr><td>GND (ToF Power)</td><td>GND</td></tr>
+            <tr><td>IN1–IN4 (Motor Driver Inputs)</td><td>PH0, PH1, PH2, PH3 on MSP432E401Y</td></tr>
+            <tr><td>Motor Driver Power (V+)</td><td>5 V</td></tr>
+            <tr><td>Push Button 1</td><td>PM0 (start scan)</td></tr>
+            <tr><td>Push Button 2</td><td>PM1 (home)</td></tr>
+            <tr><td>Power LED</td><td>PN1</td></tr>
+            <tr><td>UART LED</td><td>PN0</td></tr>
+            <tr><td>Error LED</td><td>PF4 (failed measurement)</td></tr>
+            <tr><td>UART Baud Rate</td><td>115200 bps</td></tr>
+            <tr><td>Python Version</td><td>3.12.0</td></tr>
+            <tr><td>Open3D Version</td><td>0.19.0</td></tr>
+            <tr><td>Serial Port</td><td>e.g., COM6</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Detailed Description: Distance Measurement -->
+    <section id="distance" class="fade-in">
+      <h2>Detailed Description: Distance Measurement</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+            <img src="code1.png" alt="printTOF() Function Code Snippet">
+        </div>
+        <div class="text-block">
+          <p>
+            The HAML uses the VL53L1X ToF sensor to measure distances up to 4 m with millimeter accuracy. A 940 nm VCSEL emits an IR pulse, and a SPAD array detects returning photons. The time difference between emission and reception—divided by twice the speed of light—yields the distance.
+          </p>
+          <p>Distance formula example:</p>
+          <p><em>Distance</em> = (20 ns) / (2 × 3 × 10<sup>8</sup> m/s) = 3 m (3000 mm)</p>
+          <p>
+            The sensor communicates via I²C. At startup, the MCU configures GPIOs for buttons, the ToF sensor, and motor driver. When Push Button 1 is pressed, the 
+            <code>spin()</code> function rotates the stepper 32 steps (5.625°) and calls <code>printTOF()</code> to read and validate distance data. This repeats 64 times for a full 360° scan (2048 steps total). After completion, the motor returns to –90° home.
+          </p>
+          <p>
+            Each radial measurement point is converted from polar (angle, distance) to Cartesian (Y, Z) using sine and cosine. After each full scan, the user moves the device +300 mm along X to capture the next slice.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualization -->
+    <section id="visualization" class="fade-in">
+      <h2>Visualization</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="code3.png" alt="Python UART Data Acquisition Code">
+        </div>
+        <div class="text-block">
+          <p>
+            After data collection, the Python script (<code>O3DCreateData.py</code>) reads distance values via UART (COM6), including the number of points per run and total runs. It computes XYZ coordinates: Z = cos(angle) × distance, Y = sin(angle) × distance, and X increments by 300 mm per run.
+          </p>
+          <p>
+            Once converted, the script launches Open3D to render a raw point cloud and a connected mesh, visualizing the scanned environment in 3D.
+          </p>
+        </div>
+      </div>
+      <div class="text-block">  
+        <p>
+          </li>
+        </p>
+      </div>
+      <div class="section-content">
+        <div class="section-image">
+          <img src="code4.png" alt="Python Code Converting to Cartesian Coordinates">
+        </div>
+      </div>
+    </section>
+
+    <!-- Application & Instructions & Expected Output -->
+    <section id="application" class="fade-in">
+      <h2>Application, Instructions, and Expected Output</h2>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="hallway.jpg" alt="Photo of Scanned Hallway Location">
+        </div>
+        <div class="text-block">
+          <h3>Application</h3>
+          <p>
+            HAML is useful for indoor mapping: construction planning, security, robotics navigation, and home automation. It identifies structural defects, estimates repairs, or aids robotic path planning. While optimal indoors (≤4 m range), future sensors could expand outdoor use.
+          </p>
+          <h3>Instructions</h3>
+          <ol>
+            <li>Assemble circuit per schematic: connect MSP432E401Y, VL53L1X (I²C), 28BYJ-48 stepper (ULN2003), buttons, and LEDs. Refer to the folloring figures for wiring and enclosure photos.</li>
+            <li>Mount components in a 3D-printed chassis; align ToF sensor on motor shaft, pointing downward. Place Push Button 1 to start scan, Push Button 2 for homing.</li>
+            <li>Connect to PC via USB; note COM port in Device Manager (e.g., COM6).</li>
+            <li>Upload Keil code (<code>duam4 – 2DX3 Final Project Code.c</code>) to MSP432E401Y; press reset.
+            </li>
+            <li>Update <code>O3DCreateData.py</code> with correct COM port (line 15).</li>
+            <li>Place HAML at starting position; press Button 1 to scan. After full 360° rotation, device returns home.</li>
+            <li>Move device +300 mm along +X and press Button 1 for next scan. Repeat as needed. Press Button 2 at any time to abort and return to home.</li>
+            <li>After all runs, execute <code>O3DCreateData.py</code> to retrieve data and visualize.
+            </li>
+          </ol>
+          <h3>Expected Output</h3>
+          <p>
+            Scans of location I (John Hodgins Engineering Building hallway) should resemble the following figures. Areas beyond 4 m show gaps filled using previous valid readings. The Open3D point cloud and connected mesh match hallway geometry, with minor inaccuracies on reflective or uneven surfaces.
+          </li>
+          </li>
+          </li>
+          </li>
+          </p>
+        </div>
+      </div>
+      <div class="text-block">  
+        <p>
+          </li>
+        </p>
+      </div>
+      <div class="text-block">  
+        <p>
+          </li>
+        </p>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="point cloud.png" alt="Open3D Point Cloud Visualization">
+        </div>
+        <div class="section-image">
+          <img src="mesh.png" alt="Open3D Connected Mesh Visualization">
+        </div>
+      </div>
+    </section>
+
+    <!-- Limitations -->
+    <section id="limitations" class="fade-in">
+      <h2>Limitations</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            The MSP432E401Y’s FPU supports single-precision; complex trigonometric calculations are offloaded to Python (64-bit). MCU memory (2048 integers) limits scans to 32 runs of 64 points. VL53L1X ADC quantization error (~1 mm) matches sensor resolution. UART set to 115200 bps; PC maximum ~128000 bps. I²C limited to 100 kbps. Bus speed is 26 MHz; can go to 120 MHz but stepper speed and ToF response limit scan rate (2 ms step delay required for reliability). ToF struggles with glass or brightly lit surfaces; accuracy improves at closer range.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Circuit Schematic -->
+    <section id="schematic" class="fade-in">
+      <h2>Circuit Schematic</h2>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="2DX3 Schematic.jpg" alt="HAML Circuit Schematic">
+        </div>
+        <div class="text-block">  
+        <p>
+          </li>
+        </p>
+      </div>
+      </div>
+    </section>
+
+    <!-- Flowcharts -->
+    <section id="flowcharts" class="fade-in">
+      <h2>Programming Logic Flowcharts</h2>
+      <div class="section-content">
+        <div class="section-image">
+          <img src="dx flowchart 1.jpg" alt="Flowchart of Microcontroller Code">
+        </div>
+      </div>
+      <div class="section-content">
+        <div class="section-image">
+          <p>
+            </li>
+          </p>
+        </div>
+      <div class="section-content">
+        <div class="section-image">
+          <img src="pc coe flowchart.jpg" alt="Flowchart of Python Code">
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeBg); resizeBg();
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
+      lastY = y;
+    });
+  </script>
+</body>
+</html>

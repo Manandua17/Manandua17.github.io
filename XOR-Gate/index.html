@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | CMOS XOR Gate Project</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
+    .hero-image {
+      width: 100%;
+      max-height: 400px;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--section-gap);
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    p, ul, ol, pre {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    ul li, ol li {
+      margin-bottom: 0.5rem;
+    }
+    pre {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      overflow-x: auto;
+    }
+    code {
+      background: rgba(255,255,255,0.1);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      margin: 1rem 0;
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    footer {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px calc(var(--side-padding) + 10px);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Summary Section -->
+    <section id="summary" class="fade-in">
+      <h2>Summary</h2>
+      <p>
+        Logic gates form the basis of digital circuits, and MOSFETs act as voltage-controlled switches. NMOS transistors conduct when their gate is high, while PMOS conduct when their gate is low [1]. CMOS logic uses complementary NMOS and PMOS networks—Pull-Down Network (PDN) of NMOS and Pull-Up Network (PUN) of PMOS—to build efficient, low-power gates. This project implements and tests a CMOS XOR gate using CD4007B arrays.
+      </p>
+    </section>
+
+    <!-- Design Section -->
+    <section id="design" class="fade-in">
+      <h2>Design</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            The XOR function’s Boolean expression is simplified via De Morgan’s theorem. Truth table:
+          </p>
+          <table>
+            <tr><th>A</th><th>B</th><th>F</th></tr>
+            <tr><td>0</td><td>0</td><td>0</td></tr>
+            <tr><td>0</td><td>1</td><td>1</td></tr>
+            <tr><td>1</td><td>0</td><td>1</td></tr>
+            <tr><td>1</td><td>1</td><td>0</td></tr>
+          </table>
+          <p>
+            F = A ⊕ B = A̅B + A B̅  
+            ⇒ (A̅B)<sub>̅</sub> · (A B̅)<sub>̅</sub>  
+            ⇒ (A + B̅) · (A̅ + B)
+          </p>
+          <p>
+            PDN: A·B̅ in series with A̅·B in parallel. PUN: series/parallel reversed using PMOS transistors. Inversions of A and B require two MOSFETs each. Total: 12 MOSFETs.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="circuit design.png" alt="Ideal vs. Real Switch Comparison (Figure 2)">
+        </div>
+      </div>
+    </section>
+
+    <!-- Ideal Sizing Section -->
+    <section id="sizing" class="fade-in">
+      <h2>Ideal Sizing</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            To minimize delay, PUN and PDN should be symmetric. Propagation delays:
+          </p>
+          <pre>τ<sub>PHL</sub> = 0.69 R<sub>N</sub> C<sub>L</sub> = 4.14 C<sub>L</sub>
+τ<sub>PLH</sub> = 0.69 R<sub>P</sub> C<sub>L</sub> = 4.14 C<sub>L</sub></pre>
+          <p>
+            Electron mobility is 2.5× hole mobility; thus ideal width ratios: (W/L)<sub>P</sub>:(W/L)<sub>N</sub> = 2.5:1. For worst-case (two MOSFETs in series), size should double: (W/L)<sub>P</sub>=10:1, (W/L)<sub>N</sub>=4:1. CD4007B has fixed sizes—ideal sizing not implementable. Propagation delay will be 2× τ<sub>ref</sub>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- XOR Gate Implementation -->
+    <section id="xor_gate" class="fade-in">
+      <h2>CMOS XOR Gate Implementation</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            The XOR gate uses two transmission gates (Switch 1 for A·B̅ and Switch 1 mirrored for A̅·B) arranged in PDN and PUN. Inputs A and B feed inverters (two MOSFETs each) for control. Total MOSFET count: 12.
+          </p>
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure3-physical_xor.png" alt="Physical CMOS XOR Gate (Figure 3)">
+        </div>
+        <div class="text-block">
+          <h3>Physical Build</h3>
+          <p>
+            Constructed on breadboard using one CD4007B IC. All 6 NMOS and 6 PMOS pins used. Pull-down resistor (10 kΩ) on output ensures visible logic levels.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Functional Testing -->
+    <section id="functional_testing" class="fade-in">
+      <h2>Functional Testing</h2>
+      <p>
+        Inputs: two square waves, 2.5 V amplitude, 2.5 V offset. A at 100 Hz, B at 50 Hz. Logic analyzer (AD3) probes A (GPIO1), B (GPIO2), output (GPIO3). Output follows XOR truth table: high when exactly one input is high.
+      </p>
+      <div class="section-image">
+        <img src="figure4-logic_analysis.png" alt="Logic Analysis of CMOS XOR Gate (Figure 4)">
+      </div>
+    </section>
+
+    <!-- Static Testing -->
+    <section id="static_testing" class="fade-in">
+      <h2>Static Testing</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            Input A fixed at +5 V, B toggled 0–5 V: measured V<sub>out,H</sub>=5.01 V, V<sub>out,L</sub>=0.042 V. Swapping inputs yields V<sub>out,H</sub>=5.02 V, V<sub>out,L</sub>=0.041 V. Rounded to 5 V/0 V logic levels.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure5-static_A.png" alt="VH & VL with A fixed at 5V (Figure 5)">
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure6-static_B.png" alt="VH & VL with B fixed at 5V (Figure 6)">
+        </div>
+        <div class="text-block">
+          <p>
+            Confirmed logic levels are consistent when swapping fixed input between A and B.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timing Measurements -->
+    <section id="timing" class="fade-in">
+      <h2>Timing Measurements</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            To measure propagation delay, a 100 nF capacitor is connected at output. Input B fixed at +5 V, input A toggles 0–5 V. Measured rise/fall times on output: τ<sub>rise</sub>=353 µs, τ<sub>fall</sub>=330 µs. Propagation delays: τ<sub>PLH</sub>=158 µs (Figure 8), τ<sub>PHL</sub>=175 µs (Figure 9). Average τ<sub>P</sub> = (158 + 175)/2 = 166 µs.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure7-timing_output.png" alt="Output with 100nF Capacitor (Figure 7)">
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure8-timing_plh.png" alt="Zoomed Plot for τPLH (Figure 8)">
+        </div>
+        <div class="text-block">
+          <p><strong>τ<sub>PLH</sub> Measurement:</strong> Input rising to 50%, output rising to 50% = 158 µs.</p>
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure9-timing_phl.png" alt="Zoomed Plot for τPHL (Figure 9)">
+        </div>
+        <div class="text-block">
+          <p><strong>τ<sub>PHL</sub> Measurement:</strong> Input falling to 50%, output falling to 50% = 175 µs.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pass Transistor Bonus Section -->
+    <section id="bonus" class="fade-in">
+      <h2>Bonus: Pass Transistor Implementation</h2>
+      <p>
+        A pass transistor uses NMOS/PMOS as switches to pass signals based on control. XOR via pass-transistor logic uses fewer transistors: 4 for logic, 2 for inverter (total 6 MOSFETs) [2]. When B=0, pass A; when B=1, pass A̅.
+      </p>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure10-pass_transistor_schematic.png" alt="XOR with Pass Transistors (Figure 10)">
+        </div>
+        <div class="section-image">
+          <img src="figure11-pass_physical.png" alt="Physical Pass Transistor XOR (Figure 11)">
+        </div>
+      </div>
+    </section>
+
+    <!-- Pass Transistor Testing -->
+    <section id="bonus_testing" class="fade-in">
+      <h2>Pass Transistor Testing</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Functional Testing</h3>
+          <p>
+            Inputs: same square waves as before (2.5 V amp, 2.5 V offset, A at 100 Hz, B at 50 Hz). Logic analyzer verifies correct XOR output on GPIO3. High when inputs differ, low otherwise.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure12-pass_logic_analysis.png" alt="Logic Analysis of Pass Transistor XOR (Figure 12)">
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure13-pass_oscilloscope.png" alt="Oscilloscope Output of Pass Transistor XOR (Figure 13)">
+        </div>
+        <div class="text-block">
+          <h3>Static Testing</h3>
+          <p>
+            With one input fixed at +5 V, measured V<sub>out,H</sub>=5.01 V, V<sub>out,L</sub>=0.06 V (Figure 14). Consistent for either fixed input—rounded to 5 V/0 V.
+          </p>
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure14-pass_static.png" alt="VH & VL with A Fixed (Figure 14)">
+        </div>
+        <div class="text-block">
+          <h3>Timing Comparison</h3>
+          <p>
+            With 100 nF capacitor on output: τ<sub>rise</sub>=167 µs, τ<sub>fall</sub>=334 µs (Figure 15). Zoomed plots: τ<sub>PLH</sub>=63 µs (Figure 16), τ<sub>PHL</sub>=185 µs (Figure 17). Average τ<sub>P</sub> = (63 + 185)/2 = 124 µs—improved over CD4007B implementation due to parallel NMOS pass transistors reducing R<sub>on</sub>.
+          </p>
+        </div>
+      </div>
+      <div class="section-image">
+        <img src="figure15-pass_timing.png" alt="Pass Transistor Output with Capacitor (Figure 15)">
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure16-pass_plh.png" alt="Zoomed Plot for τPLH (Figure 16)">
+        </div>
+        <div class="section-image">
+          <img src="figure17-pass_phl.png" alt="Zoomed Plot for τPHL (Figure 17)">
+        </div>
+      </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="fade-in">
+      <h2>References</h2>
+      <ol>
+        <li>A. S. Sedra, K. C. Smith, T. C. Carusone, and V. Gaudet, <em>Microelectronic Circuits</em>, 8th ed. New York, NY: Oxford University Press, 2019. :contentReference[oaicite:0]{index=0}</li>
+        <li>R. Keim, “Introduction to Pass-Transistor Logic,” <em>Allaboutcircuits.com</em>, Dec. 18, 2018.  
+          <a href="https://www.allaboutcircuits.com/technical-articles/introduction-to-pass-transistor-logic/" target="_blank">https://www.allaboutcircuits.com/technical-articles/introduction-to-pass-transistor-logic/</a> (accessed Apr. 02, 2025).
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeBg); resizeBg();
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
+      lastY = y;
+    });
+  </script>
+</body>
+</html>

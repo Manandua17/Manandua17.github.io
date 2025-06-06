@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | DC Power Supply Project</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
+    .hero-image {
+      width: 100%;
+      max-height: 400px;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--section-gap);
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    p, ul, ol, pre {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    ul li, ol li {
+      margin-bottom: 0.5rem;
+    }
+    pre {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      overflow-x: auto;
+    }
+    code {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      margin: 1rem 0;
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    footer {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px calc(var(--side-padding) + 10px);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Summary Section -->
+    <section id="summary" class="fade-in">
+      <h2>Summary</h2>
+      <p>
+        An AC-to-DC converter transforms alternating current (AC) from a source into direct current (DC), required by most electronic devices. This project’s objective was to design and build a DC power supply capable of delivering 10 mA at 3 V ± 0.1 V from a 120 V (rms), 1 kHz source. Core stages include a transformer (or direct AD3 source), a center-tapped full-wave rectifier, a filter capacitor, and a load resistor.
+      </p>
+      <div class="section-image">
+        <img src="figure1-components.png" alt="Components of an AC-to-DC Converter (Figure 1)">
+      </div>
+      <p>
+        The major design requirement: <em>output 3 V ± 0.1 V at 10 mA</em>. Secondary requirements include maintaining ripple under 0.2 V p-p and ensuring component availability (e.g., 330 Ω resistor vs. ideal 300 Ω).
+      </p>
+    </section>
+
+    <!-- Design Section -->
+    <section id="design" class="fade-in">
+      <h2>Design</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            A center-tapped full-wave rectifier was chosen over half-wave or bridge topologies to reduce ripple and utilize both halves of the AC cycle. The initial circuit model (Figure 2) guided part value calculations:
+          </p>
+          <div class="section-image">
+            <img src="figure2-initial_model.png" alt="Initial circuit model (Figure 2)">
+          </div>
+          <p>
+            Components:
+          </p>
+          <ul>
+            <li><strong>Load Resistor (R<sub>L</sub>):</strong> Defines output current at 10 mA for 3 V.</li>
+            <li><strong>Filter Capacitor (C<sub>f</sub>):</strong> Smooths output to maintain ±0.1 V ripple.</li>
+            <li><strong>Rectifier Diodes (D₁, D₂):</strong> Two 1N4148 diodes for center-tapped rectification.</li>
+            <li><strong>Transformer:</strong> Center-tapped, step-down from 120 V (rms) to required V<sub>peak</sub>. (Not physically used; AD3 waveform generator substituted.)</li>
+            <li><strong>Regulator:</strong> Omitted since filter maintains output within tolerance; could improve stability if added.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Calculations Section -->
+    <section id="calculations" class="fade-in">
+      <h2>Calculations</h2>
+
+      <!-- Load Resistor Calculation -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Load Resistor (R<sub>L</sub>)</h3>
+          <p>Given:</p>
+          <ul>
+            <li>V<sub>out</sub> = 3 V ± 0.1 V</li>
+            <li>I<sub>out</sub> = 10 mA</li>
+          </ul>
+          <p>
+            Using Ohm’s law: <br>
+            <code>V<sub>out</sub> = I<sub>out</sub> × R<sub>L</sub></code> <br>
+            <code>R<sub>L</sub> = 3 V / 10 mA = 300 Ω</code> <br>
+            <code>P<sub>L</sub> = 3 V × 10 mA = 0.03 W</code>
+          </p>
+          <p>
+            Nearest available resistor: 330 Ω (0.25 W rating) was chosen—within acceptable tolerance.
+          </p>
+        </div>
+      </div>
+
+      <!-- Filter Capacitor Calculation -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Filter Capacitor (C<sub>f</sub>)</h3>
+          <p>
+            Desired ripple: V<sub>pp</sub> ≤ 0.2 V; output frequency (full-wave) f<sub>ripple</sub> = 2 × 1000 Hz = 2000 Hz.
+          </p>
+          <p>
+            For a parallel RC filter: <br>
+            <code>V<sub>pp</sub> = I<sub>out</sub> / (f<sub>ripple</sub> × C)</code> <br>
+            Solve for C: <br>
+            <code>C = I<sub>out</sub> / (V<sub>pp</sub> × f<sub>ripple</sub>) = 10 mA / (0.2 V × 2000 Hz) = 25 µF</code>
+          </p>
+          <p>
+            Available capacitors: three 10 µF units in parallel = 30 µF total—greater than 25 µF to ensure ripple ≤ 0.2 V.
+          </p>
+        </div>
+      </div>
+
+      <!-- Rectifier and Diode Drop Calculation -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Rectifier &amp; Diode Drop</h3>
+          <p>
+            Chosen topology: center-tapped full-wave rectifier with two 1N4148 diodes. Diode forward drop (typical): 0.72 V (max ≈1 V).
+          </p>
+          <p>
+            To maintain V<sub>C</sub> ≈ 3.1 V at capacitor peak: <br>
+            <code>V<sub>peak</sub> = V<sub>C</sub> + V<sub>D</sub> = 3.1 V + 0.72 V ≈ 3.82 V</code>
+          </p>
+          <p>
+            Thus, each secondary half-cycle sinusoid (V₁, V₂) must reach ±3.82 V peak. Expressed as:<br>
+            <code>V₁ = 3.82 sin(ωt) V, V₂ = –3.82 sin(ωt) V</code>
+          </p>
+          <p>
+            No regulator was used, as calculated filter and diode arrangement keep output within ±0.1 V.
+          </p>
+        </div>
+      </div>
+
+      <!-- Transformer Turns Ratio Calculation -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Transformer Turns Ratio</h3>
+          <p>
+            The AD3 waveform generator provided 3.82 V<sub>pp</sub> on each half-cycle (in lieu of a transformer). If a center-tapped transformer were used, to find turns ratio:
+          </p>
+          <ul>
+            <li>Input RMS (120 V<sub>rms</sub>) at 1 kHz.</li>
+            <li>Desired secondary RMS: V<sub>out,peak</sub> × 2 / √2 = (3.82 V × 2) / √2 ≈ 5.40 V<sub>rms</sub>.</li>
+            <li>Turns ratio N<sub>primary</sub> / N<sub>secondary</sub> ≈ 120 V / 5.40 V ≈ 22:1.</li>
+          </ul>
+          <p>
+            Since the AD3 provided the required 3.82 V<sub>pp</sub> signals in place of the transformer’s secondaries, no physical transformer was implemented.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Circuit Schematic -->
+    <section id="schematic" class="fade-in">
+      <h2>Circuit Schematic</h2>
+      <p>
+        The completed schematic, with calculated component values inserted, is shown below. Note: transformer omitted; AD3 waveform generator substituted at the center-tap inputs.
+      </p>
+      <div class="section-image">
+        <img src="figure5-circuit_schematic.png" alt="Circuit schematic with specific component values (Figure 5)">
+      </div>
+    </section>
+
+    <!-- Measurement & Analysis -->
+    <section id="measurement-analysis" class="fade-in">
+      <h2>Measurement &amp; Analysis</h2>
+
+      <!-- Physical Build & Setup -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Physical Build</h3>
+          <p>
+            The circuit was assembled on a breadboard using:
+          </p>
+          <ul>
+            <li>AD3 waveform generator outputs as the two center-tapped secondary signals, each 3.82 V<sub>pp</sub>, 1 kHz, 180° out of phase.</li>
+            <li>Two 1N4148 diodes in center-tapped configuration.</li>
+            <li>Filter: 30 µF total (three 10 µF capacitors in parallel).</li>
+            <li>Load resistor: 330 Ω (instead of ideal 300 Ω).</li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="figure6-physical_circuit.png" alt="Physical circuit using components (Figure 4)">
+        </div>
+      </div>
+
+      <!-- Initial Waveform Settings -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Initial Waveform Settings</h3>
+          <p>
+            AD3 set to produce two sine waves, 3.82 V<sub>pp</sub> each, 180° apart—intended to yield ~3 V DC after rectification and filtering.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure7-waveform_initial.png" alt="Initial waveform generator settings (Figure 5)">
+        </div>
+      </div>
+
+      <!-- Initial Output Observation -->
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure8-output_initial.png" alt="Initial circuit output with cursors (Figure 6)">
+        </div>
+        <div class="text-block">
+          <h3>Initial Output Observation</h3>
+          <p>
+            Measured DC output: ~2.80 V–2.94 V ripple (below desired 2.9 V–3.1 V range). Resulting output current: 8.7 mA–9.3 mA (expected due to 330 Ω vs. 300 Ω).
+          </p>
+        </div>
+      </div>
+
+      <!-- Adjusted Waveform Settings -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Adjusted Waveform Settings</h3>
+          <p>
+            Increased AD3 amplitude to 3.95 V<sub>pp</sub> per half-cycle to compensate for higher diode drop (~0.9 V measured) and resistor tolerance.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure9-waveform_adjusted.png" alt="Modified waveform generator settings (Figure 7)">
+        </div>
+      </div>
+
+      <!-- Corrected Output Observation -->
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure10-output_adjusted.png" alt="Output with modified input values (Figure 8)">
+        </div>
+        <div class="text-block">
+          <h3>Corrected Output Observation</h3>
+          <p>
+            Measured DC output: ~2.92 V–3.07 V ripple, within specification. Output current: ~8.7 mA–9.3 mA, consistent with resistor choice.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulation Section -->
+    <section id="simulation" class="fade-in">
+      <h2>Simulation</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>LTSpice Simulation Setup</h3>
+          <p>
+            A transient simulation (0 ms–4 ms) was run in LTSpice, using:
+          </p>
+          <ul>
+            <li>Two voltage sources: <code>V1 N002 0 SINE(0 –3.82 1000)</code> and <code>V2 N001 0 SINE(0 3.82 1000)</code>, 180° out of phase.</li>
+            <li>Diodes: 1N4148 (LTSpice default model).</li>
+            <li>Filter capacitor: 30 µF.</li>
+            <li>Load resistor: 330 Ω.</li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="figure11-schematic_sim.png" alt="Simulation schematic (Figure 9)">
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Simulation Results</h3>
+          <p>
+            Output voltage waveform: peak ~3.03 V, ripple ~0.1 V (within spec). Output current waveform: ~8.8 mA–9.2 mA.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure12-waveform_v.png" alt="Voltage output from simulation (Figure 10)">
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure13-waveform_i.png" alt="Current output from simulation (Figure 11)">
+        </div>
+        <div class="text-block">
+          <h3>Waveform Analysis</h3>
+          <p>
+            Voltage peaks occur when one diode is forward-biased; during valleys, both diodes are off and capacitor discharges. Peak ~3.03 V vs. calculated 3.1 V (acceptable). Current ripple reflects voltage ripple through 330 Ω load.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Discussion Section -->
+    <section id="discussion" class="fade-in">
+      <h2>Discussion</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            Comparing calculations, simulation, and measurements reveals discrepancies due to component tolerances and diode forward voltage variations. Simulation closely matched calculations (peak ~3.03 V vs. 3.1 V). Physical measurements required raising input to 3.95 V<sub>pp</sub> to compensate for actual diode drop (~0.9 V vs. assumed 0.72 V) and resistor tolerance.
+          </p>
+          <p>
+            Output current ripples (8.7 mA–9.3 mA measured, 8.8 mA–9.2 mA simulated) aligned closely, given 330 Ω load. RC filter choice proved adequate, though an LC filter would reduce losses but increase complexity and cost.
+          </p>
+          <p>
+            Limitations:
+          </p>
+          <ul>
+            <li>AD3 waveform generator max ±5 V (800 mA); limits maximum load to ~4 W with this rectifier topology.</li>
+            <li>Tolerance stack-up: diode forward voltage ±5%, resistor ±5%, capacitor ±10%—combined tolerance impacts output voltage accuracy.</li>
+            <li>RC filter: dissipates ripple energy in resistor; LC filter would be more efficient but bulkier and costlier for this application.</li>
+            <li>No dedicated voltage regulator: stability relies on filter and input adjustment; spikes could occur if load varies rapidly.</li>
+          </ul>
+          <p>
+            Overall, the DC power supply met specifications after adjusting input amplitude. Ensuring accurate component values (e.g., measuring diode drops) and tight tolerances would further improve performance.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="fade-in">
+      <h2>References</h2>
+      <ol>
+        <li>A. S. Sedra, K. C. Smith, T. C. Carusone, and V. Gaudet, <em>Microelectronic Circuits</em>, 8th ed. New York, NY: Oxford University Press, 2019.</li>
+        <li>“Components—Part 1: The Capacitor is the Simplest Noise Filter,” Learn about Technology with TDK, 2024.  
+        <a href="https://www.tdk.com/en/tech-mag/noise/04" target="_blank">https://www.tdk.com/en/tech-mag/noise/04</a>.</li>
+        <li>Electrical Technology, “What is a Rectifier? Types of Rectifiers and their Operation,” Electrical Technology, Jan 15, 2019.  
+        <a href="https://www.electricaltechnology.org/2019/01/what-is-rectifier-types-of-rectifiers-their-operation.html" target="_blank">https://www.electricaltechnology.org/2019/01/what-is-rectifier-types-of-rectifiers-their-operation.html</a>.</li>
+        <li>J. Colvin, “Analog Discovery 3 Reference Manual,” Digilent, 2023.  
+        <a href="https://digilent.com/reference/test-and-measurement/analog-discovery-3/reference-manual" target="_blank">https://digilent.com/reference/test-and-measurement/analog-discovery-3/reference-manual</a>.</li>
+        <li>“1N4148 / 1N4448” Datasheet, Diodes Inc., 2008.  
+        <a href="https://www.diodes.com/assets/Datasheets/ds12019.pdf" target="_blank">https://www.diodes.com/assets/Datasheets/ds12019.pdf</a>.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeBg); resizeBg();
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
+      lastY = y;
+    });
+  </script>
+</body>
+</html>

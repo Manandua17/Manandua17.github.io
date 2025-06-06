@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | Formula Null Hackathon: Chromebook Car</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
+    .hero-image {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-height: 450px;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--section-gap);
+      background-color: var(--bg-dark);
+      overflow: hidden;
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      opacity: 1 !important;
+      background-color: transparent;
+    }
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    p, ul {
+      margin-bottom: 1rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    ul li {
+      list-style: disc;
+      margin-bottom: 0.5rem;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    /* On wider screens, place image and text side by side with text wider */
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .video-container {
+      width: 100%;
+      margin: 1rem 0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .video-container video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    footer {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px calc(var(--side-padding) + 10px);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header id="site-header">
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <div class="hero-image fade-in">
+      <img src="formulanull.jpg" alt="Formula Null Hackathon RC Car">
+    </div>
+
+    <!-- Overview & Purpose -->
+    <section id="overview" class="fade-in">
+      <h2>Overview &amp; Purpose</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>At the 48-hour Formula Null hackathon, a competition dedicated to transforming electronic waste into racing machines, our team, <strong>Alt+F4mula</strong>, took on the challenge of breathing new life into a discarded Chromebook. We embraced sustainability by salvaging key components and recycling wherever possible. By extracting motors from an old RC car and integrating a microcontroller for wireless control, we transformed the Chromebook shell into a fully functional RC-style race car, aptly named <strong>The 10 Piece</strong>.</p> <p>Formula Null itself is a call to action for tech enthusiasts: repurpose laptops, toasters, printers, and more into drivable gadgets, then compete in a 15-team Grand Prix to see whose recycled racer reigns supreme. Over two intense days, teams push the boundaries of rapid prototyping and resourcefulness, demonstrating how e-waste can become a platform for innovation. Our goal with <strong>The 10 Piece</strong> was to highlight rapid design, practical sustainability, and creative flair, all under the pressure of a 48-hour build window. In the end, Alt+F4mula’s entry exemplifies how discarded electronics can spark engineering ingenuity and bring us closer to a greener future.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team & Roles -->
+    <section id="team" class="fade-in">
+      <h2>Team &amp; Roles</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="team-photo.jpg" alt="Formula Null Team Photo">
+        </div>
+        <div class="text-block">
+          <p>Our four-member team consisted of:</p>
+          <ul>
+            <li>
+              <strong>Two Computer Engineering Students</strong> (both second-year): focused on hardware integration and firmware development.
+            </li>
+            <li>
+              <strong>Two Mechanical Engineering Students</strong> (both second-year): designed and fabricated the chassis, mounting brackets, and drivetrain.
+            </li>
+          </ul>
+          <p>
+            Each member contributed:
+          </p>
+          <ul>
+            <li><strong>Manan Dua (Comp Eng Member 1):</strong> Implemented microcontroller code, web server saetup, and motor driver logic.</li>
+            <li><strong>Adam Suljak (Comp Eng Member 2):</strong> Managed network and UART communication, wiring, and power distribution.</li>
+            <li><strong>Zach (Mech Eng Member 1):</strong> Designed 3D-printed adapters to mount RC motors onto the Chromebook’s base.</li>
+            <li><strong>Mateuz (Mech Eng Member 2):</strong> Constructed the frame using the chromebook's chassis and reused parts for strength and ensured proper weight distribution.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Components & Electronics -->
+    <section id="components" class="fade-in">
+      <h2>Components &amp; Electronics</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <ul>
+            <li>
+              <strong>Old Chromebook Chassis:</strong> Stripped down to its metal shell to serve as the car’s body and protective enclosure.
+            </li>
+            <li>
+              <strong>Salvaged RC Motors:</strong> Two brushless geared DC motors (from an old RC car) for driven rear wheels.
+            </li>
+            <li>
+              <strong>Raspberry Pi &amp; Arduino Uno (Initial Setup):</strong>
+              <ul>
+                <li>Raspberry Pi hosting a temporary web server to receive Xbox controller inputs from a laptop.</li>
+                <li>UART link between Pi’s GPIO TX/RX pins and Arduino Uno’s RX/TX pins.</li>
+                <li>Arduino Uno driving motor driver (L298N) to control speed and direction of DC motors.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>ESP32-C3 SuperMini (Final Setup):</strong>
+              <ul>
+                <li>Served as both Wi-Fi access point and MCU - eliminated need for Pi + Uno chain.</li>
+                <li>Hosted a lightweight HTTP server responding to REST commands from phone browser.</li>
+                <li>Controlled L298N inputs directly via ESP32 GPIOs, sending PWM signals to motors.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Motor Driver:</strong> L298N dual H-bridge module powered by 9V Alkaline battery.
+            </li>
+            <li>
+              <strong>Xbox Controller:</strong> Paired to laptop (initially) via Bluetooth and transmitted to the Raspberry Pi through a websocket server.
+            </li>
+            <li>
+              <strong>Battery &amp; Power Distribution:</strong> dual 9V Alkaline for motor driver logic. with 5000mAh power bank for microcontrollers.
+            </li>
+            <li>
+              <strong>Wiring Harness:</strong> Soldered connections using 22 AWG silicone wires, secured with zip ties and heat-shrink tubing.
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="components-overview.jpg" alt="Electronics Layout and Components">
+        </div>
+      </div>
+    </section>
+
+    <!-- Build Process -->
+    <section id="build-process" class="fade-in">
+      <h2>Build Process</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Hackathon Kickoff</h3>
+          <ul>
+            <li>
+              <strong>Chassis Preparation:</strong> Removed Chromebook’s screen and keyboard, repurposed metal base as mounting plate. Verified structural rigidity to support motors and battery.
+            </li>
+            <li>
+              <strong>Motor Integration:</strong> Fabricated 3D-printed motor mounts to bolt RC motors onto Chromebook’s rear axle points. Ensured alignment and correct gear meshing.
+            </li>
+            <li>
+              <strong>Initial Control Architecture:</strong>
+              <ul>
+                <li>Set up a Raspberry Pi with Raspbian and installed Flask (Python) to run a web server.</li>
+                <li>Wrote Python endpoint to receive Xbox controller inputs via Bluetooth and translate into simple serial commands.</li>
+                <li>Connected Pi UART TX→Arduino Uno RX and Pi RX→Arduino TX. On Arduino, wrote code to parse serial packets and output corresponding PWM signals to L298N inputs.</li>
+                <li>Tested motor direction and speed on bench; verified forward, backward, left, and right commands worked locally via USB serial monitor.
+                </li>
+              </ul>
+            </li>
+            <li>
+              <strong>Challenges with Pi + Uno:</strong>
+              <ul>
+                <li>Wi-Fi connectivity between laptop and Pi was inconsistent—lost HTTP connections frequently.</li>
+                <li>Serial buffer overflow on Arduino when Pi’s packet bursts occurred, causing dropped commands.</li>
+                <li>Debugging over SSH consumed extra time; issues persisted despite restarts.
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <h3>Last-Minute Pivot to ESP32-C3</h3>
+          <ul>
+            <li>
+              <strong>Rationale:</strong> Given unreliable Pi-Uno link, we needed a single-board solution capable of hosting Wi-Fi and driving motors. An ESP32-C3 SuperMini was on hand.
+            </li>
+            <li>
+              <strong>Rapid Integration (<em>~30 minutes</em>):</strong>
+              <ul>
+                <li>Configured ESP32-C3 to run as a Wi-Fi access point (SSID: “FormulaNull_Car”).</li>
+                <li>Wrote Arduino-style code using ESP-IDF’s Arduino compatibility layer using C/C++:
+                  <ul>
+                    <li>Set up a lightweight HTTP server using ESPAsyncWebServer library.</li>
+                    <li>Defined endpoints and translated commands sent from the http server.</li>
+                    <li>Parsed URL parameters, converted to PWM duty cycles, and wrote to GPIOs connected to L298N.
+                    </li>
+                  </ul>
+                </li>
+                <li>Powered ESP32 via 5 V power bank; routed motor driver inputs directly to ESP32’s GPIOs (GPIO 2 & 3 = PWM for motor A, GPIO 5 & 6 = PWM for motor B).
+                </li>
+                <li>Tested control by connecting phone to “FormulaNull_Car” network and browsing to 192.168.4.1. Control page loaded instantly, no disconnects.
+                </li>
+              </ul>
+            </li>
+            <li>
+              <strong>Final Assembly:</strong> Removed Pi and Uno, re-routed wiring so ESP32 drove L298N directly. Secured ESP32 atop Chromebook base with double-sided foam tape. Ensured antenna had clear line of sight for Wi-Fi.
+            </li>
+            <li>
+              <strong>Race Ready:</strong> With ~15 minutes remaining, we performed a quick drive test—forward, reverse, and turns all responded immediately. Left margin for minor adjustments (tightened motor mounts, verified battery voltage).
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="Formula Null Schematic.jpg" alt="ESP32-C3 Mounted and Wiring Diagram">
+        </div>
+      </div>
+    </section>
+
+    <!-- Results & Demo -->
+    <section id="results" class="fade-in">
+      <h2>Results &amp; Demo</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            At the end of the 48-hour event, our Chromebook car successfully completed the track with remote control via phone. Key outcomes:
+          </p>
+          <ul>
+            <li><strong>Stable Remote Control:</strong> ESP32-C3’s local web server never dropped connection during two full practice laps.</li>
+            <li><strong>Top Speed:</strong> Achieved approximately 1 m/s on flat surface—comparable to other e-waste builds.</li>
+            <li><strong>Battery Life:</strong> 2x9V batteries provided about 20 minutes of continuous driving before voltage sag; sufficient for multiple race attempts.</li>
+            <li><strong>Reliability:</strong> No stalling or communication timeout during final race runs.</li>
+          </ul>
+          <div class="section-image">
+            <img src="formulanull-car-front.jpg" alt="Front View of Chromebook Car">
+          </div>
+          <p>
+            The car drew major interest for its simplicity—eliminating the Pi/Arduino complexity—and for showcasing how a small microcontroller can handle both networking and motor control in real time.
+          </p>
+          <div class="video-container">
+            <video controls src="race.mp4" alt="Chromebook Car Demo">
+              Your browser does not support HTML5 video.
+            </video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="fade-in">
+      <h2>Gallery</h2>
+      <div class="section-content">
+        <div class="section-image">
+          <img src="formulanull-car-back.jpg" alt="Rear View with RC Motors Mounted">
+        </div>
+        <div class="section-image">
+          <img src="finished-car.gif" alt="360 of the Finished Chromebook Car">
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & Resources -->
+    <section id="resources" class="fade-in">
+      <h2>Community &amp; Resources</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="formula_null_racing.jpg" alt="Hackathon Collaboration and Sharing Ideas">
+        </div>
+        <div class="text-block">
+          <p>
+            For detailed build files, code, and additional insights:
+          </p>
+          <ul>
+            <li><a href="https://github.com/sullynumber9/FormulaNull" target="_blank">GitHub Repository</a> (ESP32-C3, Arduino Uno, and Raspberry Pi code).</li>
+            <li><a href="https://www.formulanull.racing/" target="_blank">Formula Null Hackathon Website</a> (event details, challenge guidelines, and other team projects).</li>
+            <li><a href="https://youtu.be/EXAMPLEVIDEO" target="_blank">YouTube: Race Day Highlights</a> (compilation of top e-waste cars in action).</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Future Improvements & Reflections -->
+    <section id="future" class="fade-in">
+      <h2>Future Improvements &amp; Reflections</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <ul>
+            <li>
+              <strong>Bluetooth Controller Integration:</strong> Explore ESP32’s BLE stack to pair directly with Xbox controllers—eliminate phone interface latency.
+            </li>
+            <li>
+              <strong>Improved Steering Mechanism:</strong> Replace single servo with differential drive or incorporate a rack-and-pinion 3D-printed steering assembly for tighter turning radius.
+            </li>
+            <li>
+              <strong>Charger Integration:</strong> Embed a charging port on the chassis to allow quick battery swaps between races.
+            </li>
+          </ul>
+          <p>
+            Participating in Formula Null taught us rapid problem solving—pivoting to ESP32-C3 in under 30 minutes was critical. The event highlighted how e-waste can become the foundation for creative engineering, and we look forward to refining our design for future competitions.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeBg); resizeBg();
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
+      lastY = y;
+    });
+  </script>
+</body>
+</html>

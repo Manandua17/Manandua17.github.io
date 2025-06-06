@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Force scroll to top and clear any URL hash -->
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | Voltage Controlled Switch Project</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: rgba(44, 44, 44, 0.8);
+      --text-color: #f0f0f0;
+      --shadow: rgba(0, 0, 0, 0.5);
+      --border-radius: 16px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #005bb5;
+    }
+    header {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
+    .hero-image {
+      width: 100%;
+      max-height: 400px;
+      border-radius: var(--border-radius);
+      margin-bottom: var(--section-gap);
+      overflow: hidden;
+      background: var(--bg-dark);
+    }
+    .hero-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.3rem;
+      border-bottom: 2px solid var(--primary-color);
+    }
+    p, ul, ol {
+      margin-bottom: 1rem;
+    }
+    ul, ol {
+      padding-left: 1.2rem;
+    }
+    ul li, ol li {
+      margin-bottom: 0.5rem;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+      margin: 1rem 0;
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+    footer {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 4px var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 10px calc(var(--side-padding) + 10px);
+      padding: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header>
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- Introduction Section -->
+    <section id="introduction" class="fade-in">
+      <h2>Introduction</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            In this project, two voltage-controlled switches were designed, built, and tested using CD4007 MOSFET arrays. Each switch’s performance was evaluated against the ideal-switch model by examining four non-idealities: on-state resistance (R<sub>on</sub>), off-state leakage (R<sub>off</sub>), limited voltage range, and bidirectional capability. Measurements were compared to LTSpice simulations to understand practical deviations.
+          </p>
+          <p>
+            <strong>Switch Type 1:</strong> Single transmission gate formed by an NMOS and PMOS in parallel, controlled by V<sub>control</sub> and its inverse.  
+            <strong>Switch Type 2:</strong> Two transmission gates arranged to select between two outputs (V<sub>A</sub> or V<sub>B</sub>), behaving like a 2:1 multiplexer.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ideal vs Non-Ideal Switches -->
+    <section id="ideal_nonideal" class="fade-in">
+      <h2>Ideal vs. Non-Ideal Switches</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Ideal Switch Properties</h3>
+          <p>
+            An ideal switch has:
+          </p>
+          <ul>
+            <li>Zero on-state resistance (R<sub>on</sub> = 0), producing no voltage drop or power loss.</li>
+            <li>Infinite off-state resistance (R<sub>off</sub> → ∞), ensuring zero leakage current when open.</li>
+            <li>Ability to handle any voltage difference without breakdown.</li>
+            <li>Constant R<sub>on</sub>, independent of applied voltage.</li>
+          </ul>
+        </div>
+
+        <div class="text-block">
+          <h3>Non-Idealities</h3>
+          <p>Real switches exhibit:</p>
+          <ul>
+            <li><strong>Non-zero R<sub>on</sub>:</strong> Measurable voltage drop and power dissipation in ON state.</li>
+            <li><strong>Finite R<sub>off</sub>:</strong> Leakage current flows when switch is OFF.</li>
+            <li><strong>Limited Voltage Range:</strong> Switch only operates within a certain V<sub>in</sub> range.</li>
+            <li><strong>Directional Dependence:</strong> R<sub>on</sub> may differ depending on current direction.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Test Plan -->
+    <section id="test_plan" class="fade-in">
+      <h2>Test Plan</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <p>
+            Each switch was tested under four conditions to quantify non-idealities. In all tests, a 10 kΩ pull-down resistor was used at the output terminal(s) to ensure a measurable voltage drop.
+          </p>
+          <ol>
+            <li><strong>On-State Resistance (R<sub>on</sub>):</strong> Apply V<sub>1</sub>=5 V, V<sub>control</sub>=0 V, measure V<sub>out</sub>, calculate R<sub>on</sub> via voltage divider.</li>
+            <li><strong>Off-State Leakage (I<sub>leak</sub>):</strong> Apply V<sub>1</sub>=5 V, V<sub>control</sub>=5 V, measure V<sub>out</sub>, compute leakage current and R<sub>off</sub>.</li>
+            <li><strong>Operating Voltage Range:</strong> Apply a 5 V<sub>pp</sub> sinusoid at 10 Hz to V<sub>1</sub>, V<sub>control</sub>=0 V, observe V<sub>out</sub> vs. V<sub>in</sub> to identify threshold anomalies.</li>
+            <li><strong>Bidirectional Operation:</strong> Swap input to previously output node with V<sub>control</sub>=0 V, measure V<sub>other</sub>, compute reverse R<sub>on</sub>.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Switch Type 1 Details -->
+    <section id="switch1" class="fade-in">
+      <h2>Switch Type 1</h2>
+
+      <!-- Schematic & Physical Build -->
+      <div class="section-content image-left">
+        <div class="text-block">
+          <h3>Circuit Description</h3>
+          <p>
+            Switch 1 is a single transmission gate implemented on a CD4007. An NMOS and PMOS are arranged in parallel, with gates driven by V<sub>control</sub> and its inverted signal (generated via two additional MOSFETs). This ensures conduction for any input between 0 V and 5 V.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="schematic 1.jpg" alt="Switch 1 LTSpice Schematic (Figure 5)">
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="physical1.jpg" alt="Switch 1 Physical Build (Figure 6)">
+        </div>
+        <div class="text-block">
+          <h3>Physical Build</h3>
+          <p>
+            Assembled on a solderless breadboard using a CD4007 IC, two 1N4148 diodes (for control inversion), and a 10 kΩ pull-down resistor at V<sub>out</sub> (V<sub>2</sub>).
+          </p>
+        </div>
+      </div>
+
+      <!-- R_on Measurement -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>On-State Resistance (R<sub>on</sub>)</h3>
+          <p>
+            <strong>Test Conditions:</strong> V<sub>supply</sub>=5 V, V<sub>1</sub>=5 V, V<sub>control</sub>=0 V, 10 kΩ pull-down at V<sub>2</sub>.  
+            Measured V<sub>2</sub>≈4.75 V, so:
+          </p>
+          <pre>
+R<sub>on</sub> = [V<sub>1</sub> × 10 kΩ / V<sub>2</sub>] – 10 kΩ = [5 V × 10 kΩ / 4.75 V] – 10 kΩ ≈ 526 Ω
+          </pre>
+        </div>
+        <div class="section-image">
+          <img src="figure7-switch1_von.png" alt="V<sub>2</sub> Measurement for R<sub>on</sub> (Figure 7)">
+        </div>
+      </div>
+
+      <!-- Off-State Leakage -->
+      <div class="section-content image-left">
+        <div class="text-block">
+          <h3>Off-State Leakage (I<sub>leak</sub>)</h3>
+          <p>
+            <strong>Test Conditions:</strong> V<sub>supply</sub>=5 V, V<sub>1</sub>=5 V, V<sub>control</sub>=5 V, 10 kΩ pull-down at V<sub>2</sub>.  
+            Measured V<sub>2</sub>≈19.2 mV ⇒ I<sub>leak</sub>=19.2 mV/10 kΩ≈1.92 µA.  
+            ⇒ R<sub>off</sub>≈[5 V × 10 kΩ / 0.0192 V] – 10 kΩ ≈ 2.59 MΩ.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure8-switch1_leak.png" alt="V<sub>2</sub> Measurement for Leakage (Figure 8)">
+        </div>
+      </div>
+
+      <!-- Voltage Range -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Operating Voltage Range</h3>
+          <p>
+            <strong>Test Conditions:</strong> V<sub>supply</sub>=5 V, V<sub>1</sub>=5 V<sub>pp</sub> sinusoid at 10 Hz (±2.5 V), offset 2.5 V, V<sub>control</sub>=0 V, 10 kΩ pull-down at V<sub>2</sub>.  
+            Measured V<sub>2</sub> follows V<sub>1</sub> for most of 0–5 V range, but deviation at ~2.4 V due to MOSFET threshold mismatches.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure9-switch1_vrange.png" alt="V<sub>2</sub> vs. V<sub>1</sub> (Figure 9)">
+        </div>
+      </div>
+
+      <!-- Bidirectional Operation -->
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="figure10-switch1_reverse.png" alt="Reverse R<sub>on</sub> Measurement (Figure 10)">
+        </div>
+        <div class="text-block">
+          <h3>Bidirectional Operation</h3>
+          <p>
+            <strong>Test Conditions:</strong> V<sub>supply</sub>=5 V, V<sub>2</sub>=5 V, V<sub>control</sub>=0 V, 10 kΩ pull-down at V<sub>1</sub>.  
+            Measured V<sub>1</sub>≈4.76 V ⇒ R<sub>on,reverse</sub>≈[5 V × 10 kΩ / 4.76 V] – 10 kΩ ≈ 504 Ω.  
+            Similar to forward R<sub>on</sub>, confirming bidirectional conduction.
+          </p>/
+        </div>
+      </div>
+
+      <!-- Theoretical Explanation -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Theoretical Explanation</h3>
+          <p>
+            Switch 1 is a CMOS transmission gate: NMOS and PMOS in parallel ensure that for any V<sub>in</sub> (0–5 V), one device is in conduction. V<sub>control</sub> drives both gates; an inverter (two additional MOSFETs) provides the complementary gate drive. In ON state, both devices conduct; in OFF state, both are cut off.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure11-switch1_theory.png" alt="Transmission Gate Operation (Figure 11)">
+        </div>
+      </div>
+
+      <!-- Design Trade-offs -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Design Trade-offs</h3>
+          <ul>
+            <li>Requires 4 MOSFETs on a CD4007, leaving 2 unused—inefficient IC utilization.</li>
+            <li>Measured R<sub>on</sub> (~500 Ω) far exceeds ideal (2–3 Ω) due to 10 kΩ load and device parameters.</li>
+            <li>Differing NMOS/PMOS thresholds cause voltage-range anomaly at ~2.4 V.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Switch Type 2 Details -->
+    <section id="switch2" class="fade-in">
+      <h2>Switch Type 2</h2>
+
+      <!-- Schematic & Physical Build -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Circuit Description</h3>
+          <p>
+            Switch 2 extends Switch 1 by adding a second transmission gate (TG<sub>2</sub>) controlled by the inverted V<sub>control</sub>. TG<sub>1</sub> connects V<sub>1</sub> to V<sub>A</sub> when V<sub>control</sub>=0 V; TG<sub>2</sub> connects V<sub>1</sub> to V<sub>B</sub> when V<sub>control</sub>=5 V. Thus, only one of V<sub>A</sub> or V<sub>B</sub> is connected at a time.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure12-switch2_schematic.png" alt="Switch 2 LTSpice Schematic (Figure 12)">
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure13-switch2_physical.png" alt="Switch 2 Physical Build (Figure 13)">
+        </div>
+        <div class="text-block">
+          <h3>Physical Build</h3>
+          <p>
+            Built on a breadboard using two CD4007 ICs (one per transmission gate), plus two inverters for complementary control. 10 kΩ pull-down resistors on V<sub>A</sub> and V<sub>B</sub>.
+          </p>
+        </div>
+      </div>
+
+      <!-- R_on Measurement -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>On-State Resistance (R<sub>on</sub>)</h3>
+          <p>
+            <strong>Test Conditions (V<sub>A</sub>):</strong> V<sub>control</sub>=0 V, V<sub>supply</sub>=5 V, V<sub>1</sub>=5 V, pull-downs on V<sub>A</sub>/V<sub>B</sub>=10 kΩ.  
+            Measured V<sub>A</sub>≈4.76 V ⇒ R<sub>on,A</sub>≈504 Ω.
+          </p>
+          <p>
+            <strong>Test Conditions (V<sub>B</sub>):</strong> V<sub>control</sub>=5 V, same setup. Measured V<sub>B</sub>≈4.76 V ⇒ R<sub>on,B</sub>≈504 Ω.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure14-switch2_von.png" alt="V<sub>A</sub> and V<sub>B</sub> Measurement for R<sub>on</sub> (Figure 14)">
+        </div>
+      </div>
+
+      <!-- Off-State Leakage -->
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure15-switch2_leak.png" alt="Leakage Measurement (Figure 15)">
+        </div>
+        <div class="text-block">
+          <h3>Off-State Leakage (I<sub>leak</sub>)</h3>
+          <p>
+            <strong>Test Conditions (V<sub>B</sub> off):</strong> V<sub>control</sub>=0 V, V<sub>supply</sub>=5 V, V<sub>1</sub>=5 V, pull-downs=10 kΩ. Measured V<sub>B</sub>≈45.0 mV ⇒ I<sub>leak,B</sub>≈4.5 µA ⇒ R<sub>off,B</sub>≈1.10 MΩ.
+          </p>
+          <p>
+            <strong>Test Conditions (V<sub>A</sub> off):</strong> V<sub>control</sub>=5 V, same setup. Measured V<sub>A</sub>≈43.3 mV ⇒ I<sub>leak,A</sub>≈4.33 µA ⇒ R<sub>off,A</sub>≈1.14 MΩ.
+          </p>
+        </div>
+      </div>
+
+      <!-- Voltage Range -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Operating Voltage Range</h3>
+          <p>
+            <strong>Test Conditions (V<sub>A</sub>):</strong> V<sub>1</sub>=5 V<sub>pp</sub> sinusoid at 10 Hz, offset 2.5 V, V<sub>control</sub>=0 V, pull-down on V<sub>A</sub>=10 kΩ.  
+            V<sub>A</sub> follows V<sub>1</sub> for 0–5 V, minor deviation at ~2.4 V.  
+            <strong>Test Conditions (V<sub>B</sub>):</strong> V<sub>control</sub>=5 V, pull-down on V<sub>B</sub>, similar results.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure16-switch2_vrange.png" alt="V<sub>A</sub> and V<sub>B</sub> vs. V<sub>1</sub> (Figure 16)">
+        </div>
+      </div>
+
+      <!-- Bidirectional Operation -->
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="figure17-switch2_bidir.png" alt="Bidirectional Test (Figure 17)">
+        </div>
+        <div class="text-block">
+          <h3>Bidirectional Operation</h3>
+          <p>
+            <strong>Test Conditions (VA→V1):</strong> V<sub>control</sub>=0 V, VA=5 V, pull-down on V<sub>1</sub>=10 kΩ. Measured V<sub>1</sub>≈4.76 V ⇒ R<sub>on,reverse</sub>≈504 Ω.  
+            <strong>Test Conditions (VB→V1):</strong> V<sub>control</sub>=5 V, VB=5 V, pull-down on V<sub>1</sub>. Measured V<sub>1</sub>≈4.76 V ⇒ R<sub>on,reverse</sub>≈504 Ω.  
+            Confirms bidirectional conduction.
+          </p>
+        </div>
+      </div>
+
+      <!-- Theoretical Explanation -->
+      <div class="section-content">
+        <div class="text-block">
+          <h3>Theoretical Explanation</h3>
+          <p>
+            Switch 2 uses two transmission gates controlled by V<sub>control</sub> and its inverse to select between V<sub>A</sub> and V<sub>B</sub>. When V<sub>control</sub>=0 V, TG<sub>1</sub> connects V<sub>1</sub> to V<sub>A</sub>, TG<sub>2</sub> is OFF. When V<sub>control</sub>=5 V, TG<sub>2</sub> connects V<sub>1</sub> to V<sub>B</sub>, TG<sub>1</sub> is OFF. Each transmission gate behaves like Switch 1.
+          </p>
+        </div>
+        <div class="section-image">
+          <img src="figure18-switch2_theory.png" alt="Switch 2 Transmission Gates (Figure 18)">
+        </div>
+      </div>
+
+      <!-- Design Trade-offs -->
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>Design Trade-offs</h3>
+          <ul>
+            <li>Requires two CD4007 ICs to implement both transmission gates—higher cost (~\$1.88) and unused MOSFETs.</li>
+            <li>Measured R<sub>on</sub> (~500 Ω) and deviations at 2.4 V similar to Switch 1.</li>
+            <li>Functionally resembles a multiplexer; reverse current only flows to V<sub>1</sub>, not between V<sub>A</sub> and V<sub>B</sub>.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- References Section -->
+    <section id="references" class="fade-in">
+      <h2>References</h2>
+      <ol>
+        <li>“CD4007UB Types,” Texas Instruments,  
+          <a href="https://www.ti.com/lit/ds/symlink/cd4007ub-mil.pdf" target="_blank">https://www.ti.com/lit/ds/symlink/cd4007ub-mil.pdf</a>, accessed Feb. 27, 2025.</li>
+        <li>W. Storr, “Transmission gate as a CMOS bilateral switch,” Basic Electronics Tutorials,  
+          <a href="https://www.electronics-tutorials.ws/combination/transmission-gate.html" target="_blank">https://www.electronics-tutorials.ws/combination/transmission-gate.html</a>, accessed Feb. 26, 2025.</li>
+        <li>A. S. Sedra, K. C. Smith, T. C. Carusone, and V. Gaudet, <em>Microelectronic Circuits</em>, 8th ed. New York, NY: Oxford University Press, 2019.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.fade-in').forEach(el =>
+        new IntersectionObserver(entries => {
+          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 }).observe(el)
+      );
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+    window.addEventListener('resize', resizeBg); resizeBg();
+
+    const particles = Array.from({ length: 100 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2 + 1
+    }));
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width;
+        if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height;
+        if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 100) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
+      lastY = y;
+    });
+  </script>
+</body>
+</html>

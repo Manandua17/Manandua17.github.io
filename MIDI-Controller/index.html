@@ -17,9 +17,14 @@
       --text-color: #f0f0f0;
       --shadow: rgba(0, 0, 0, 0.5);
       --border-radius: 16px;
-      --max-width: 800px;
+      --section-gap: 3rem;
+      --side-padding: 5vw;
     }
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       background: var(--bg-dark);
       color: var(--text-color);
@@ -27,31 +32,44 @@
       line-height: 1.6;
       overflow-x: hidden;
     }
-    a { color: var(--primary-color); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
     header {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 4px var(--shadow);
       border-radius: var(--border-radius);
-      padding: 15px 40px;
-      margin: 10px;
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 10px calc(var(--side-padding) + 10px);
       position: sticky;
       top: 0;
-      width: calc(100% - 20px);
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
     }
-    .site-title { font-size: 1.5rem; font-weight: bold; }
-    .nav-menu { display: flex; gap: 25px; }
-    main { max-width: var(--max-width); margin: 2rem auto; padding: 0 40px; }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 25px;
+    }
+    main {
+      width: 100%;
+      padding: 2rem var(--side-padding);
+    }
     .hero-image {
       width: 100%;
       max-height: 350px;
       border-radius: var(--border-radius);
-      margin-bottom: 2rem;
+      margin-bottom: var(--section-gap);
       overflow: hidden;
       background: var(--bg-dark);
     }
@@ -61,29 +79,92 @@
       object-fit: cover;
       opacity: 1;
     }
-    section { margin-bottom: 2rem; }
+    section {
+      margin-bottom: var(--section-gap);
+    }
     section > h2 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin-bottom: 0.5rem;
       padding-bottom: 0.3rem;
       border-bottom: 2px solid var(--primary-color);
     }
-    ul { padding-left: 1.2rem; margin-bottom: 1rem; }
-    ul li { list-style: disc; margin-bottom: 0.5rem; }
-    .fade-in { opacity: 0; transform: translateY(20px) scale(0.95); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
-    .fade-in.visible { opacity: 1; transform: none; }
+    p, ul {
+      margin-bottom: 1rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
+    ul li {
+      list-style: disc;
+      margin-bottom: 0.5rem;
+    }
+    .section-content {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    @media (min-width: 900px) {
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      .section-content img, .section-content .text-block {
+        flex: 1 1 0;
+      }
+      .section-content img {
+        flex: 0 0 40%;
+        border-radius: var(--border-radius);
+        object-fit: cover;
+      }
+      .section-content .text-block {
+        flex: 0 0 60%;
+        padding: 0 1.5rem;
+      }
+    }
+    .section-image {
+      width: 100%;
+      margin: 1rem 0;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background-color: var(--bg-dark);
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px) scale(0.95);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
     footer {
       opacity: 0.8;
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       box-shadow: 0 2px 4px var(--shadow);
       border-radius: var(--border-radius);
-      margin: 10px;
+      margin: 10px calc(var(--side-padding) + 10px);
       padding: 20px;
       text-align: center;
       font-size: 0.9rem;
     }
-    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -95,92 +176,235 @@
     </nav>
   </header>
   <main>
+    <!-- Hero Section -->
     <div class="hero-image fade-in">
       <img src="misterdeck-hero.jpg" alt="MisteRdeck MIDI Controller">
     </div>
-    <section class="fade-in" id="overview">
-      <h2>Overview</h2>
-      <p>The MisteRdeck is an Arduino-powered MIDI Stream Deck designed for streaming scene switching and volume control. It features built-in faders and buttons and runs on QMK firmware for easy customization.</p>
+
+    <!-- Overview & Purpose -->
+    <section id="overview" class="fade-in">
+      <h2>Overview &amp; Purpose</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            The MisteRdeck is an Arduino-based MIDI Stream Deck crafted to streamline live streaming, content creation, and music production workflows. By integrating tactile buttons and fader sliders into a compact, customizable surface. It allows users to switch scenes, trigger sound effects, and adjust audio levels without switching windows or using a mouse.
+          </p>
+          <p>
+            Key goals of this project:
+          </p>
+          <ul>
+            <li>Provide intuitive, hardware-based controls for OBS, Voicemeeter, and other streaming or audio software.</li>
+            <li>Offer an affordable, open-source alternative to expensive commercial stream decks.</li>
+            <li>Demonstrate hands-on experience with Arduino, QMK firmware, and custom hardware design.</li>
+          </ul>
+        </div>
+      </div>
     </section>
-    <section class="fade-in" id="features">
-      <h2>Features</h2>
-      <ul>
-        <li>12 tactile scene-control buttons</li>
-        <li>4 Inline fader knobs for precision volume adjustment</li>
-        <li>USB-C or Pro Micro compatibility</li>
-        <li>Programmable via QMK firmware</li>
-      </ul>
+
+    <!-- Design & Development -->
+    <section id="design-development" class="fade-in">
+      <h2>Design &amp; Development</h2>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="switches.jpg" alt="Breadboard Prototype with Arduino and Faders">
+        </div>
+        <div class="text-block">
+          <p>
+            Development began with identifying user requirements: 12 buttons, 4 faders, and compatibility with popular streaming software via MIDI. From there:
+          </p>
+          <ul>
+            <li><strong>Enclosure Design:</strong> 3D models of the device were provivded by the original creater <strong>MattRigg</strong> on Printables.The models provided a sturdy chassis to house an Arduino Pro Micro (or USB-C variant), faders, and switches. Iterated on mounting points for easy assembly and cable routing.</li>
+            <li><strong>Button &amp; Fader Layout:</strong> The design includes a 3×4 grid of tactile buttons for scene control. Four inline faders on the side for precise audio adjustments.</li>
+            <li><strong>Electronics &amp; Wiring:</strong> Mapped wiring: each switch is connected to eachother to enable button array scanning to use fewer pins on digital inputs with internal pull-down resistors; faders to analog inputs. Added diodes for debouncing the switches to prevent unwanted noise.</li>
+            <li><strong>Firmware Selection:</strong> The device supports many MIDI softwares including QMK firmware for native MIDI support. I chose to use Deej, an dopen source DJ mixing software to integrate with windows media controls. Developed a custom keymap assigning each button a unique MIDI CC or Note; faders send continuous controller messages based on analog readings.</li>
+            <li><strong>Prototyping &amp; Testing:</strong> Assembled a prototype to verify button logic and fader response. Tuned analog smoothing in firmware to eliminate jitter.</li>
+          </ul>
+          <p>
+            Challenges &amp; Solutions:
+          </p>
+          <ul>
+            <li><strong>Button Debounce:</strong> Initial tests showed multiple triggers per press. Added hardware diodes and enabled software debouncing in QMK.</li>
+            <li><strong>Analog Noise:</strong> Fader readings fluctuated. Added RC filters on each line and implemented a 16-sample moving average in code.</li>
+            <li><strong>USB Latency:</strong> Required low-latency MIDI. Tuned the software's USB polling interval to 1 ms and adjust the computer's buad rate.</li>
+          </ul>
+        </div>
+      </div>
     </section>
-    <section class="fade-in" id="files">
-      <h2>Files &amp; Parts</h2>
-      <ul>
-        <li>3D model STLs: clip_single, clips, base, base_usbc, box_standard variants, fader_knob, solder_jig</li>
-        <li>Electronics: Arduino Pro Micro or similar board, fader potentiometers, switches, diodes, wiring harness</li>
-      </ul>
+
+    <!-- Features & Components -->
+    <section id="features-components" class="fade-in">
+      <h2>Features &amp; Components</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <ul>
+            <li><strong>Buttons:</strong> 12 Akko V3 Cream Yellow switches with custom 3D printed keycaps.</li>
+            <li><strong>Faders:</strong> Four B10k linear slide potentiometers for smooth linear control, mounted with 3D-printed brackets for stability.</li>
+            <li><strong>Microcontroller:</strong> Arduino Pro Micro (ATmega32U4) or USB-C variant for native USB-MIDI support. Loaded with QMK firmware or deej firmware and custom keymaps.</li>
+            <li><strong>Power &amp; Connectivity:</strong> USB-C supplies 5 V, wires use heat-shrink tubing and braided sleeves for organization.</li>
+            <li><strong>PCB &amp; Wiring Harness:</strong> Custom brackets for buttons and faders, including internal pull-down resistors and diode footprints. Simplifies wiring and improves reliability.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content image-left">
+        <div class="section-image">
+          <img src="pinout.jpg" alt="pinout diagram">
+        </div>
+        <div class="text-block">
+          <ul>
+            <li><strong>Soldering Jig:</strong> 3D-printed jig to hold faders and switches in place for precise soldering.</li>
+          </ul>
+        </div>
+      </div>
     </section>
-    <section class="fade-in" id="process">
+
+    <!-- Build Process -->
+    <section id="build-process" class="fade-in">
       <h2>Build Process</h2>
-      <ul>
-        <li>3D print chassis and components</li>
-        <li>Solder faders and buttons to the microcontroller</li>
-        <li>Flash QMK firmware with custom keymap</li>
-        <li>Enclose and test functionality with MIDI software</li>
-      </ul>
+      <div class="section-content">
+        <div class="text-block">
+          <p>Steps to assemble your own MisteRdeck:</p>
+          <h3>1. 3D Printing</h3>
+          <ul>
+            <li>Print STL parts (base, cover, button clips, fader knobs) using PLA or PETG at 0.2 mm layer height. Use 20%–30% infill for rigidity.</li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="3D-Print.png" alt="3D Printing Chassis Components">
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>2. Electronics Prep</h3>
+          <ul>
+            <li>Solder switches together to form a button array, install diodes and solder headers for Pro Micro and fader connections.</li>
+            <li>Connect fader potentiometers to analog input pins via labeled microcontroller headers.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <h3>3. Assembling Chassis</h3>
+          <ul>
+            <li>connects the chassis together using M2 nylon standoffs. Snap-fit button clips, insert switches. Slide fader pots into brackets and secure with screws.</li>
+          </ul>
+          <h3>4. Firmware Flashing</h3>
+          <ul>
+            <li>Download QMK or deej firmware. Modify code for custon kepampping Place custom keymaping. Compile and flash to Pro Micro.</li>
+          </ul>
+          <h3>5. Testing &amp; Calibration</h3>
+          <ul>
+            <li>Open MIDI monitor (e.g., MIDI-OX). Press buttons to verify Note/CC messages. Move faders and ensure smooth 0–127 values. Adjust deadzone in code if needed.</li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="misterdeck-assembly.jpg" alt="Completed MisteRdeck Assembly">
+        </div>
+      </div>
     </section>
-    <section class="fade-in" id="resources">
-      <h2>Resources</h2>
-      <ul>
-        <li><a href="https://www.printables.com/model/134529-misterdeck" target="_blank">MisteRdeck on Printables</a></li>
-        <li><a href="https://files.printables.com/media/prints/134529/pdfs/134529-misterdeck-822aca1a-228e-4188-893e-47363f813762.pdf" target="_blank">Official PDF Manual</a></li>
-        <li><a href="https://www.youtube.com/watch?v=YYY7iTM4BYM" target="_blank">Quick Demo Video</a></li>
-        <li><a href="https://www.youtube.com/watch?v=Eho_ae5cxNE" target="_blank">Live Build Video</a></li>
-        <li><a href="https://github.com/qmk/qmk_firmware" target="_blank">QMK Firmware Repository</a></li>
-        <li><a href="https://discord.gg/bz3j3AvAU3" target="_blank">Community Discord</a></li>
-      </ul>
+
+    <!-- Usage & Workflow -->
+    <section id="usage-workflow" class="fade-in">
+      <h2>Usage &amp; Workflow</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            Once assembled and flashed, integrate the MisteRdeck into your setup:
+          </p>
+          <ul>
+            <li><strong>OBS Scene Control:</strong> Map buttons to switch scenes (e.g., “Stream”, “BRB”, “Ending”) via MIDI plugin or MIDI Translator.</li>
+            <li><strong>Audio Mixer Integration:</strong> Assign faders to desktop audio, mic gain, or music volume in deej. Adjust without leaving main software.</li>
+            <li><strong>Custom Macros & Plugins:</strong> Use Bome MIDI Translator to create macros (e.g., mute all mics). Switch layers in QMK or Microsoft Powertoys for alternate mappings.
+            </li>
+            <li><strong>DAW & Music Production:</strong> In Ableton Live or FL Studio, map buttons to trigger samples, faders to control effect parameters (e.g., filter cutoff, reverb). Great for live performance.
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="misterdeck-setup.gif" alt="MisteRdeck Integrated with Streaming Software">
+        </div>
+      </div>
+    </section>
+
+    <!-- Performance & Results -->
+    <section id="performance-results" class="fade-in">
+      <h2>Performance &amp; Results</h2>
+      <div class="section-content image-right">
+        <div class="section-image">
+          <img src="pc-software.gif" alt="MisteRdeck Integrated with PC Software">
+        </div>
+        <div class="text-block">
+          <p>
+            Real-world testing yielded:
+          </p>
+          <ul>
+            <li><strong>Button Responsiveness:</strong> 1 ms polling ensures instant registration—no missed triggers during rapid scene changes.</li>
+            <li><strong>Fader Accuracy:</strong> Analog readings within ±2 units across full range (0–1023). Smooth fades without jumps.</li>
+            <li><strong>Stability:</strong> Over 10 hours of continuous usage, USB-MIDI connection remained stable with no dropouts.</li>
+            <li><strong>Ergonomics:</strong> Button layout allows quick access; faders offer precise audio control during mixes.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community & Resources -->
+    <section id="community-resources" class="fade-in">
+      <h2>Community &amp; Resources</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            The MisteRdeck is supported by a maker community. Resources:
+          </p>
+          <ul>
+            <li><a href="https://www.printables.com/model/134529-misterdeck" target="_blank">MisteRdeck on Printables</a> (STL files, build instructions).</li>
+            <li><a href="https://www.youtube.com/watch?v=mABbKafoRzk" target="_blank">Live Build Video</a> (step-by-step walkthrough).</li>
+            <li><a href="MisteRdeck_Manual.pdf" target="_blank">Assembly Manual</a></li>
+            <li><a href="https://github.com/qmk/qmk_firmware" target="_blank">QMK Firmware Repo</a> (source code, custom keymap).
+            </li>
+            <li><a href="https://discord.gg/bz3j3AvAU3" target="_blank">Community Discord</a> (help, mods).
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="cover.jpg" alt="MisteRdeck Community Discussion Forum">
+        </div>
+      </div>
+    </section>
+
+    <!-- Future Improvements -->
+    <section id="future-improvements" class="fade-in">
+      <h2>Future Improvements &amp; Next Steps</h2>
+      <div class="section-content">
+        <div class="text-block">
+          <ul>
+            <li><strong>OLED Status Screen:</strong> Add OLED display for live scene names, audio levels, and fader assignments.
+            </li>
+            <li><strong>RGB Button Rings:</strong> Integrate addressable RGB rings around buttons for visual feedback: active scenes or alerts.
+            </li>
+            <li><strong>Hot-Swap Switch Modules:</strong> Design modular holders for easy swapping.
+            </li>
+            <li><strong>Wireless Connectivity:</strong> Explore Bluetooth connection for cable-free use and mobile compatibility.
+            </li>
+            <li><strong>Alternative Enclosures:</strong> Experiment with milled aluminum or laser-cut acrylic for durability and aesthetics.
+            </li>
+          </ul>
+          <p>
+            These enhancements aim to expand functionality and user experience for future iterations.
+          </p>
+        </div>
+      </div>
     </section>
   </main>
   <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-in').forEach(el => new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && el.classList.add('visible')), { threshold: 0.1 }).observe(el));
+      document.querySelectorAll('.fade-in').forEach(el => new IntersectionObserver(entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1 }).observe(el));
     });
     const canvas = document.getElementById('bg-canvas'); const ctx = canvas.getContext('2d');
     function resize() { canvas.width = innerWidth; canvas.height = innerHeight; }
     window.addEventListener('resize', resize); resize();
     const particles = Array.from({ length: 100 }, () => ({ x: Math.random()*canvas.width, y: Math.random()*canvas.height, vx:(Math.random()-0.5)*0.5, vy:(Math.random()-0.5)*0.5, r:Math.random()*2+1 }));
-    function animate() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      // Draw particles
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255,255,255,0.8)';
-        ctx.fill();
-      });
-      // Draw lines between close particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - dist/100})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(animate);
-    }
+    function animate() { ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p => { p.x += p.vx; p.y += p.vy; if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0; if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 2*Math.PI); ctx.fillStyle = 'rgba(255,255,255,0.8)'; ctx.fill(); }); for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const dist = Math.hypot(dx, dy); if (dist < 100) { ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.strokeStyle = `rgba(255,255,255,${1 - dist/100})`; ctx.lineWidth = 1; ctx.stroke(); } } } requestAnimationFrame(animate); }
     animate();
   </script>
 </body>
