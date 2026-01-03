@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Force scroll to top and clear any URL hash -->
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -14,12 +13,13 @@
     :root {
       --primary-color: #007aff;
       --bg-dark: #1e1e1e;
-      --card-bg: rgba(44, 44, 44, 0.8);
+      --card-bg: linear-gradient(145deg, rgba(44, 44, 44, 0.6), rgba(30, 30, 30, 0.6));
       --text-color: #f0f0f0;
-      --shadow: rgba(0, 0, 0, 0.5);
-      --border-radius: 16px;
-      --section-gap: 3rem;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      --border-radius: 24px;
+      --section-gap: 5rem;
       --side-padding: 5vw;
+      --highlight-color: #64d2ff;
     }
     *, *::before, *::after {
       margin: 0;
@@ -30,144 +30,281 @@
       background: var(--bg-dark);
       color: var(--text-color);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.6;
+      line-height: 1.7;
       overflow-x: hidden;
+      /* Subtle blue radial gradient background */
+      background-image: radial-gradient(circle at top right, rgba(0, 122, 255, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(0, 122, 255, 0.05), transparent 40%);
+      background-attachment: fixed;
     }
     a {
       color: var(--primary-color);
       text-decoration: none;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
+      border-bottom: 1px dotted var(--primary-color);
     }
     a:hover {
-      color: #005bb5;
+      color: #3395ff;
+      border-bottom-style: solid;
     }
     header {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 4px var(--shadow);
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       padding: 15px calc(var(--side-padding) + 10px);
-      margin: 10px calc(var(--side-padding) + 10px);
+      margin: 20px calc(var(--side-padding) + 10px);
       position: sticky;
-      top: 0;
+      top: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
+      border: 1px solid rgba(255, 255, 255, 0.05);
       transition: transform 0.3s ease;
     }
     .site-title {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: 700;
+      border: none;
+      letter-spacing: -0.5px;
     }
     .nav-menu {
       display: flex;
-      gap: 25px;
+      gap: 30px;
+    }
+    .nav-menu a {
+        border: none;
+        font-weight: 500;
     }
     main {
       width: 100%;
-      padding: 2rem var(--side-padding);
+      padding: 3rem var(--side-padding);
+      max-width: 1400px;
+      margin: 0 auto;
     }
+
+    /* --- HERO & TECH STACK --- */
     .hero-image {
       width: 100%;
-      max-height: 400px;
+      height: 500px;
       border-radius: var(--border-radius);
-      margin-bottom: var(--section-gap);
+      margin-bottom: 3rem;
+      background-color: transparent;
       overflow: hidden;
-      background: var(--bg-dark);
+      box-shadow: var(--shadow);
     }
     .hero-image img {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
       object-fit: cover;
     }
+
+    /* Tech Stack Pills */
+    .tech-stack {
+      display: flex;
+      gap: 15px;
+      margin-bottom: var(--section-gap);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .tech-badge {
+      background: rgba(0, 122, 255, 0.1);
+      border: 1px solid rgba(0, 122, 255, 0.3);
+      color: var(--primary-color);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    .tech-badge:hover {
+       background: rgba(0, 122, 255, 0.2);
+       transform: translateY(-2px);
+    }
+
+    /* --- SECTIONS --- */
     section {
       margin-bottom: var(--section-gap);
     }
     section > h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 2px solid var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-color);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      position: relative;
+      display: inline-block;
     }
+    section > h2::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), transparent);
+        margin-top: 10px;
+        border-radius: 2px;
+    }
+
+    /* Typography */
     p, ul, ol, pre {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      color: rgba(240, 240, 240, 0.9);
     }
     ul, ol {
-      padding-left: 1.2rem;
+      padding-left: 1.5rem;
     }
     ul li, ol li {
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    strong {
+        color: #fff;
+        font-weight: 600;
+    }
+    .data-highlight {
+      color: var(--highlight-color);
+      font-weight: 600;
+      font-family: 'Courier New', Courier, monospace;
     }
     pre {
-      background: rgba(255,255,255,0.1);
-      padding: 1rem;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1.5rem;
       border-radius: var(--border-radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       overflow-x: auto;
+      font-family: 'Courier New', Courier, monospace;
+      color: var(--highlight-color);
     }
-    code {
-      background: rgba(255,255,255,0.1);
-      padding: 0.2rem 0.4rem;
-      border-radius: 4px;
-      font-family: monospace;
-    }
+
+    /* --- FLEX LAYOUT FIX FOR ALIGNMENT --- */
     .section-content {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 3rem;
     }
-    @media (min-width: 900px) {
-      .section-content.image-right {
-        flex-direction: row;
-      }
-      .section-content.image-left {
-        flex-direction: row-reverse;
-      }
-      .section-content img, .section-content .text-block {
-        flex: 1 1 0;
-      }
-      .section-content img {
-        flex: 0 0 40%;
-        border-radius: var(--border-radius);
-        object-fit: cover;
-      }
-      .section-content .text-block {
-        flex: 0 0 60%;
-        padding: 0 1.5rem;
-      }
+
+    /* Text Card Styling */
+    .text-block {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      padding: 2.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
     }
+    .text-block::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary-color);
+    }
+    .text-block h3 {
+      margin-top: 0;
+      color: var(--primary-color);
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    /* Image Styling */
     .section-image {
       width: 100%;
       border-radius: var(--border-radius);
       overflow: hidden;
-      background-color: var(--bg-dark);
-      margin: 1rem 0;
+      background: transparent;
+      box-shadow: var(--shadow);
+      display: flex; 
+      align-items: flex-start; 
     }
     .section-image img {
       width: 100%;
       height: auto;
       display: block;
-      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+      object-fit: contain; 
+      background: rgba(255,255,255,0.02);
     }
+    .section-image:hover img {
+        transform: scale(1.03);
+    }
+
+    /* --- DESKTOP ALIGNMENT FIX --- */
+    @media (min-width: 900px) {
+      /* Base Row */
+      .section-content {
+        flex-direction: row;
+        align-items: flex-start; /* FORCE TOP ALIGNMENT */
+        gap: 4rem;
+      }
+      
+      /* Child widths */
+      .section-content > .text-block,
+      .section-content > .section-image {
+        flex: 1;
+        width: 50%;
+      }
+
+      /* Image Left Configuration */
+      .section-content.image-left {
+        flex-direction: row-reverse;
+      }
+      
+      /* Image Right Configuration */
+      .section-content.image-right {
+        flex-direction: row;
+      }
+      
+      /* Stacked Configuration */
+      .section-content.stacked {
+        flex-direction: column;
+        gap: 2rem;
+      }
+      .section-content.stacked > .text-block,
+      .section-content.stacked > .section-image {
+        width: 100%;
+      }
+      .section-content.stacked > .section-image {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+    }
+
+    /* Animation Classes */
     .fade-in {
       opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .fade-in.visible {
       opacity: 1;
       transform: none;
     }
+
+    /* Footer */
     footer {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 4px var(--shadow);
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
       border-radius: var(--border-radius);
-      margin: 10px calc(var(--side-padding) + 10px);
-      padding: 20px;
+      margin: 20px calc(var(--side-padding) + 10px);
+      padding: 25px;
       text-align: center;
       font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(240, 240, 240, 0.7);
     }
     #bg-canvas {
       position: fixed;
@@ -183,7 +320,7 @@
 <body>
   <canvas id="bg-canvas"></canvas>
 
-  <header>
+  <header id="site-header">
     <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
     <nav class="nav-menu">
       <a href="https://manandua17.github.io">Home</a>
@@ -191,15 +328,35 @@
   </header>
 
   <main>
+    <div class="hero-image fade-in">
+      <img src="figure2_physical.png" alt="3-Bit DAC Breadboard Circuit">
+    </div>
 
-    <!-- Summary Section -->
+    <div class="tech-stack fade-in">
+        <span class="tech-badge">Analog Discovery 3</span>
+        <span class="tech-badge">Op-Amp (TL072)</span>
+        <span class="tech-badge">MOSFETs</span>
+        <span class="tech-badge">LTSpice Simulation</span>
+        <span class="tech-badge">Breadboarding</span>
+    </div>
+
     <section id="summary" class="fade-in">
       <h2>Summary</h2>
       <div class="section-content image-left">
         <div class="text-block">
-        <p>
-          The goal of Project 5 was to design, simulate, and build a 3-bit Digital-to-Analog Converter (DAC) with a full-scale output of 5 V. Three digital input bits feed a weighted resistor network, and the resulting analog voltage is buffered by a unity-gain op-amp stage. Each bit’s weight is set by R<sub>REF</sub> = 100 kΩ: R<sub>1</sub> = 100 kΩ (LSB), R<sub>2</sub> = 200 kΩ, and R<sub>3</sub> = 400 kΩ. MOSFET switches ensure input lines draw < 1 µA. The final circuit produces an output voltage proportional to the binary input, buffered to prevent loading.
-        </p>
+            <h3>Project Overview</h3>
+            <p>
+              The goal of Project 5 was to design, simulate, and build a 3-bit Digital-to-Analog Converter (DAC) with a full-scale output of <span class="data-highlight">5 V</span>. Three digital input bits feed a weighted resistor network, and the resulting analog voltage is buffered by a unity-gain op-amp stage.
+            </p>
+            <p>Each bit’s weight is set by <span class="data-highlight">R_REF = 100 kΩ</span>:</p>
+            <ul>
+                <li>R1 = <span class="data-highlight">100 kΩ</span> (LSB)</li>
+                <li>R2 = <span class="data-highlight">200 kΩ</span></li>
+                <li>R3 = <span class="data-highlight">400 kΩ</span></li>
+            </ul>
+            <p>
+              MOSFET switches ensure input lines draw <span class="data-highlight">< 1 µA</span>. The final circuit produces an output voltage proportional to the binary input, buffered to prevent loading.
+            </p>
         </div>
         <div class="section-image">
           <img src="figure1_schematic.png" alt="Weighted-Resistor DAC Schematic (Figure 1)">
@@ -207,233 +364,258 @@
       </div>
     </section>
 
-    <!-- Design Section -->
     <section id="design" class="fade-in">
       <h2>Design</h2>
+      
       <div class="section-content image-right">
         <div class="text-block">
-          <p>
-            The DAC core is a binary-weighted resistor network. Each digital input (V<sub>1</sub>, V<sub>2</sub>, V<sub>3</sub>) drives both a P-MOS and an N-MOS transistor to connect either +5 V or 0 V into the resistor ladder without drawing input current. Because of the complementary MOS topology, logic is inverted: 5 V = logic 0, 0 V = logic 1. The weighted resistors are:
-          </p>
-          <ul>
-            <li>R<sub>1</sub> = 100 kΩ (LSB)</li>
-            <li>R<sub>2</sub> = 200 kΩ (constructed from 150 kΩ + 2×24.9 kΩ in series)</li>
-            <li>R<sub>3</sub> = 400 kΩ (4×100 kΩ in series)</li>
-          </ul>
-          <p>
-            The resistor node drives a non-inverting unity-gain buffer (op-amp) to isolate and maintain the voltage. This buffer draws negligible current, preserving the weighted sum accuracy.
-          </p>
+            <h3>Circuit Topology</h3>
+            <p>
+              The DAC core is a binary-weighted resistor network. Each digital input (V1, V2, V3) drives both a P-MOS and an N-MOS transistor to connect either <span class="data-highlight">+5 V</span> or <span class="data-highlight">0 V</span> into the resistor ladder without drawing input current. Because of the complementary MOS topology, logic is inverted:
+            </p>
+            <ul>
+                <li><span class="data-highlight">5 V</span> = logic 0</li>
+                <li><span class="data-highlight">0 V</span> = logic 1</li>
+            </ul>
         </div>
         <div class="section-image">
-          <img src="figure2_physical.png" alt="Physical DAC Circuit (Figure 2)">
+          <img src="figure6_sim_schematic.png" alt="Simulation Schematic">
         </div>
       </div>
-      <p>
-        References for design:
-      </p>
-      <ul>
-        <li>W. Storr, “Binary Weighted Digital to Analogue Converter,” Basic Electronics Tutorials (2022). :contentReference[oaicite:0]{index=0}</li>
-        <li>Simply Put, “Making a DAC Using a Resistor Ladder Op-Amp Weighted Summing Amplifier” (YouTube, 2020). :contentReference[oaicite:1]{index=1}</li>
-      </ul>
+
+      <div class="section-content stacked" style="margin-top: 3rem;">
+        <div class="text-block">
+            <h3>Component Details</h3>
+            <p>The weighted resistors are:</p>
+            <ul>
+              <li>R1 = <span class="data-highlight">100 kΩ</span> (LSB)</li>
+              <li>R2 = <span class="data-highlight">200 kΩ</span> (constructed from 150 kΩ + 2×24.9 kΩ in series)</li>
+              <li>R3 = <span class="data-highlight">400 kΩ</span> (4×100 kΩ in series)</li>
+            </ul>
+            <p>
+              The resistor node drives a non-inverting unity-gain buffer (op-amp) to isolate and maintain the voltage. This buffer draws negligible current, preserving the weighted sum accuracy.
+            </p>
+            
+            <p style="margin-top: 2rem;"><strong>References:</strong></p>
+            <ul>
+                <li>W. Storr, “Binary Weighted Digital to Analogue Converter,” Basic Electronics Tutorials.</li>
+                <li>Simply Put, “Making a DAC Using a Resistor Ladder,” YouTube.</li>
+            </ul>
+        </div>
+      </div>
     </section>
 
-    <!-- Measurement & Analysis Section -->
     <section id="measurement-analysis" class="fade-in">
       <h2>Measurement &amp; Analysis</h2>
 
-      <!-- Input Configuration -->
       <div class="section-content image-left">
+        <div class="text-block">
+            <h3>Digital Input Setup</h3>
+            <p>
+              The AD3’s pattern generator drove the three GPIO pins (<span class="data-highlight">3.3 V</span> levels) as digital inputs, cycling through all 3-bit codes. Although the DAC was designed for 5 V logic, 3.3 V inputs still switch the MOSFET gates reliably. Op-amp supplies were <span class="data-highlight">+5 V / −5 V</span>, and the oscilloscope measured the buffered output.
+            </p>
+        </div>
         <div class="section-image">
           <img src="figure3_input_config.png" alt="Digital Input Configuration (Figure 3)">
         </div>
-        <div class="text-block">
-          <h3>Digital Input Setup</h3>
-          <p>
-            The AD3’s pattern generator drove the three GPIO pins (3.3 V levels) as digital inputs, cycling through all 3-bit codes. Although the DAC was designed for 5 V logic, 3.3 V inputs still switch the MOSFET gates reliably. Op-amp supplies were +5 V/−5 V, and the oscilloscope measured the buffered output.
-          </p>
-        </div>
       </div>
 
-      <!-- Oscilloscope Output -->
-      <div class="section-content image-right">
+      <div class="section-content image-right" style="margin-top: 3rem;">
         <div class="text-block">
-          <h3>Oscilloscope Output</h3>
-          <p>
-            The scope captured the DAC output as the input code increments from 000 to 111. Each step ideally changes by 5 V/7 ≈ 0.714 V. The measured waveform shows distinct voltage levels corresponding to each code.
-          </p>
+            <h3>Oscilloscope Output</h3>
+            <p>
+              The scope captured the DAC output as the input code increments from 000 to 111. Each step ideally changes by <span class="data-highlight">5 V / 7 ≈ 0.714 V</span>. The measured waveform shows distinct voltage levels corresponding to each code.
+            </p>
         </div>
         <div class="section-image">
           <img src="figure4_oscilloscope.png" alt="Oscilloscope Output (Figure 4)">
         </div>
       </div>
 
-      <!-- Gain Error -->
-      <div class="section-content">
+      <div class="section-content stacked" style="margin-top: 3rem;">
         <div class="text-block">
-          <h3>Gain Error</h3>
-          <p>
-            Gain error is the deviation between expected and measured full-scale voltage. The ideal full-scale is 5 V, but the measured peak is ~4.74 V. Unity-gain buffer gain error:
-          </p>
-          <pre>
-Error = (V<sub>Expected</sub> − V<sub>Actual</sub>) / V<sub>Expected</sub>  
-      = (5 V − 4.74 V) / 5 V  
-      = 5.2 %
-          </pre>
+            <h3>Gain Error</h3>
+            <p>
+              Gain error is the deviation between expected and measured full-scale voltage. The ideal full-scale is <span class="data-highlight">5 V</span>, but the measured peak is <span class="data-highlight">~4.74 V</span>. Unity-gain buffer gain error:
+            </p>
+            <pre>
+Error = (V_Expected − V_Actual) / V_Expected 
+      = (5 V − 4.74 V) / 5 V 
+      = 5.2 %</pre>
+        </div>
+        
+        <div class="text-block">
+            <h3>Maximum Differential Non-Linearity (MDNL)</h3>
+            <p>
+              MDNL quantifies the largest deviation between ideal and actual step size. For 3 bits, ideal step = <span class="data-highlight">5 V / 7 ≈ 0.714 V</span>. Measured step ≈ <span class="data-highlight">0.697 V</span>. Thus:
+            </p>
+            <pre>
+V_ideal = 5 V / (2³ − 1) = 0.714 V 
+V_actual = 0.697 V 
+
+MDNL = |V_ideal − V_actual| / V_ideal 
+     = |0.714 V − 0.697 V| / 0.714 V 
+     ≈ 2.42 %</pre>
         </div>
       </div>
 
-      <!-- Maximum Differential Non-Linearity -->
-      <div class="section-content image-right">
+      <div class="section-content image-left" style="margin-top: 3rem;">
         <div class="text-block">
-          <h3>Maximum Differential Non-Linearity (MDNL)</h3>
-          <p>
-            MDNL quantifies the largest deviation between ideal and actual step size. For 3 bits, ideal step = 5 V/7 ≈ 0.714 V. Measured step ≈ 0.697 V. Thus:
-          </p>
-          <pre>
-V<sub>ideal</sub> = 5 V / (2³ − 1) = 0.714 V  
-V<sub>actual</sub> = 0.697 V  
-
-MDNL = |V<sub>ideal</sub> − V<sub>actual</sub>| / V<sub>ideal</sub>  
-     = |0.714 V − 0.697 V| / 0.714 V  
-     ≈ 2.42 %
-          </pre>
+            <h3>Offset Error</h3>
+            <p>
+              Offset error is the output when input code = 000 (should be 0 V). Measured <span class="data-highlight">~7.05 mV</span>. Causes include MOSFET threshold mismatches and op-amp offset. Thus:
+            </p>
+            <pre>
+Offset Error = 7.05 mV</pre>
         </div>
-      </div>
-
-      <!-- Offset Error -->
-      <div class="section-content image-left">
         <div class="section-image">
           <img src="figure5_sim_output.png" alt="Simulated Output with 5 V Input (Figure 5)">
         </div>
-        <div class="text-block">
-          <h3>Offset Error</h3>
-          <p>
-            Offset error is the output when input code = 000 (should be 0 V). Measured ~7.05 mV. Causes include MOSFET threshold mismatches and op-amp offset. Thus:
-          </p>
-          <pre>
-Offset Error = 7.05 mV
-          </pre>
-        </div>
       </div>
     </section>
 
-    <!-- Discussion Section -->
     <section id="discussion" class="fade-in">
       <h2>Discussion</h2>
-
-      <!-- Origins of Errors -->
-      <div class="section-content image-right">
+      <div class="section-content stacked">
         <div class="text-block">
-          <h3>Origins of Errors</h3>
-          <p>
-            Deviations arise from:
-          </p>
-          <ul>
-            <li>3.3 V input limitation (AD3 GPIO) instead of 5 V specification—MOSFET gates partially on.</li>
-            <li>Resistor tolerances (±1%–±5%) in R<sub>REF</sub> network.</li>
-            <li>Op-amp offset and finite open-loop gain causing slight gain error.</li>
-            <li>Wiring and breadboard parasitics introducing noise.
-          </ul>
+            <h3>Origins of Errors</h3>
+            <p>Deviations arise from:</p>
+            <ul>
+              <li><span class="data-highlight">3.3 V</span> input limitation (AD3 GPIO) instead of 5 V specification—MOSFET gates partially on.</li>
+              <li>Resistor tolerances (<span class="data-highlight">±1%–±5%</span>) in R_REF network.</li>
+              <li>Op-amp offset and finite open-loop gain causing slight gain error.</li>
+              <li>Wiring and breadboard parasitics introducing noise.</li>
+            </ul>
         </div>
-        <div class="section-image">
-          <img src="figure6_sim_schematic.png" alt="Simulation Schematic with 5 V Inputs (Figure 6)">
-        </div>
-      </div>
 
-      <!-- Alternate Designs -->
-      <div class="section-content">
         <div class="text-block">
-          <h3>Alternate Designs</h3>
-          <p>
-            Two common 3-bit DAC topologies:
-          </p>
-          <ul>
-            <li><strong>Binary-Weighted Resistor Network:</strong> Simple resistor values proportional to bit weight. Easy to calculate for 3 bits but requires precise high-value resistors (100 kΩ, 200 kΩ, 400 kΩ).</li>
-            <li><strong>R-2R Ladder Network:</strong> Uses only two resistor values (R, 2R), improving matching and reducing tolerance sensitivity. Preferred for higher-bit DACs; slightly more complex routing on breadboard.</li>
-          </ul>
-          <p>
-            For this 3-bit design, binary-weighted was chosen for simplicity and minimal component count, despite R-2R’s potential accuracy advantages.
-          </p>
+            <h3>Alternate Designs</h3>
+            <p>Two common 3-bit DAC topologies:</p>
+            <ul>
+              <li><strong>Binary-Weighted Resistor Network:</strong> Simple resistor values proportional to bit weight. Easy to calculate for 3 bits but requires precise high-value resistors (100 kΩ, 200 kΩ, 400 kΩ).</li>
+              <li><strong>R-2R Ladder Network:</strong> Uses only two resistor values (R, 2R), improving matching and reducing tolerance sensitivity. Preferred for higher-bit DACs; slightly more complex routing on breadboard.</li>
+            </ul>
+            <p>
+              For this 3-bit design, binary-weighted was chosen for simplicity and minimal component count, despite R-2R’s potential accuracy advantages.
+            </p>
         </div>
       </div>
     </section>
 
-    <!-- References Section -->
     <section id="references" class="fade-in">
       <h2>References</h2>
-      <ol>
-        <li>W. Storr, “Binary Weighted Digital to Analogue Converter,” Basic Electronics Tutorials, Jun. 10, 2022.  
-          <a href="https://www.electronics-tutorials.ws/combination/digital-to-analogue-converter.html" target="_blank">electronics-tutorials.ws/…/digital-to-analogue-converter.html</a> :contentReference[oaicite:2]{index=2}
-        </li>
-        <li>Simply Put, “Making a DAC Using a Resistor Ladder Op-Amp Weighted Summing Amplifier,” YouTube, May 4, 2020.  
-          <a href="https://www.youtube.com/watch?v=kLUrVIhzeAY" target="_blank">youtube.com/watch?v=kLUrVIhzeAY</a> :contentReference[oaicite:3]{index=3}
-        </li>
-      </ol>
+      <div class="text-block">
+          <ol>
+            <li>W. Storr, “Binary Weighted Digital to Analogue Converter,” Basic Electronics Tutorials, Jun. 10, 2022.  
+              <a href="https://www.electronics-tutorials.ws/combination/digital-to-analogue-converter.html" target="_blank">View Source</a>
+            </li>
+            <li>Simply Put, “Making a DAC Using a Resistor Ladder Op-Amp Weighted Summing Amplifier,” YouTube, May 4, 2020.  
+              <a href="https://www.youtube.com/watch?v=kLUrVIhzeAY" target="_blank">View Video</a>
+            </li>
+          </ol>
+      </div>
     </section>
   </main>
 
   <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
 
   <script>
+    // Intersection Observer for fade-in animation
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-in').forEach(el =>
-        new IntersectionObserver(entries => {
-          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1 }).observe(el)
-      );
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); 
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.fade-in').forEach(el => {
+        observer.observe(el);
+      });
     });
 
+    // Header scroll effect
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > lastY && y > 50) {
+        headerEl.style.transform = 'translateY(-120%)';
+      } else {
+        headerEl.style.transform = 'translateY(0)';
+      }
+      lastY = y;
+    });
+
+    // Particle background
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
-    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeBg); resizeBg();
+    let particles = [];
 
-    const particles = Array.from({ length: 100 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1
-    }));
+    function resizeBg() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initParticles();
+    }
+
+    function initParticles() {
+      particles = [];
+      const numParticles = Math.min(window.innerWidth / 10, 100); 
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
-        p.x += p.vx; p.y += p.vy;
+        p.x += p.vx;
+        p.y += p.vy;
+
         if (p.x < 0) p.x = canvas.width;
         if (p.x > canvas.width) p.x = 0;
         if (p.y < 0) p.y = canvas.height;
         if (p.y > canvas.height) p.y = 0;
+
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fillStyle = `rgba(0, 122, 255, ${p.alpha})`;
         ctx.fill();
       });
+
+      // Connect particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const d = Math.hypot(dx, dy);
-          if (d < 100) {
+          const maxDist = 120;
+
+          if (d < maxDist) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = `rgba(0, 122, 255, ${ (1 - d / maxDist) * 0.15 })`;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
       }
       requestAnimationFrame(draw);
     }
-    draw();
 
-    let lastY = 0;
-    const headerEl = document.getElementById('site-header');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
-      lastY = y;
-    });
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+    draw();
   </script>
 </body>
 </html>

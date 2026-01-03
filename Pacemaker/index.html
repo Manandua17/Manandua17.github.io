@@ -8,7 +8,7 @@
     window.scrollTo(0, 0);
   </script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Manan Dua | Pulltrusion Machine</title>
+  <title>Manan Dua | Pacemaker & DCM (SFWRENG 3K04)</title>
   <style>
     :root {
       --primary-color: #007aff;
@@ -87,7 +87,7 @@
     /* --- HERO & TECH STACK --- */
     .hero-image {
       width: 100%;
-      max-height: 500px;
+      height: 500px;
       border-radius: var(--border-radius);
       margin-bottom: 3rem;
       background-color: transparent;
@@ -170,6 +170,17 @@
         color: #fff;
         font-weight: 600;
     }
+    
+    /* Code/Math Highlights */
+    .code-style {
+      font-family: 'Courier New', Courier, monospace;
+      background: rgba(0, 122, 255, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #64d2ff;
+      border: 1px solid rgba(0, 122, 255, 0.2);
+    }
 
     /* --- LAYOUT & CARDS --- */
     .section-content {
@@ -202,19 +213,6 @@
         transform: scale(1.03);
     }
 
-    .video-container {
-      width: 100%;
-      margin-top: 2rem;
-      border-radius: var(--border-radius);
-      overflow: hidden;
-      background: #000;
-      box-shadow: var(--shadow);
-    }
-    .video-container video {
-      width: 100%;
-      display: block;
-    }
-
     /* Desktop Layout: Side-by-Side */
     @media (min-width: 900px) {
       .section-content {
@@ -226,8 +224,7 @@
       .section-content.image-right .text-block {
         grid-column: 1;
       }
-      .section-content.image-right .section-image,
-      .section-content.image-right .video-container {
+      .section-content.image-right .section-image {
         grid-column: 2;
       }
 
@@ -273,8 +270,7 @@
           padding-left: 1.5rem;
           padding-right: 0;
       }
-      .section-content.stacked .section-image,
-      .section-content.stacked .video-container {
+      .section-content.stacked .section-image {
         grid-column: 1 !important;
         width: 100%;
         max-width: 1000px;
@@ -282,11 +278,10 @@
       }
     }
 
-    /* Milestone Styling (For Process Steps) */
+    /* Milestone Styling */
     .milestone-group {
         display: grid;
-        gap: 1.5rem;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
     }
     .milestone-item {
         background: rgba(255, 255, 255, 0.03);
@@ -297,7 +292,7 @@
     .milestone-item h3 {
         color: var(--primary-color);
         margin-top: 0;
-        font-size: 1.2rem;
+        font-size: 1.3rem;
         margin-bottom: 1rem;
     }
 
@@ -347,195 +342,162 @@
 
   <main>
     <div class="hero-image fade-in">
-      <img src="pulltrusion-hero-large.jpg" alt="Open-Source PET Pulltrusion Machine">
+      <img src="pacemaker.png" alt="Pacemaker">
     </div>
 
     <div class="tech-stack fade-in">
-      <span class="tech-badge">3D Printing</span>
-      <span class="tech-badge">PID Control</span>
-      <span class="tech-badge">Electronics</span>
-      <span class="tech-badge">CAD Modeling</span>
-      <span class="tech-badge">Sustainability</span>
+      <span class="tech-badge">Python (CustomTkinter)</span>
+      <span class="tech-badge">Simulink</span>
+      <span class="tech-badge">FRDM-K64F</span>
+      <span class="tech-badge">SQLite</span>
+      <span class="tech-badge">UART Communication</span>
     </div>
 
     <section id="overview" class="fade-in">
       <h2>Overview &amp; Purpose</h2>
       <div class="text-block" style="border: none; padding: 0;">
-        <p>
-          The Pulltrusion Machine is an open-source filament extruder designed to convert discarded PET bottles into high-quality 3D printing filament. By repurposing plastic waste, this project reduces environmental impact and provides makers with an affordable filament source.
-        </p>
-        <p>
-          Commercial filament can be costly and contribute to landfill waste. The Pulltrusion Machine addresses this by:
-        </p>
-        <ul>
-          <li>Recycling used PET bottles into usable 3D filament.</li>
-          <li>Lowering material costs for small-scale and hobbyist applications.</li>
-          <li>Promoting sustainability within the maker community.</li>
-        </ul>
+        <p>This project, completed for the <strong>SFWRENG 3K04</strong> course, involved the development of a safety-critical <strong>Pacemaker</strong> system and its accompanying <strong>Device Controller-Monitor (DCM)</strong>. The primary goal was to design a real-time embedded system capable of managing and regulating a patient's heart rate through various pacing modes while ensuring robust safety and reliability.</p> 
+        <p>The system is divided into two main components: the <strong>Pacemaker</strong>, running on hardware (simulated via Simulink on an FRDM-K64F board), and the <strong>DCM</strong>, a Python-based desktop application used by clinicians to program parameters and visualize heart activity. Key features include rate-adaptive pacing using accelerometer data, real-time Electrogram (ECG) visualization, and a secure database for patient management.</p>
       </div>
     </section>
 
-    <section id="design-development" class="fade-in">
-      <h2>Design &amp; Development</h2>
+    <section id="team" class="fade-in">
+      <h2>Team &amp; Collaboration</h2>
       <div class="section-content image-left">
         <div class="section-image">
-          <img src="design-prototype.jpg" alt="Initial Prototype Frame and Components">
+          <img src="login.png" alt="DCM Login Interface">
         </div>
         <div class="text-block">
-          <p>
-            Based on the PETamentor design, the Pulltrusion Machine emphasizes efficient heating and a controlled puller system. Key development milestones:
-          </p>
+          <p>This project was a comprehensive group effort involving six students: <strong>Adam Suljak, Jonathan Hincks, Yat Yin Hui (Heidi), Joshua Guo, Manan Dua,</strong> and <strong>Mohammad Mustafa</strong>. We adopted an Agile-like workflow, breaking down the massive requirements into modular tasks.</p>
+          <p>The development was split into distinct domains to ensure efficiency:</p>
           <ul>
-            <li><strong>Prototype Frame:</strong> Built from aluminum profiles to maintain alignment between cutter, heater, and puller assemblies.</li>
-            <li><strong>Cutter Mechanism:</strong> Designed a rotary cutter to slice bottles into uniform ribbons for consistent melting.</li>
-            <li><strong>Nozzle &amp; Heater:</strong> Tested optimal filament diameter of 1.75 mm, optimizing heater cartridge placement for uniform temperature.</li>
-            <li><strong>Puller Calibration:</strong> Iterated on motor speeds using a JGB37-520 high torque geared motor with 7 rpm.</li>
-            <li><strong>Temperature Control:</strong> Integrated a W1209 digital controller to maintain nozzle temperature between 240 °C and 260 °C. This was later upgraded to a W3230 for more accurate control and temperature display.</li>
-          </ul>
-          <p>Challenges &amp; Solutions:</p>
-          <ul>
-            <li><strong>Uneven Ribbon Thickness:</strong> Early tests yielded inconsistent ribbon width; refined blade angle and guiding channel to ensure uniform strips.</li>
-            <li><strong>Nozzle Clogging:</strong> PET caramelized at high temperatures; optimized feed rate and added a short cooling zone before the puller.</li>
-            <li><strong>Puller Slip:</strong> Initial wheels lacked traction; switched to toothed rollers to eliminate slippage.</li>
+            <li>
+              <strong>DCM Team:</strong> Focused on the Python GUI using <span class="code-style">CustomTkinter</span>, implementing the Login, Pacing Modes, and Reports modules, and managing the SQLite database.
+            </li>
+            <li>
+              <strong>Pacemaker Team:</strong> Developed the Simulink models for the Bradycardia operating modes (AOO, VOO, AAI, VVI, etc.) and the rate-adaptive algorithms.
+            </li>
+            <li>
+              <strong>Integration:</strong> We collaborated closely to establish the UART serial communication protocol, ensuring seamless data transfer between the Python interface and the embedded hardware.
+            </li>
           </ul>
         </div>
       </div>
     </section>
 
     <section id="components" class="fade-in">
-      <h2>Key Components</h2>
+      <h2>Components &amp; Architecture</h2>
       <div class="section-content image-right">
         <div class="text-block">
+          <p>The system architecture bridges high-level software with low-level hardware control:</p>
           <ul>
-            <li><strong>Frame &amp; Cutter:</strong> Custom wood and 3D printed chassis holds all modules in rigid alignment. Rotary cutter slices PET bottles into roughly 9mm ribbons.</li>
-            <li><strong>Heater &amp; Nozzle:</strong> Interchangeable 1.75 mm nozzle tip; 100 W PTC heater cartridge; thermistor for precise temperature feedback.</li>
-            <li><strong>Puller Motor Assembly:</strong> Using a JGB37-520 high torque geared motor. Toothed 3D printed rollers ensure consistent draw without slipping.</li>
-            <li><strong>Temperature Control:</strong> W3230 digital controller regulates nozzle temperature via SSR to maintain 240 °C–260 °C.</li>
-            <li><strong>Power Supply:</strong> Separate switch-mode supplies: 12 V 10 A for heater and puller motor to ensure sufficient power.</li>
-            <li><strong>Spooling &amp; Collection:</strong> Retrofit spool holder attached to chassis; adjustable pull speed prevents slack. Manual tensioner maintains consistent winding.</li>
+            <li>
+              <strong>Device Controller-Monitor (DCM):</strong> A modular Python application built with <span class="code-style">CustomTkinter</span>. It features a secure Login module using <strong>SQLite</strong> for credential and parameter storage, a Pacing Modes interface for configuration, and an ECG plotter using <strong>Matplotlib</strong>.
+            </li>
+            <li>
+              <strong>Pacemaker Model:</strong> Designed in <strong>Simulink</strong> and deployed on the <strong>FRDM-K64F</strong>. It implements the Finite State Machines (FSMs) for modes like <span class="code-style">VOOR</span> and <span class="code-style">AAIR</span>, handling sensing, pacing, and refractory periods.
+            </li>
+            <li>
+              <strong>Communication:</strong> A robust <strong>UART</strong> protocol running at <span class="code-style">115200 baud</span> connects the DCM and Pacemaker. We implemented custom packet structures for sending parameters (Echo) and receiving real-time ECG streams.
+            </li>
           </ul>
         </div>
         <div class="section-image">
-          <img src="components-heater.jpg" alt="Heater Cartridge and Nozzle Assembly">
+          <img src="simulink.png" alt="Simulink Design Overview">
         </div>
       </div>
     </section>
 
-    <section id="process" class="fade-in">
-      <h2>Manufacturing Process</h2>
+    <section id="build-process" class="fade-in">
+      <h2>Build Process & Milestones</h2>
       <div class="section-content stacked">
         <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
-          <p>Step-by-step guide to transform PET bottles into 3D filament:</p>
-          
           <div class="milestone-group">
             <div class="milestone-item">
-              <h3>1. Preparation</h3>
-              <ul>
-                <li>Clean &amp; dry each PET bottle to remove labels and residue.</li>
-                <li>Trim bottles into flat panels using a utility knife and scissors.</li>
-                <li>Feed panels through the cutter to produce long 9 mm ribbons.</li>
-              </ul>
+              <h3>Phase 1: Foundation & Basic Modes</h3>
+              <p>
+                <strong>The Task:</strong> Establish the core architecture by building the DCM's user management system and implementing the four fundamental pacing modes: <strong>AOO, VOO, AAI, and VVI</strong>. This involved designing a scalable <strong>SQLite database</strong> schema to handle multiple users, ensuring that device parameters (like Upper Rate Limit and Pulse Width) were securely stored and retrievable for each specific patient.
+              </p>
+              <p>
+                <strong>Implementation:</strong> 
+                We built the GUI framework using <span class="code-style">Tkinter</span> (later upgraded to CustomTkinter for better aesthetics) and defined the Stateflow logic in Simulink to handle basic pacing triggers and refractory periods (ARP/VRP).
+              </p>
+              <p>
+                <strong>Key Challenge:</strong> The initial challenge was creating a robust database structure that could link a specific user (clinician) to their patient's saved parameters without data collision, while also ensuring the UI inputs strictly validated numerical ranges before saving.
+              </p>
             </div>
 
             <div class="milestone-item">
-              <h3>2. Preheating &amp; Feeding</h3>
-              <ul>
-                <li>Set W3230 to 80 °C (accounting for thermistor offset) for optimal PET melting without degradation.</li>
-                <li>Slowly feed ribbons into feed tube through the heated nozzle.</li>
-                <li>Wait until nozzle temperature stabilizes within ±3 °C of setpoint.</li>
-              </ul>
+              <h3>Phase 2: Rate Adaptivity & Serial Communication</h3>
+              <p>
+                <strong>The Task:</strong> The system needed to intelligently adjust pacing based on patient activity. We had to implement rate-adaptive modes (<span class="code-style">AOOR, VOOR, AAIR, VVIR</span>) where the Lower Rate Limit (LRL) increases dynamically based on accelerometer data. Additionally, we needed to visualize live heart activity by plotting real-time ECG data on the DCM.
+              </p>
+              <p>
+                <strong>Implementation:</strong> 
+                We integrated the <strong>on-board accelerometer</strong> data into our Simulink model, mapping physical movement thresholds to specific "Response Factors" that drove the target heart rate. Simultaneously, we built the <strong>UART Channel</strong> module in Python to serialize parameter packets for transmission and deserialize incoming ECG stream data.
+              </p>
+              <p>
+                <strong>Key Challenge:</strong> A major hurdle was the <strong>UART synchronization with rate adaptivity</strong>. We faced issues where the pacemaker's independent functions would run at different clock rates and would interfere with eachother. Since the accelerameter on the pacemaker was required to run at a specific clock rate, it has to be placed in a clocked module inside simulink, however in doing so introduced errors when integrated the UART system. This caused parameter packets sent from the DCM to be occasionally dropped or malformed by the hardware or rate adaptiving not responding.
+              </p>
             </div>
 
             <div class="milestone-item">
-              <h3>3. Extrusion &amp; Pulling</h3>
-              <ul>
-                <li>Once molten PET emerges, engage puller motor at ~3 RPM (≈10 cm/min filament speed).</li>
-                <li>Measure filament diameter with calipers every 30 cm; adjust puller speed to maintain 1.75 mm ± 0.05 mm.</li>
-              </ul>
-            </div>
-
-            <div class="milestone-item">
-              <h3>4. Spooling &amp; Drying</h3>
-              <ul>
-                <li>Spool the filament on the onboard removable spool and remove once finished.</li>
-                <li>Dry the filament using a filament dryer on PETG settings to ensure consistent print textures before use.</li>
-              </ul>
-            </div>
-
-            <div class="milestone-item">
-              <h3>5. Testing &amp; Quality Control</h3>
-              <ul>
-                <li>Print a 20 mm³ calibration cube to check for smooth walls and no under-extrusion.</li>
-                <li>Inspect spool for air bubbles or diameter inconsistencies. Discard any segments outside tolerance.</li>
-              </ul>
+              <h3>Phase 3: Safety Assurance & Verification</h3>
+              <p>
+                <strong>The Task:</strong> As a safety-critical device, "working" isn't enough; it must be proven safe. We were tasked with generating a formal <strong>Assurance Case</strong> to argue the safety of our system claims (e.g., "The system shall never pace above the Upper Rate Limit").
+              </p>
+              <p>
+                <strong>Implementation:</strong> 
+                We developed a structured argument tree linking high-level safety goals to specific evidence in our code and test results. We performed rigorous testing, including unit tests for the database and integration tests for the serial communication, to verify that invalid inputs (like negative pulse widths) were rejected at the source.
+              </p>
+              <p>
+                <strong>Key Challenge:</strong> The main difficulty was identifying and testing <strong>edge cases</strong>, such as what happens if the connection drops mid-transmission or if the accelerometer sends noisy data, and ensuring the Pacemaker defaulted to a safe state (nominal pacing) rather than halting.
+              </p>
             </div>
           </div>
         </div>
-        
-        <div class="video-container">
-          <video controls src="pulltrusion.mp4" alt="Pulltrusion Demo">
-            Your browser does not support HTML5 video.
-          </video>
+        <div class="section-image">
+          <img src="pacing modes.png" alt="DCM Pacing Modes Interface">
         </div>
       </div>
     </section>
 
     <section id="results" class="fade-in">
-      <h2>Results &amp; Performance</h2>
+      <h2>Results</h2>
       <div class="section-content image-right">
         <div class="text-block">
           <p>
-            After multiple production runs, the Pulltrusion Machine produced filament with:
+            The final system successfully met all requirements for Deliverable 2.
           </p>
           <ul>
-            <li><strong>Average Diameter:</strong> 1.75 mm ± 0.05 mm</li>
-            <li><strong>Surface Finish:</strong> Smooth, minimal layer lines when printing at 250 °C–260 °C.</li>
-            <li><strong>Printability:</strong> Successfully printed various parts without stringing.</li>
+            <li><strong>Functionality:</strong> All 8 pacing modes are fully operational. The rate-adaptive logic correctly adjusts the heart rate based on simulated physical activity.</li>
+            <li><strong>Connectivity:</strong> The DCM reliably connects to the Pacemaker via COM ports, with the "Connect/Disconnect" logic handling state changes gracefully.</li>
+            <li><strong>Visualization:</strong> The ECG module plots real-time atrial and ventricular data with adjustable gain and visibility settings, allowing clinicians to analyze heart rhythms effectively.</li>
           </ul>
-          <p>
-            Cost analysis shows recycled PET filament is roughly one-third the price of commercial filament when accounting for electricity and labor.
-          </p>
         </div>
         <div class="section-image">
-           <img src="results-printed-parts.jpg" alt="Printed Parts Using Recycled PET Filament"> 
+          <img src="ecg.png" alt="Real-time ECG Visualization">
         </div>
       </div>
     </section>
 
-    <section id="community" class="fade-in">
-      <h2>Community &amp; Resources</h2>
-      <div class="section-content image-left">
-        <div class="section-image">
-            <img src="community-hero.jpg" alt="PETamentor Community Builds">
-        </div>
-        <div class="text-block">
-          <p>
-            The Pulltrusion Machine is part of an open-source ecosystem. Key resources:
-          </p>
-          <ul>
-            <li><a href="https://petamentor.com/" target="_blank">Official PETamentor Website</a> (schematics, BOM, assembly guide).</li>
-            <li><a href="https://github.com/petamentor/pulltrusion" target="_blank">GitHub Repository</a> (CAD files, firmware, community contributions).</li>
-            <li><a href="https://forum.petamentor.com/" target="_blank">PETamentor Forum</a> (Q&amp;A, modifications, discussion).</li>
-          </ul>
-          <p>
-            Join maker spaces or online workshops—many host build sessions where participants assemble their own Pulltrusion Machines and share tips on feed rates and nozzle optimizations.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="future" class="fade-in">
-      <h2>Future Improvements &amp; Next Steps</h2>
+    <section id="reflections" class="fade-in">
+      <h2>Reflections & Learnings</h2>
       <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
-        <ul>
-          <li><strong>Automated Ribbon Feeder:</strong> Implement rotary gear feeder to maintain constant ribbon tension and speed.</li>
-          <li><strong>Closed-Loop Diameter Control:</strong> Add laser micrometer sensor to monitor filament diameter in real time and adjust puller speed dynamically.</li>
-          <li><strong>Multi-Material Filament:</strong> Explore co-extrusion of PET with additives like wood fiber or PLA to create composite filaments.</li>
-          <li><strong>Improved Bottle Cutter:</strong> Implement a more robust rotary cutter with adjustable blade angles for different bottle sizes.</li>
-        </ul>
         <p>
-          These enhancements aim to further increase consistency, throughput, and material versatility for community-driven builds.
+          This project provided invaluable insight into the lifecycle of safety-critical software. Key takeaways included:
         </p>
+        <ul>
+          <li>
+            <strong>Separation of Concerns:</strong> The importance of modular design (e.g., separating the UI logic in <span class="code-style">parameters.py</span> from the backend logic in <span class="code-style">uartChannel.py</span>) for maintainability and testing.
+          </li>
+          <li>
+            <strong>Safety First:</strong> Learning that reliability isn't an afterthought. Mechanisms like input validation ranges and connection monitoring are foundational to preventing patient harm.
+          </li>
+          <li>
+            <strong>Modern Tools:</strong> We leveraged Generative AI (GitHub Copilot) as a "pair programmer" to accelerate boilerplate code generation for the GUI and unit tests, allowing us to focus on complex logic and integration.
+          </li>
+        </ul>
       </div>
     </section>
   </main>

@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <!-- Force scroll to top and clear any URL hash -->
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
     if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
@@ -14,11 +13,11 @@
     :root {
       --primary-color: #007aff;
       --bg-dark: #1e1e1e;
-      --card-bg: rgba(44, 44, 44, 0.8);
+      --card-bg: linear-gradient(145deg, rgba(44, 44, 44, 0.6), rgba(30, 30, 30, 0.6));
       --text-color: #f0f0f0;
-      --shadow: rgba(0, 0, 0, 0.5);
-      --border-radius: 16px;
-      --section-gap: 3rem;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      --border-radius: 24px;
+      --section-gap: 5rem;
       --side-padding: 5vw;
     }
     *, *::before, *::after {
@@ -30,144 +29,310 @@
       background: var(--bg-dark);
       color: var(--text-color);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-      line-height: 1.6;
+      line-height: 1.7;
       overflow-x: hidden;
+      /* Radial Blue Background Hue */
+      background-image: radial-gradient(circle at top right, rgba(0, 122, 255, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(0, 122, 255, 0.05), transparent 40%);
+      background-attachment: fixed;
     }
     a {
       color: var(--primary-color);
       text-decoration: none;
-      transition: color 0.3s;
+      transition: all 0.3s ease;
+      border-bottom: 1px dotted var(--primary-color);
     }
     a:hover {
-      color: #005bb5;
+      color: #3395ff;
+      border-bottom-style: solid;
     }
     header {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 4px var(--shadow);
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
       border-radius: var(--border-radius);
       padding: 15px calc(var(--side-padding) + 10px);
-      margin: 10px calc(var(--side-padding) + 10px);
+      margin: 20px calc(var(--side-padding) + 10px);
       position: sticky;
-      top: 0;
+      top: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       z-index: 100;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
     }
     .site-title {
       font-size: 1.5rem;
-      font-weight: bold;
+      font-weight: 700;
+      border: none;
+      letter-spacing: -0.5px;
     }
     .nav-menu {
       display: flex;
-      gap: 25px;
+      gap: 30px;
+    }
+    .nav-menu a {
+        border: none;
+        font-weight: 500;
     }
     main {
       width: 100%;
-      padding: 2rem var(--side-padding);
+      padding: 3rem var(--side-padding);
+      max-width: 1400px;
+      margin: 0 auto;
     }
+
+    /* --- HERO & TECH STACK --- */
     .hero-image {
       width: 100%;
-      max-height: 400px;
+      max-height: 500px;
       border-radius: var(--border-radius);
-      margin-bottom: var(--section-gap);
+      margin-bottom: 3rem;
+      background-color: transparent;
       overflow: hidden;
-      background-color: var(--bg-dark);
+      box-shadow: var(--shadow);
     }
     .hero-image img {
       width: 100%;
-      height: auto;
+      height: 100%;
       display: block;
       object-fit: cover;
     }
+
+    /* Modern Tech Stack Badges */
+    .tech-stack {
+      display: flex;
+      gap: 15px;
+      margin-bottom: var(--section-gap);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .tech-badge {
+      background: rgba(0, 122, 255, 0.1);
+      border: 1px solid rgba(0, 122, 255, 0.3);
+      color: var(--primary-color);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    .tech-badge:hover {
+        background: rgba(0, 122, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* --- TYPOGRAPHY --- */
     section {
       margin-bottom: var(--section-gap);
     }
     section > h2 {
-      font-size: 2rem;
-      margin-bottom: 0.5rem;
-      padding-bottom: 0.3rem;
-      border-bottom: 2px solid var(--primary-color);
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-color);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      position: relative;
+      display: inline-block;
+      border-bottom: none;
     }
-    p, ul {
-      margin-bottom: 1rem;
+    section > h2::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), transparent);
+        margin-top: 10px;
+        border-radius: 2px;
     }
-    ul {
-      padding-left: 1.2rem;
+
+    /* Justified Text Settings */
+    p, ul, ol {
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      color: rgba(240, 240, 240, 0.9);
+      text-align: justify; /* Changed to Justify */
+      -webkit-hyphens: auto; /* Adds hyphens to prevent big gaps */
+      -ms-hyphens: auto;
+      hyphens: auto;
     }
-    ul li {
-      list-style: disc;
-      margin-bottom: 0.5rem;
+    ul, ol {
+      padding-left: 1.5rem;
     }
+    ul li, ol li {
+      margin-bottom: 0.8rem;
+    }
+    strong {
+        color: #fff;
+        font-weight: 600;
+    }
+    
+    /* Code/Math Highlights */
+    .code-style {
+      font-family: 'Courier New', Courier, monospace;
+      background: rgba(0, 122, 255, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #64d2ff;
+      border: 1px solid rgba(0, 122, 255, 0.2);
+    }
+
+    /* --- TABLE STYLING --- */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin-bottom: 1.5rem;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    th, td {
+      padding: 1rem;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    th {
+      background: rgba(0, 122, 255, 0.2);
+      color: #fff;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+    }
+    td {
+      background: rgba(255, 255, 255, 0.02);
+      color: rgba(240, 240, 240, 0.9);
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* --- LAYOUT --- */
     .section-content {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
+      display: grid;
+      gap: 3rem;
+      align-items: start;
     }
-    @media (min-width: 900px) {
-      .section-content.image-right {
-        flex-direction: row;
-      }
-      .section-content.image-left {
-        flex-direction: row-reverse;
-      }
-      .section-content img, .section-content .text-block {
-        flex: 1 1 0;
-      }
-      .section-content img {
-        flex: 0 0 40%;
-        border-radius: var(--border-radius);
-        object-fit: cover;
-      }
-      .section-content .text-block {
-        flex: 0 0 60%;
-        padding: 0 1.5rem;
-      }
+
+    /* Text Block Styling */
+    .text-block {
+      border-left: 4px solid var(--primary-color);
+      padding-left: 2rem;
+      text-align: justify; /* Ensure justify here too */
     }
+
     .section-image {
       width: 100%;
       border-radius: var(--border-radius);
       overflow: hidden;
-      background-color: var(--bg-dark);
+      background: transparent;
+      box-shadow: var(--shadow);
     }
     .section-image img {
       width: 100%;
       height: auto;
       display: block;
-      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 1rem;
+    .section-image:hover img {
+        transform: scale(1.03);
     }
-    th, td {
-      border: 1px solid var(--text-color);
-      padding: 0.5rem;
-      text-align: left;
+
+    /* Gallery Grid */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 30px;
+        margin-top: 2rem;
     }
-    th {
-      background: rgba(0, 122, 255, 0.2);
+    .gallery-grid .section-image {
+        box-shadow: none; 
     }
+    .gallery-grid .section-image img {
+        border-radius: var(--border-radius);
+    }
+
+    /* Desktop Layout: Side-by-Side */
+    @media (min-width: 900px) {
+      .section-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+      
+      /* Image Right */
+      .section-content.image-right .text-block {
+        grid-column: 1;
+      }
+      .section-content.image-right .section-image {
+        grid-column: 2;
+      }
+
+      /* Image Left */
+      .section-content.image-left .section-image {
+        grid-column: 1;
+      }
+      .section-content.image-left .text-block {
+        grid-column: 2;
+        border-left: none;
+        border-right: 4px solid var(--primary-color);
+        padding-left: 0;
+        padding-right: 2rem;
+        /* Changed from right to justify as requested */
+        text-align: justify; 
+      }
+      /* Reset lists for right-border alignment but LTR text */
+      .section-content.image-left .text-block ul, 
+      .section-content.image-left .text-block ol {
+          direction: rtl; /* Keeps bullets near the border */
+          padding-right: 1.5rem;
+      }
+      .section-content.image-left .text-block ul li,
+      .section-content.image-left .text-block ol li {
+          direction: ltr; /* Reset text direction to read normally */
+          text-align: justify; /* Justify the list items */
+      }
+      
+      /* Full Width / Stacked Override */
+      .section-content.full-width {
+        grid-template-columns: 1fr !important;
+      }
+      .section-content.full-width .text-block {
+        grid-column: 1 !important;
+        border: none;
+        border-top: 4px solid var(--primary-color);
+        padding: 2rem 0 0 0;
+        text-align: justify;
+      }
+    }
+
     .fade-in {
       opacity: 0;
-      transform: translateY(20px) scale(0.95);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
     .fade-in.visible {
       opacity: 1;
       transform: none;
     }
+
     footer {
-      background: var(--card-bg);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 2px 4px var(--shadow);
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
       border-radius: var(--border-radius);
-      margin: 10px calc(var(--side-padding) + 10px);
-      padding: 20px;
+      margin: 20px calc(var(--side-padding) + 10px);
+      padding: 25px;
       text-align: center;
       font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(240, 240, 240, 0.7);
     }
     #bg-canvas {
       position: fixed;
@@ -183,7 +348,7 @@
 <body>
   <canvas id="bg-canvas"></canvas>
 
-  <header>
+  <header id="site-header">
     <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
     <nav class="nav-menu">
       <a href="https://manandua17.github.io">Home</a>
@@ -191,14 +356,20 @@
   </header>
 
   <main>
-    <!-- Hero Section -->
     <div class="hero-image fade-in">
       <img src="Fully Assembled.jpg" alt="Fully Assembled HAML Device">
     </div>
 
-    <!-- Device Description -->
+    <div class="tech-stack fade-in">
+      <span class="tech-badge">MSP432E401Y MCU</span>
+      <span class="tech-badge">VL53L1X ToF</span>
+      <span class="tech-badge">Stepper Motor</span>
+      <span class="tech-badge">Python / Open3D</span>
+      <span class="tech-badge">UART / I2C</span>
+    </div>
+
     <section id="description" class="fade-in">
-      <h2>Device Description: High-Accuracy Mapping Lidar (HAML)</h2>
+      <h2>Device Description</h2>
       <div class="section-content image-right">
         <div class="text-block">
           <p>
@@ -206,16 +377,16 @@
           </p>
           <p>Key Features:</p>
           <ul>
-            <li><strong>Microcontroller:</strong> MSP432E401Y running at 26 MHz with 17 kB program memory.</li>
+            <li><strong>Microcontroller:</strong> MSP432E401Y running at 26 MHz with 17 kB program memory.</li>
             <li><strong>User Interface:</strong> Two push buttons—one to start the scan, one for homing.</li>
             <li><strong>ToF Sensor:</strong> VL53L1X captures distance readings every 5.625° for a full 360° sweep (64 measurements).</li>
             <li><strong>Stepper Motor:</strong> 28BYJ-48 controlled via ULN2003 driver in Full-Step mode for maximum torque.</li>
-            <li><strong>Power:</strong> 5 V DC via micro-USB; VL53L1X powered at 3.3 V from the MCU.</li>
-            <li><strong>Connectivity:</strong> I²C between MCU and ToF sensor; UART between MCU and PC at 115200 bps.</li>
+            <li><strong>Power:</strong> 5 V DC via micro-USB; VL53L1X powered at 3.3 V from the MCU.</li>
+            <li><strong>Connectivity:</strong> I²C between MCU and ToF sensor; UART between MCU and PC at 115200 bps.</li>
             <li><strong>Indicators:</strong> LEDs for data measurement, UART status, and error indication.</li>
             <li><strong>Data Visualization:</strong> Python (v3.12) and Open3D (v0.19) convert measurements into 3D point clouds.</li>
-            <li><strong>Cost:</strong> Approximately $105 total: MSP432E401Y ($75), VL53L1X ($15), stepper kit ($10), 3D prints ($5).
-          </li></ul>
+            <li><strong>Cost:</strong> Approximately $105 total: MSP432E401Y ($75), VL53L1X ($15), stepper kit ($10), 3D prints ($5).</li>
+          </ul>
         </div>
         <div class="section-image">
           <img src="block diagram.jpg" alt="Block Diagram of HAML Data Flow">
@@ -223,61 +394,60 @@
       </div>
     </section>
 
-    <!-- Device Characteristics Table -->
     <section id="characteristics" class="fade-in">
       <h2>Device Characteristics</h2>
-      <div class="section-content">
-        <table>
-          <thead>
-            <tr><th>Characteristic</th><th>Detail</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Microcontroller Bus Speed</td><td>26 MHz</td></tr>
-            <tr><td>SCL (ToF Pin)</td><td>PB2 on MSP432E401Y (I²C clock)</td></tr>
-            <tr><td>SDA (ToF Pin)</td><td>PB3 on MSP432E401Y (I²C data)</td></tr>
-            <tr><td>Vin (ToF Power)</td><td>3.3 V</td></tr>
-            <tr><td>GND (ToF Power)</td><td>GND</td></tr>
-            <tr><td>IN1–IN4 (Motor Driver Inputs)</td><td>PH0, PH1, PH2, PH3 on MSP432E401Y</td></tr>
-            <tr><td>Motor Driver Power (V+)</td><td>5 V</td></tr>
-            <tr><td>Push Button 1</td><td>PM0 (start scan)</td></tr>
-            <tr><td>Push Button 2</td><td>PM1 (home)</td></tr>
-            <tr><td>Power LED</td><td>PN1</td></tr>
-            <tr><td>UART LED</td><td>PN0</td></tr>
-            <tr><td>Error LED</td><td>PF4 (failed measurement)</td></tr>
-            <tr><td>UART Baud Rate</td><td>115200 bps</td></tr>
-            <tr><td>Python Version</td><td>3.12.0</td></tr>
-            <tr><td>Open3D Version</td><td>0.19.0</td></tr>
-            <tr><td>Serial Port</td><td>e.g., COM6</td></tr>
-          </tbody>
-        </table>
+      <div class="section-content full-width">
+        <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
+            <table>
+              <thead>
+                <tr><th>Characteristic</th><th>Detail</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Microcontroller Bus Speed</td><td>26 MHz</td></tr>
+                <tr><td>SCL (ToF Pin)</td><td>PB2 on MSP432E401Y (I²C clock)</td></tr>
+                <tr><td>SDA (ToF Pin)</td><td>PB3 on MSP432E401Y (I²C data)</td></tr>
+                <tr><td>Vin (ToF Power)</td><td>3.3 V</td></tr>
+                <tr><td>GND (ToF Power)</td><td>GND</td></tr>
+                <tr><td>IN1–IN4 (Motor Driver Inputs)</td><td>PH0, PH1, PH2, PH3 on MSP432E401Y</td></tr>
+                <tr><td>Motor Driver Power (V+)</td><td>5 V</td></tr>
+                <tr><td>Push Button 1</td><td>PM0 (start scan)</td></tr>
+                <tr><td>Push Button 2</td><td>PM1 (home)</td></tr>
+                <tr><td>Power LED</td><td>PN1</td></tr>
+                <tr><td>UART LED</td><td>PN0</td></tr>
+                <tr><td>Error LED</td><td>PF4 (failed measurement)</td></tr>
+                <tr><td>UART Baud Rate</td><td>115200 bps</td></tr>
+                <tr><td>Python Version</td><td>3.12.0</td></tr>
+                <tr><td>Open3D Version</td><td>0.19.0</td></tr>
+                <tr><td>Serial Port</td><td>e.g., COM6</td></tr>
+              </tbody>
+            </table>
+        </div>
       </div>
     </section>
 
-    <!-- Detailed Description: Distance Measurement -->
     <section id="distance" class="fade-in">
-      <h2>Detailed Description: Distance Measurement</h2>
+      <h2>Measurement Logic</h2>
       <div class="section-content image-left">
         <div class="section-image">
             <img src="code1.png" alt="printTOF() Function Code Snippet">
         </div>
         <div class="text-block">
           <p>
-            The HAML uses the VL53L1X ToF sensor to measure distances up to 4 m with millimeter accuracy. A 940 nm VCSEL emits an IR pulse, and a SPAD array detects returning photons. The time difference between emission and reception—divided by twice the speed of light—yields the distance.
+            The HAML uses the VL53L1X ToF sensor to measure distances up to 4 m with millimeter accuracy. A 940 nm VCSEL emits an IR pulse, and a SPAD array detects returning photons. The time difference between emission and reception—divided by twice the speed of light—yields the distance.
           </p>
           <p>Distance formula example:</p>
-          <p><em>Distance</em> = (20 ns) / (2 × 3 × 10<sup>8</sup> m/s) = 3 m (3000 mm)</p>
+          <p><em>Distance</em> = (20 ns) / (2 × 3 × 10<sup>8</sup> m/s) = 3 m (3000 mm)</p>
           <p>
-            The sensor communicates via I²C. At startup, the MCU configures GPIOs for buttons, the ToF sensor, and motor driver. When Push Button 1 is pressed, the 
-            <code>spin()</code> function rotates the stepper 32 steps (5.625°) and calls <code>printTOF()</code> to read and validate distance data. This repeats 64 times for a full 360° scan (2048 steps total). After completion, the motor returns to –90° home.
+            The sensor communicates via I²C. At startup, the MCU configures GPIOs for buttons, the ToF sensor, and motor driver. When Push Button 1 is pressed, the 
+            <span class="code-style">spin()</span> function rotates the stepper 32 steps (5.625°) and calls <span class="code-style">printTOF()</span> to read and validate distance data. This repeats 64 times for a full 360° scan (2048 steps total). After completion, the motor returns to –90° home.
           </p>
           <p>
-            Each radial measurement point is converted from polar (angle, distance) to Cartesian (Y, Z) using sine and cosine. After each full scan, the user moves the device +300 mm along X to capture the next slice.
+            Each radial measurement point is converted from polar (angle, distance) to Cartesian (Y, Z) using sine and cosine. After each full scan, the user moves the device +300 mm along X to capture the next slice.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Visualization -->
     <section id="visualization" class="fade-in">
       <h2>Visualization</h2>
       <div class="section-content image-left">
@@ -286,71 +456,50 @@
         </div>
         <div class="text-block">
           <p>
-            After data collection, the Python script (<code>O3DCreateData.py</code>) reads distance values via UART (COM6), including the number of points per run and total runs. It computes XYZ coordinates: Z = cos(angle) × distance, Y = sin(angle) × distance, and X increments by 300 mm per run.
+            After data collection, the Python script (<span class="code-style">O3DCreateData.py</span>) reads distance values via UART (COM6), including the number of points per run and total runs. It computes XYZ coordinates: Z = cos(angle) × distance, Y = sin(angle) × distance, and X increments by 300 mm per run.
           </p>
           <p>
             Once converted, the script launches Open3D to render a raw point cloud and a connected mesh, visualizing the scanned environment in 3D.
           </p>
         </div>
       </div>
-      <div class="text-block">  
-        <p>
-          </li>
-        </p>
-      </div>
-      <div class="section-content">
+      <div class="gallery-grid" style="grid-template-columns: 1fr; margin-top: 3rem;">
         <div class="section-image">
-          <img src="code4.png" alt="Python Code Converting to Cartesian Coordinates">
+           <img src="code4.png" alt="Python Code Converting to Cartesian Coordinates">
         </div>
       </div>
     </section>
 
-    <!-- Application & Instructions & Expected Output -->
     <section id="application" class="fade-in">
-      <h2>Application, Instructions, and Expected Output</h2>
+      <h2>Application & Instructions</h2>
       <div class="section-content image-right">
-        <div class="section-image">
-          <img src="hallway.jpg" alt="Photo of Scanned Hallway Location">
-        </div>
         <div class="text-block">
           <h3>Application</h3>
           <p>
-            HAML is useful for indoor mapping: construction planning, security, robotics navigation, and home automation. It identifies structural defects, estimates repairs, or aids robotic path planning. While optimal indoors (≤4 m range), future sensors could expand outdoor use.
+            HAML is useful for indoor mapping: construction planning, security, robotics navigation, and home automation. It identifies structural defects, estimates repairs, or aids robotic path planning. While optimal indoors (≤4 m range), future sensors could expand outdoor use.
           </p>
           <h3>Instructions</h3>
           <ol>
-            <li>Assemble circuit per schematic: connect MSP432E401Y, VL53L1X (I²C), 28BYJ-48 stepper (ULN2003), buttons, and LEDs. Refer to the folloring figures for wiring and enclosure photos.</li>
-            <li>Mount components in a 3D-printed chassis; align ToF sensor on motor shaft, pointing downward. Place Push Button 1 to start scan, Push Button 2 for homing.</li>
+            <li>Assemble circuit per schematic: connect MSP432E401Y, VL53L1X (I²C), 28BYJ-48 stepper (ULN2003), buttons, and LEDs.</li>
+            <li>Mount components in a 3D-printed chassis; align ToF sensor on motor shaft, pointing downward. Place Push Button 1 to start scan, Push Button 2 for homing.</li>
             <li>Connect to PC via USB; note COM port in Device Manager (e.g., COM6).</li>
-            <li>Upload Keil code (<code>duam4 – 2DX3 Final Project Code.c</code>) to MSP432E401Y; press reset.
-            </li>
-            <li>Update <code>O3DCreateData.py</code> with correct COM port (line 15).</li>
-            <li>Place HAML at starting position; press Button 1 to scan. After full 360° rotation, device returns home.</li>
-            <li>Move device +300 mm along +X and press Button 1 for next scan. Repeat as needed. Press Button 2 at any time to abort and return to home.</li>
-            <li>After all runs, execute <code>O3DCreateData.py</code> to retrieve data and visualize.
-            </li>
+            <li>Upload Keil code (<span class="code-style">duam4 – 2DX3 Final Project Code.c</span>) to MSP432E401Y; press reset.</li>
+            <li>Update <span class="code-style">O3DCreateData.py</span> with correct COM port (line 15).</li>
+            <li>Place HAML at starting position; press Button 1 to scan. After full 360° rotation, device returns home.</li>
+            <li>Move device +300 mm along +X and press Button 1 for next scan. Repeat as needed. Press Button 2 at any time to abort and return to home.</li>
+            <li>After all runs, execute <span class="code-style">O3DCreateData.py</span> to retrieve data and visualize.</li>
           </ol>
-          <h3>Expected Output</h3>
-          <p>
-            Scans of location I (John Hodgins Engineering Building hallway) should resemble the following figures. Areas beyond 4 m show gaps filled using previous valid readings. The Open3D point cloud and connected mesh match hallway geometry, with minor inaccuracies on reflective or uneven surfaces.
-          </li>
-          </li>
-          </li>
-          </li>
-          </p>
+        </div>
+        <div class="section-image">
+          <img src="hallway.jpg" alt="Photo of Scanned Hallway Location">
         </div>
       </div>
-      <div class="text-block">  
-        <p>
-          </li>
-        </p>
-      </div>
-      <div class="text-block">  
-        <p>
-          </li>
-        </p>
-      </div>
-      <div class="section-content image-right">
+      
+      <h3 style="margin-top: 3rem; color: var(--text-color); font-size: 1.5rem; border-left: 4px solid var(--primary-color); padding-left: 1rem;">Expected Output</h3>
+      <p style="margin-top: 1rem; text-align: justify;">
+        Scans of location I (John Hodgins Engineering Building hallway). Areas beyond 4 m show gaps filled using previous valid readings. The Open3D point cloud and connected mesh match hallway geometry.
+      </p>
+      <div class="gallery-grid">
         <div class="section-image">
           <img src="point cloud.png" alt="Open3D Point Cloud Visualization">
         </div>
@@ -360,48 +509,37 @@
       </div>
     </section>
 
-    <!-- Limitations -->
     <section id="limitations" class="fade-in">
       <h2>Limitations</h2>
-      <div class="section-content">
-        <div class="text-block">
+      <div class="section-content full-width">
+        <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
           <p>
-            The MSP432E401Y’s FPU supports single-precision; complex trigonometric calculations are offloaded to Python (64-bit). MCU memory (2048 integers) limits scans to 32 runs of 64 points. VL53L1X ADC quantization error (~1 mm) matches sensor resolution. UART set to 115200 bps; PC maximum ~128000 bps. I²C limited to 100 kbps. Bus speed is 26 MHz; can go to 120 MHz but stepper speed and ToF response limit scan rate (2 ms step delay required for reliability). ToF struggles with glass or brightly lit surfaces; accuracy improves at closer range.
+            The MSP432E401Y’s FPU supports single-precision; complex trigonometric calculations are offloaded to Python (64-bit). MCU memory (2048 integers) limits scans to 32 runs of 64 points. VL53L1X ADC quantization error (~1 mm) matches sensor resolution. UART set to 115200 bps; PC maximum ~128000 bps. I²C limited to 100 kbps. Bus speed is 26 MHz; can go to 120 MHz but stepper speed and ToF response limit scan rate (2 ms step delay required for reliability). ToF struggles with glass or brightly lit surfaces; accuracy improves at closer range.
           </p>
         </div>
       </div>
     </section>
 
-    <!-- Circuit Schematic -->
     <section id="schematic" class="fade-in">
       <h2>Circuit Schematic</h2>
       <div class="section-content image-right">
+        <div class="text-block">
+            <p>
+              The schematic details the connections between the MSP432 microcontroller, the I²C sensor, the motor driver board, and the user input buttons. Note the specific GPIO port assignments for the stepper motor sequence (PH0-PH3) and the I²C bus (PB2/PB3).
+            </p>
+        </div>
         <div class="section-image">
           <img src="2DX3 Schematic.jpg" alt="HAML Circuit Schematic">
         </div>
-        <div class="text-block">  
-        <p>
-          </li>
-        </p>
-      </div>
       </div>
     </section>
 
-    <!-- Flowcharts -->
     <section id="flowcharts" class="fade-in">
       <h2>Programming Logic Flowcharts</h2>
-      <div class="section-content">
+      <div class="gallery-grid">
         <div class="section-image">
           <img src="dx flowchart 1.jpg" alt="Flowchart of Microcontroller Code">
         </div>
-      </div>
-      <div class="section-content">
-        <div class="section-image">
-          <p>
-            </li>
-          </p>
-        </div>
-      <div class="section-content">
         <div class="section-image">
           <img src="pc coe flowchart.jpg" alt="Flowchart of Python Code">
         </div>
@@ -414,36 +552,54 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('.fade-in').forEach(el =>
-        new IntersectionObserver(entries => {
-          entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-        }, { threshold: 0.1 }).observe(el)
-      );
+      const options = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    });
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > lastY && y > 50) headerEl.style.transform = 'translateY(-120%)';
+      else headerEl.style.transform = 'translateY(0)';
+      lastY = y;
     });
 
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
-    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    window.addEventListener('resize', resizeBg); resizeBg();
-
-    const particles = Array.from({ length: 100 }, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1
-    }));
+    let particles = [];
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); }
+    function initParticles() {
+      particles = [];
+      const num = Math.min(window.innerWidth / 10, 100);
+      for (let i = 0; i < num; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       particles.forEach(p => {
         p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = canvas.width;
-        if (p.x > canvas.width) p.x = 0;
-        if (p.y < 0) p.y = canvas.height;
-        if (p.y > canvas.height) p.y = 0;
+        if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
-        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fillStyle = `rgba(0, 122, 255, ${p.alpha})`;
         ctx.fill();
       });
       for (let i = 0; i < particles.length; i++) {
@@ -451,27 +607,21 @@
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const d = Math.hypot(dx, dy);
-          if (d < 100) {
+          if (d < 120) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255,255,255,${1 - d / 100})`;
-            ctx.lineWidth = 1;
+            ctx.strokeStyle = `rgba(0, 122, 255, ${(1 - d / 120) * 0.15})`;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
       }
       requestAnimationFrame(draw);
     }
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
     draw();
-
-    let lastY = 0;
-    const headerEl = document.getElementById('site-header');
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      headerEl.style.transform = y > lastY && y > 100 ? 'translateY(-120%)' : 'translateY(0)';
-      lastY = y;
-    });
   </script>
 </body>
 </html>

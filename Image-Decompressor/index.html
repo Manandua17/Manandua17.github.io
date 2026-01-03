@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (window.location.hash) history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manan Dua | Hardware Image Decompressor (COE 3DQ5)</title>
+  <style>
+    :root {
+      --primary-color: #007aff;
+      --bg-dark: #1e1e1e;
+      --card-bg: linear-gradient(145deg, rgba(44, 44, 44, 0.6), rgba(30, 30, 30, 0.6));
+      --text-color: #f0f0f0;
+      --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+      --border-radius: 24px;
+      --section-gap: 5rem;
+      --side-padding: 5vw;
+    }
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: var(--bg-dark);
+      color: var(--text-color);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.7;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at top right, rgba(0, 122, 255, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(0, 122, 255, 0.05), transparent 40%);
+      background-attachment: fixed;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px dotted var(--primary-color);
+    }
+    a:hover {
+      color: #3395ff;
+      border-bottom-style: solid;
+    }
+    header {
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      padding: 15px calc(var(--side-padding) + 10px);
+      margin: 20px calc(var(--side-padding) + 10px);
+      position: sticky;
+      top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
+    }
+    .site-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      border: none;
+      letter-spacing: -0.5px;
+    }
+    .nav-menu {
+      display: flex;
+      gap: 30px;
+    }
+    .nav-menu a {
+        border: none;
+        font-weight: 500;
+    }
+    main {
+      width: 100%;
+      padding: 3rem var(--side-padding);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* --- HERO & TECH STACK --- */
+    .hero-image {
+      width: 100%;
+      height: 500px;
+      border-radius: var(--border-radius);
+      margin-bottom: 3rem;
+      background-color: transparent;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .hero-image img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* Modern Tech Stack Badges */
+    .tech-stack {
+      display: flex;
+      gap: 15px;
+      margin-bottom: var(--section-gap);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .tech-badge {
+      background: rgba(0, 122, 255, 0.1);
+      border: 1px solid rgba(0, 122, 255, 0.3);
+      color: var(--primary-color);
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    .tech-badge:hover {
+        background: rgba(0, 122, 255, 0.2);
+        transform: translateY(-2px);
+    }
+
+    /* --- TYPOGRAPHY --- */
+    section {
+      margin-bottom: var(--section-gap);
+    }
+    section > h2 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: var(--text-color);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      position: relative;
+      display: inline-block;
+      border-bottom: none;
+    }
+    section > h2::after {
+        content: '';
+        display: block;
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), transparent);
+        margin-top: 10px;
+        border-radius: 2px;
+    }
+
+    p, ul {
+      margin-bottom: 1.5rem;
+      font-size: 1.05rem;
+      color: rgba(240, 240, 240, 0.9);
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    ul li {
+      margin-bottom: 0.8rem;
+    }
+    strong {
+        color: #fff;
+        font-weight: 600;
+    }
+    
+    /* Code/Math Highlights */
+    .code-style {
+      font-family: 'Courier New', Courier, monospace;
+      background: rgba(0, 122, 255, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.9em;
+      color: #64d2ff;
+      border: 1px solid rgba(0, 122, 255, 0.2);
+    }
+
+    /* --- LAYOUT & CARDS --- */
+    .section-content {
+      display: grid;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    /* Text Block Styling */
+    .text-block {
+      /* Vertical accent line */
+      border-left: 4px solid var(--primary-color);
+      padding-left: 2rem;
+    }
+
+    .section-image {
+      width: 100%;
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: transparent;
+      box-shadow: var(--shadow);
+    }
+    .section-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .section-image:hover img {
+        transform: scale(1.03);
+    }
+
+    /* Desktop Layout: Side-by-Side */
+    @media (min-width: 900px) {
+      .section-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+      }
+      
+      /* Image Right */
+      .section-content.image-right .text-block {
+        grid-column: 1;
+      }
+      .section-content.image-right .section-image {
+        grid-column: 2;
+      }
+
+      /* Image Left */
+      .section-content.image-left .section-image {
+        grid-column: 1;
+      }
+      .section-content.image-left .text-block {
+        grid-column: 2;
+        border-left: none;
+        border-right: 4px solid var(--primary-color);
+        padding-left: 0;
+        padding-right: 2rem;
+        text-align: right;
+      }
+      /* Reset lists for right-aligned text */
+      .section-content.image-left .text-block ul {
+          direction: rtl;
+          padding-right: 1.5rem;
+      }
+      .section-content.image-left .text-block ul li {
+          direction: ltr;
+      }
+      
+      /* Stacked Override (Text Top, Image Bottom) */
+      .section-content.stacked {
+        grid-template-columns: 1fr !important;
+        gap: 2rem;
+      }
+      .section-content.stacked .text-block {
+        grid-column: 1 !important;
+        border: none; 
+        border-top: 4px solid var(--primary-color); /* Top accent */
+        padding: 2rem 0 0 0;
+        text-align: left;
+      }
+      /* Ensure lists in stacked view are normal */
+      .section-content.stacked .text-block ul {
+          direction: ltr;
+          padding-left: 1.5rem;
+          padding-right: 0;
+      }
+      .section-content.stacked .section-image {
+        grid-column: 1 !important;
+        width: 100%;
+        max-width: 1000px;
+        margin: 1rem auto 0 auto;
+      }
+    }
+
+    /* Milestone Styling */
+    .milestone-group {
+        display: grid;
+        gap: 2rem;
+    }
+    .milestone-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 1.5rem;
+        border-radius: var(--border-radius);
+    }
+    .milestone-item h3 {
+        color: var(--primary-color);
+        margin-top: 0;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    footer {
+      background: rgba(44, 44, 44, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      margin: 20px calc(var(--side-padding) + 10px);
+      padding: 25px;
+      text-align: center;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(240, 240, 240, 0.7);
+    }
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+
+  <header id="site-header">
+    <a href="https://manandua17.github.io" class="site-title">Manan Dua</a>
+    <nav class="nav-menu">
+      <a href="https://manandua17.github.io">Home</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="hero-image fade-in">
+      <img src="fpga.jpg" alt="FPGA Image Decompressor on Altera DE2-115">
+    </div>
+
+    <div class="tech-stack fade-in">
+      <span class="tech-badge">Verilog / SystemVerilog</span>
+      <span class="tech-badge">Altera DE2-115 FPGA</span>
+      <span class="tech-badge">ModelSim</span>
+      <span class="tech-badge">Quartus Prime</span>
+      <span class="tech-badge">Python</span>
+    </div>
+
+    <section id="overview" class="fade-in">
+      <h2>Overview &amp; Purpose</h2>
+      <div class="text-block" style="border: none; padding: 0;">
+        <p>This project, developed for the <strong>COE 3DQ5 (Digital Systems Design)</strong> course, involved designing and implementing a hardware-accelerated image decompression system on an <strong>Altera DE2-115 FPGA</strong>. The primary goal was to receive a compressed image in the custom <span class="code-style">.mic19</span> bitstream format via UART, decode it in real-time using custom hardware logic, and display the resulting decompressed image on a monitor via a VGA interface.</p> 
+        <p>Modern image processing often requires specialized hardware to handle high-throughput data streams efficiently. By offloading complex tasks such as Inverse Discrete Cosine Transforms (IDCT) and Color Space Conversion from a general-purpose processor to the FPGA, we demonstrated the power of parallelism in digital system design. The project required rigorous timing analysis, resource optimization, and the implementation of a robust finite state machine (FSM) to manage data flow between the UART, SRAM, and the display pipeline.</p>
+      </div>
+    </section>
+
+    <section id="team" class="fade-in">
+      <h2>Team &amp; Collaboration</h2>
+      <div class="section-content stacked">
+        <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
+          <p>This project was a deep collaborative effort between myself (Manan Dua) and my partner, <strong>Mohammad Mustafa</strong>. Unlike typical projects where components are split entirely, we worked together on the conceptualization, state machine design, and board testing for <strong>every single milestone</strong>. We utilized pair programming for the critical debugging phases to solve complex timing violations.</p>
+          <p>To maximize efficiency, we divided the specific implementation tasks within each milestone:</p>
+          <ul>
+            <li>
+              <strong>Manan Dua:</strong> 
+              Took the lead on the second pass of the IDCT (Compute S) and adapting the arithmetic logic for the Chroma planes during Milestone 2. For Milestone 3, I designed the "Zig-Zag" address counters and the Quantization logic required to reconstruct frequency coefficients from the bitstream.
+            </li>
+            <li>
+              <strong>Mohammad Mustafa:</strong> 
+              Optimized register usage in Milestone 1 to ensure we met resource constraints. In Milestone 2, he led the implementation of the first IDCT pass (Compute T). For Milestone 3, he focused on the "Burst Write" logic for the SRAM interface to ensure the decoded data was written back to memory efficiently.
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="lab setup.png" alt="FPGA Lab Setup">
+        </div>
+      </div>
+    </section>
+
+    <section id="components" class="fade-in">
+      <h2>Components &amp; Architecture</h2>
+      <div class="section-content stacked">
+        <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
+          <p>The system is built on the <strong>Altera DE2-115 Development Board</strong>, operating at a clock frequency of <span class="code-style">50 MHz</span>. The data flow architecture consists of:</p>
+          <ul>
+            <li>
+              <strong>Communication Interface:</strong> A UART receiver operating at <span class="code-style">115200 baud</span> to fetch the compressed <span class="code-style">.mic19</span> bitstream from a PC.
+            </li>
+            <li>
+              <strong>Memory Management:</strong> An SRAM Controller that manages the 2MB off-chip SRAM. It handles the critical task of arbitration, allowing the system to simultaneously write incoming compressed data and read out decompressed pixel data for the display.
+            </li>
+            <li>
+              <strong>VGA Controller:</strong> Generates the necessary H-Sync and V-Sync signals to drive a standard monitor at <span class="code-style">640x480</span> resolution.
+            </li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="wavefrom.png" alt="Waveform Diagram">
+        </div>
+      </div>
+    </section>
+
+    <section id="build-process" class="fade-in">
+      <h2>Build Process & Milestones</h2>
+      <div class="section-content stacked">
+        <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
+          <div class="milestone-group">
+            <div class="milestone-item">
+              <h3>Milestone 1: Colour Space Conversion & Upsampling</h3>
+              <p>
+                <strong>The Task:</strong> In image compression, color data (Chroma, or U/V) is often downsampled (stored at lower resolution) to save space because the human eye is less sensitive to color detail than brightness (Luma, or Y). Our task was to restore the full resolution image. This involved implementing a <strong>10-tap interpolation filter</strong> to "guess" the missing color pixels (Upsampling) and then performing matrix multiplication to convert the YCbCr data into the standard RGB format for the monitor.
+              </p>
+              <p>
+                <strong>The Constraint:</strong> Hardware multipliers (DSP blocks) are a limited resource on an FPGA. We were restricted to using <strong>only 4 hardware multipliers</strong> for this entire stage. To prove our design was efficient, we were required to achieve a utilization rate of at least 80%.
+              </p>
+              <p>
+                <strong>Our Implementation:</strong>
+                We designed a state machine that reused partial products in the matrix multiplication to minimize calculations.
+                <ul>
+                  <li><strong>Result:</strong> We achieved a multiplier utilization rate of <strong>83.33%</strong> (using 30 out of 36 available multiplication slots in our pipeline).</li>
+                  <li><strong>Throughput:</strong> The processing of one pixel row (which involves calculating 320 pixels) took approximately <strong>864 clock cycles</strong>.</li>
+                  <li><strong>Resource Usage:</strong> This complex module consumed <strong>550 registers</strong> on the FPGA.</li>
+                </ul>
+              </p>
+            </div>
+
+            <div class="milestone-item">
+              <h3>Milestone 2: Inverse DCT (IDCT)</h3>
+              <p>
+                <strong>The Task:</strong> JPEG compression stores images as frequencies (waves) rather than pixels. To display the image, we must convert these frequency coefficients back into spatial pixel data. This requires an <strong>Inverse Discrete Cosine Transform (IDCT)</strong>, a computationally heavy operation involving transforming 8x8 and 16x16 matrices.
+              </p>
+              <p>
+                <strong>The Constraint:</strong> Storing these large matrices consumes significant on-chip memory. We were allowed to use up to <strong>4 Dual-Port RAMs (DPRAMs)</strong> to buffer the data. We were also restricted to using only <strong>3 hardware multipliers</strong> for the IDCT math, with a target utilization of >85%.
+              </p>
+              <p>
+                <strong>Our Implementation:</strong>
+                We decomposed the 2-D IDCT into two 1-D passes (processing rows first, then columns). We utilized the 4 DPRAMs to store intermediate results (S' and T matrices) and the Transpose matrix (C), optimizing the read/write patterns to keep the pipeline full.
+                <ul>
+                  <li><strong>Result:</strong> We achieved extremely high efficiency, with multiplier utilization rates of <strong>88% for Luma</strong> blocks and <strong>87% for Chroma</strong> blocks.</li>
+                  <li><strong>Resource Usage:</strong> This complex module consumed only <strong>357 registers</strong> on the FPGA.</li>
+                </ul>
+              </p>
+            </div>
+
+            <div class="milestone-item">
+              <h3>Milestone 3: Lossless Decoding & Quantization</h3>
+              <p>
+                <strong>The Task:</strong> This was the final piece of the puzzle: reading the raw compressed bitstream (<span class="code-style">.mic19</span> format) from memory. Compressed data is variable-length (a simple "white" block might take 2 bits, while a complex texture might take 100 bits). We had to parse this stream, identify the codes, and perform <strong>Requantization</strong> to reconstruct the frequency coefficients for the IDCT stage.
+              </p>
+              <p>
+                <strong>The Constraint:</strong> Since multipliers are scarce and were largely used in previous stages, we were required to use <strong>variable shifters</strong> (bit-shifting logic) instead of multipliers for the Requantization step.
+              </p>
+              <p>
+                <strong>Our Implementation:</strong>
+                We implemented "zig-zag" scanning logic to correctly place the decoded coefficients into the 8x8 and 16x16 matrices.
+                <ul>
+                  <li><strong>Engineering Analysis:</strong> We calculated the worst-case latency for a Luma block to be <strong>864 clock cycles</strong> and a Chroma block to be <strong>216 clock cycles</strong>.</li>
+                  <li><strong>Bottleneck Identification:</strong> Our analysis revealed that a seamless real-time pipeline was difficult because fetching the bitstream from SRAM pauses the arithmetic pipeline. To fully meet the integration timing, the bitstream fetching would need to be decoupled and run as a background process to hide this latency. Unfortunately, due to time contraints, we were not able to complete milstone 3 to the fullest extent which would be merging the requantized values with the Compute T stage of milestone 2. However the core functionality was implemented independently of milestone 2 successfully.</li>
+                  <li><strong>Resource Usage:</strong> This complex module consumed only <strong>197 registers</strong> on the FPGA.</li>
+                </ul>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="section-image">
+          <img src="rtl.png" alt="RTL Schematic View">
+        </div>
+      </div>
+    </section>
+
+    <section id="results" class="fade-in">
+      <h2>Results</h2>
+      <div class="section-content image-right">
+        <div class="text-block">
+          <p>
+            The final design successfully met the core project specifications, correctly decoding and displaying the test images.
+          </p>
+          <ul>
+            <li><strong>Total Resources:</strong> The entire project utilized <strong>4,586 Logic Elements</strong> on the FPGA.</li>
+            <li><strong>Functionality:</strong> The system reliably decompressed the <span class="code-style">.mic19</span> format and displayed it on the monitor with no visual artifacts.</li>
+            <li><strong>Design Quality:</strong> We achieved a fully synchronous design without any latches, ensuring robustness against timing glitches and reliable operation on the FPGA hardware.</li>
+          </ul>
+        </div>
+        <div class="section-image">
+          <img src="final output.jpg" alt="Final Decompressed Image on VGA">
+        </div>
+      </div>
+    </section>
+
+    <section id="reflections" class="fade-in">
+      <h2>Reflections & Learnings</h2>
+      <div class="text-block" style="border: none; padding: 0rem 0 0 0;">
+        <p>
+          This project was a deep dive into the complexities of digital system design. We learned significant lessons about:
+        </p>
+        <ul>
+          <li>
+            <strong>Matrix Operations in Hardware:</strong> How to efficiently perform matrix multiplication on data stored in RAM and manage the storage of intermediate results.
+          </li>
+          <li>
+            <strong>Variable Latency:</strong> Handling circuits and modules that take variable amounts of time to complete tasks, and designing interfaces that can wait or stall correctly without losing data.
+          </li>
+          <li>
+            <strong>Project Management:</strong> The importance of breaking a complex system into smaller, testable modules and effectively assigning concurrent tasks to maximize team efficiency.
+          </li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>⚒️ Designed by Manan Dua — 2025 ⚒️</footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const options = { threshold: 0.15, rootMargin: "0px 0px -50px 0px" };
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+      document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    });
+
+    let lastY = 0;
+    const headerEl = document.getElementById('site-header');
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      if (y > lastY && y > 50) headerEl.style.transform = 'translateY(-120%)';
+      else headerEl.style.transform = 'translateY(0)';
+      lastY = y;
+    });
+
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    function resizeBg() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initParticles(); }
+    function initParticles() {
+      particles = [];
+      const num = Math.min(window.innerWidth / 10, 100);
+      for (let i = 0; i < num; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 0.2,
+          vy: (Math.random() - 0.5) * 0.2,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.5 + 0.2
+        });
+      }
+    }
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = canvas.width; if (p.x > canvas.width) p.x = 0;
+        if (p.y < 0) p.y = canvas.height; if (p.y > canvas.height) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 2 * Math.PI);
+        ctx.fillStyle = `rgba(0, 122, 255, ${p.alpha})`;
+        ctx.fill();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(0, 122, 255, ${(1 - d / 120) * 0.15})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    window.addEventListener('resize', resizeBg);
+    resizeBg();
+    draw();
+  </script>
+</body>
+</html>
